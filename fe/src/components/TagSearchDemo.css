@@ -1,0 +1,125 @@
+/* The demo of the tag search on the landing page: the same field as the real one, always shown with
+   its focus ring as if someone is using it, a blinking caret, chips that bounce in as they're picked
+   with a ring flashing out from the field, suggestions that fly in one after the other, and the tracks
+   found sliding in underneath. Quick and springy, to make the search look like fun to use. All in the
+   grey of Bootstrap's secondary colour, so the blue is left to the buttons under it. */
+.tag-demo .tag-search {
+  border-color: rgba(var(--bs-secondary-rgb), 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-secondary-rgb), 0.18);
+  cursor: default;
+  /* as high with chips in it as without, so the bar never changes height */
+  height: 2.875rem;
+}
+
+.tag-demo-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1.25em;
+  margin-inline: 1px;
+  background: var(--bs-body-color);
+  vertical-align: text-bottom;
+  animation: tag-demo-blink 1.06s steps(1) infinite;
+}
+
+/* the caret stays on while letters are coming in, like a real one */
+.tag-demo-caret.is-typing {
+  animation: none;
+}
+
+@keyframes tag-demo-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.tag-demo-chip,
+.tag-demo-line .badge.is-active {
+  background-color: var(--bs-secondary);
+  color: #fff;
+}
+
+.tag-demo-arrow {
+  color: var(--bs-secondary);
+}
+
+/* a springy landing: too big for a moment, then settling */
+.tag-demo-chip {
+  animation: tag-demo-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes tag-demo-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.5);
+  }
+}
+
+.tag-demo-pulse {
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  animation: tag-demo-pulse 0.55s ease-out forwards;
+}
+
+@keyframes tag-demo-pulse {
+  from {
+    box-shadow: 0 0 0 0 rgba(var(--bs-secondary-rgb), 0.4);
+  }
+  to {
+    box-shadow: 0 0 0 0.9rem rgba(var(--bs-secondary-rgb), 0);
+  }
+}
+
+/* the suggestions fly up into place, each a moment after the one before */
+.tag-demo-panel .badge {
+  animation: tag-demo-rise 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes tag-demo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.85);
+  }
+}
+
+/* the tracks found slide in from the left, the arrow nudging forward and the count popping */
+.tag-demo-results {
+  animation: tag-demo-slide 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes tag-demo-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+}
+
+.tag-demo-arrow {
+  animation: tag-demo-nudge 0.6s ease-in-out 0.15s 2;
+}
+
+@keyframes tag-demo-nudge {
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+.tag-demo-count {
+  display: inline-block;
+  animation: tag-demo-pop 0.36s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s both;
+}
+
+.tag-demo-line {
+  height: 1.5rem;
+}
+
+.tag-demo-line .badge {
+  font-size: 0.8rem;
+  padding: 0.35em 0.75em;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+/* a suggestion being "clicked" darkens for a moment */
+.tag-demo-line .badge.is-pressed {
+  filter: brightness(0.85);
+}

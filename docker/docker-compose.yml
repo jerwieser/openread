@@ -1,0 +1,61 @@
+# Local development: three containers (Postgres, the FastAPI API and the Vite FE), hot reload,
+# source mounted, Postgres exposed on localhost:5432. `make up` starts it (see the Makefile). Paths
+# are relative to this file, in docker/: the project is the folder above. The name keeps the
+# containers and the database's volume the same wherever this file is.
+name: openread
+
+services:
+  db:
+    image: postgres:17-alpine
+    env_file: ../envs/.env.local
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/api.Dockerfile
+    env_file: ../envs/.env.local
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    # Migrate, then serve. --proxy-headers: see the browser's IP (forwarded by
+    # Vite) for rate limiting.
+    command: sh -c "alembic -c db/alembic.ini upgrade head && uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir api --proxy-headers --forwarded-allow-ips '*'"
+    ports:
+      - "8000:8000"
+    # the API and the database's folder, db/ (its migrations), and readers' uploads
+    volumes:
+      - ../api:/app/api
+      - ../db:/app/db
+      - ../media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+  fe:
+    build:
+      context: ../fe
+      dockerfile: ../docker/fe.Dockerfile
+      target: dev
+    environment:
+      API_URL: http://api:8000
+    # Install on start so dependency changes are picked up (node_modules lives in its own volume).
+    command: sh -c "npm install --no-audit --no-fund && npm run dev"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../fe:/app
+      - /app/node_modules
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

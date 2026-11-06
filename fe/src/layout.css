@@ -1,0 +1,126 @@
+/* Facebook's layering: the navbar and the footer white, the page between them a light gray, so the
+   cards on it (white, like the fields and menus) stand out. Only the page's own background: Bootstrap's
+   --bs-body-bg stays white, and everything that uses it with it. */
+body {
+  background-color: #f0f2f5;
+}
+
+/* The scrollbar's space is kept on every page, scrolling or not, so the page is as wide on a short
+   page as on a long one and nothing moves sideways between them: the standard way. On both edges,
+   so the page stays centred in the window and both sides have the same space, scrollbar or not. It
+   matters where scrollbars take space (Windows, or macOS set to always show them); overlay
+   scrollbars take none. */
+html {
+  scrollbar-gutter: stable both-edges;
+}
+
+/* Bootstrap's containers, with one change: on very wide screens (1700px and up) they keep growing, to
+   1600px, instead of stopping at 1320px, so the grids of books and tracks use more of the screen.
+   Text keeps its own narrower columns (col-lg-6, max-width in rem), so lines stay easy to read. The
+   selectors are Bootstrap's own (bootstrap/dist/css/bootstrap.css); load this after it. */
+@media (min-width: 1700px) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl,
+  .container-xxl {
+    max-width: 1600px;
+  }
+}
+
+/* Nine books a row from 1200px up (<Row xl={9}>, components/grids.js), so the extra width shows more
+   books rather than bigger ones. Bootstrap's row-cols-* classes stop at 6; this is its own rule for
+   them. */
+@media (min-width: 1200px) {
+  .row-cols-xl-9 > * {
+    flex: 0 0 auto;
+    width: calc(100% / 9);
+  }
+}
+
+/* A flex item that may shrink below its content's width (Bootstrap has no class for it), so the text
+   in it can be cut short with "…" (text-truncate) or wrap, rather than push the row wider than the
+   page: the Open Library results' titles, the next book on a followed track. */
+.min-w-0 {
+  min-width: 0;
+}
+
+/* The page never scrolls sideways: anything that ends up wider than the screen is clipped at its edge
+   instead of adding a horizontal scrollbar. A safety net, not a layout tool; the pages themselves are
+   built to fit from 320px up. "clip" rather than "hidden", so sticky elements keep working. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* The navbar links' names in bold, and their outline icons as heavy as the names: Bootstrap Icons come
+   in one weight, so a thin stroke along their edges thickens them. Not the solid ones (the page the
+   reader is on), which would lose their cut-outs, like the compass's needle. */
+.nav-link-label {
+  font-weight: 700;
+}
+
+.navbar-item svg:not([class*="-fill"]) path {
+  stroke: currentColor;
+  stroke-width: 0.4px;
+}
+
+/* The navbar links' names under their icons, from lg up (SiteNav.jsx): small, like LinkedIn's, so the
+   24px icon, a 4px gap and the name fit in the 40px the link had and the navbar keeps its height.
+   Bootstrap has no responsive font size, hence this one rule. */
+@media (min-width: 992px) {
+  .nav-link-label {
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+}
+
+/* The account menu's button in the navbar (SiteNav.jsx): its caret goes after the word "Account"
+   under the avatar, which has Bootstrap's dropdown-toggle class for it, not after the button. */
+.navbar-account.dropdown-toggle::after {
+  display: none;
+}
+
+/* The navbar's page links and account menu, from lg up (SiteNav.jsx): columns of one width, their
+   icon and name centred, so the icons stand evenly apart whatever the length of the names. 5rem,
+   LinkedIn's spacing: the longest name ("Bookshelf") still has room on both sides. */
+@media (min-width: 992px) {
+  .navbar-item {
+    width: 5rem;
+  }
+
+  /* The last column, the account menu, is wider than its "Account ▾", so what shows of it would end
+     12px further in than the logo begins on the left. The navbar's right padding is 12px less for
+     it: 24px of space on both sides, as far as the eye can tell. */
+  .navbar-row {
+    padding-right: 0.75rem;
+  }
+}
+
+/* A field holding chips and a text field (the suggest form's authors, components/Combobox.jsx): the
+   focus ring of the field inside shows on the whole box, as on any other field. */
+.form-select:focus-within {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+  outline: 0;
+}
+.form-select.is-invalid:focus-within {
+  border-color: var(--bs-form-invalid-border-color);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+}
+
+/* The navbar sticks to the top of the window (SiteNav.jsx). A jump to a #section stops under it
+   rather than behind it (its height, 56px, and a little room), and below lg the open burger menu
+   scrolls on its own when it's taller than the window, as on a phone held sideways, rather than
+   running off the bottom with its last links out of reach. */
+html {
+  scroll-padding-top: 5rem;
+}
+
+@media (max-width: 991.98px) {
+  .navbar.sticky-top .navbar-collapse {
+    max-height: calc(100dvh - 3.5rem);
+    overflow-y: auto;
+  }
+}

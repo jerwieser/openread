@@ -1,0 +1,11 @@
+/* The tag search looks like one Bootstrap text field with the chosen tags inside it: the field's own
+   focus ring when anything in it has focus, and the input itself without a border of its own. */
+.tag-search:focus-within {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.tag-search input {
+  outline: 0;
+  min-width: 8rem;
+}

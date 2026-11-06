@@ -1,0 +1,9 @@
+# Used automatically for docker/api.Dockerfile (named after it), whose build context is the project root: only what the API
+# image needs goes in.
+*
+!pyproject.toml
+!uv.lock
+!api
+!db
+**/__pycache__
+**/*.pyc

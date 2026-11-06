@@ -1,0 +1,16 @@
+/* From Bootstrap's sign-in example (getbootstrap.com/docs/5.3/examples/sign-in): floating-label
+   fields in a .stacked group join into one block, and the focused field draws over its neighbours */
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin .stacked .form-floating:not(:last-child) .form-control {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin .stacked .form-floating:not(:first-child) .form-control {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

@@ -1,0 +1,105 @@
+/* A reflection as a card: a band in the colours of the book's cover, blurred, with the title on it,
+   then the opening lines as a pull quote. Lifts a little on hover, like the track cards. */
+.reflection-card {
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.reflection-card:hover,
+.reflection-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--bs-box-shadow) !important;
+}
+
+/* the cover, blurred and enlarged so its edges don't show, multiplied into a colour picked per book
+   (most covers are pale title pages), under a dark wash that keeps the white title readable */
+.reflection-card-band {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 1.25rem;
+  min-height: 9rem;
+  padding: 1.5rem;
+  overflow: hidden;
+  background-color: var(--band);
+  isolation: isolate;
+}
+
+.reflection-card-band::before,
+.reflection-card-band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.reflection-card-band::before {
+  background: var(--cover) center / cover no-repeat;
+  filter: blur(18px) saturate(1.4);
+  transform: scale(1.4);
+  mix-blend-mode: multiply;
+}
+
+.reflection-card-band::after {
+  background: linear-gradient(to top, rgba(15, 20, 40, 0.6), rgba(15, 20, 40, 0.1));
+}
+
+/* the cover itself, tilted a little, straightening on hover */
+.reflection-card-cover {
+  position: relative;
+  transform: rotate(-4deg);
+  transition: transform 0.2s ease-in-out;
+  filter: drop-shadow(0 0.5rem 0.75rem rgba(0, 0, 0, 0.35));
+}
+
+.reflection-card:hover .reflection-card-cover,
+.reflection-card:focus-within .reflection-card-cover {
+  transform: rotate(0deg) translateY(-2px);
+}
+
+.reflection-card-kicker {
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.06em;
+}
+
+/* the opening lines in a book face, behind a large quotation mark */
+.reflection-card-quote {
+  position: relative;
+  padding-left: 2.25rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--bs-body-color);
+}
+
+.reflection-card-quote::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.6rem;
+  left: -0.1rem;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: var(--bs-primary);
+  opacity: 0.35;
+}
+
+.reflection-card-more .bi,
+.reflection-card-more svg {
+  transition: transform 0.2s ease-in-out;
+}
+
+.reflection-card:hover .reflection-card-more svg {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reflection-card,
+  .reflection-card-cover,
+  .reflection-card-more svg {
+    transition: none;
+  }
+
+  .reflection-card:hover,
+  .reflection-card:focus-within {
+    transform: none;
+  }
+}

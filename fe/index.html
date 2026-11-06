@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Reading tracks through the great books, old and new, like the Dutch canon in ten books, and gatherings where readers talk them through together, online or in person." />
+    <meta name="theme-color" content="#ffffff" />
+    <title>OR · Read great books together</title>
+    <!-- the mark, transparent around it: the SVG where the browser can draw one, and favicon.ico (the
+         same drawing at 16 and 32 px, made from it) for the ones that can't, like older Safari -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <!-- what shows until the app has the catalogue and replaces it (main.jsx): LoadingSpinner's
+         spinner, drawn here without Bootstrap, which isn't loaded yet -->
+    <style>
+      .opening { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
+      .opening div { width: 2rem; height: 2rem; border: 0.25em solid #0d6efd; border-right-color: transparent; border-radius: 50%; animation: opening 0.75s linear infinite; }
+      @keyframes opening { to { transform: rotate(360deg); } }
+    </style>
+    <div id="root"><div class="opening" role="status" aria-label="Loading…"><div></div></div></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
