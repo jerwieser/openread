@@ -2,8 +2,7 @@
 
 # OpenRead
 
-The right books, in the right order. Pick a subject, follow a reading track of books through it one
-at a time, and talk to readers who have read them.
+The right books, in the right order. Pick a subject, follow a reading track of books through it one at a time, and talk to readers who have read them. OpenRead is an alternative for Goodreads. No ads, no commercial incentive. Just a free easy-to-use web-application.
 
 Live at [openread.cloud](https://www.openread.cloud).
 
