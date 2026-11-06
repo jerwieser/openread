@@ -1,3 +1,5 @@
+<img src="fe/public/favicon.svg" alt="OpenRead icon" width="96">
+
 # OpenRead
 
 The right books, in the right order. Pick a subject, follow a reading track of books through it one
