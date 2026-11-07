@@ -50,7 +50,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: process.env.API_URL ?? "http://localhost:8000",
+        target: process.env.API_PROXY_URL ?? "http://localhost:8000",
         rewrite: (path) => path.replace(/^\/api/, ""),
         xfwd: true, // pass the browser's IP on (X-Forwarded-For), used for rate limiting
       },

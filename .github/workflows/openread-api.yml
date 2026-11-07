@@ -1,0 +1,228 @@
+name: openread api — test, build and deploy
+
+# OpenRead's API: lint, migrations up to date with the models, the tests, and the API answering; then,
+# on pushes to main, build the image, point App Service at it and wait for it to serve. Pull requests
+# run the checks only.
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'api/**'
+      - 'db/**'
+      - 'tests/**'
+      - 'docker/api.Dockerfile*'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - 'DATAMODEL.md'
+      - '.github/workflows/openread-api.yml'
+  pull_request:
+    paths:
+      - 'api/**'
+      - 'db/**'
+      - 'tests/**'
+      - 'docker/api.Dockerfile*'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - 'DATAMODEL.md'
+      - '.github/workflows/openread-api.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: sideprojectswebapps-aucvffd4gybxdka2.azurecr.io
+  # Azure's own names: an App Service and a resource group can't be renamed.
+  APP_SERVICE: app-openread
+  RESOURCE_GROUP: app-openread_group
+
+jobs:
+  # =========================
+  # Test: lint, migrations, the tests, and the API answering.
+  # Nothing is built or deployed unless this is green.
+  # =========================
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: openread
+          POSTGRES_USER: openread
+          POSTGRES_PASSWORD: openread
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U openread"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      # Local mode: the checks exercise the app, not Azure storage and email (which production
+      # requires).
+      ENVIRONMENT: local
+      SECRET_KEY: ci-only-not-a-real-secret
+      POSTGRES_DB: openread
+      POSTGRES_USER: openread
+      POSTGRES_PASSWORD: openread
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_PORT: "5432"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Lint
+        run: |
+          uv run ruff check
+          uv run ruff format --check
+
+      - name: Migrations
+        run: uv run alembic -c db/alembic.ini upgrade head
+
+      - name: Model changes all have migrations
+        run: uv run alembic -c db/alembic.ini check
+
+      - name: The data model's drawing is up to date (make erd)
+        run: uv run python -m api.commands.erd --check
+
+      - name: Tests
+        run: uv run pytest
+
+      - name: API answers
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Straight from the venv, not `uv run`, and stopped at the end: a `uv run` left running
+          # holds uv's cache lock, and setup-uv's post-job cache prune then fails (exit code 2).
+          .venv/bin/uvicorn api.main:app --port 8000 &
+          server=$!
+          trap 'kill "$server"' EXIT
+          for _ in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/health && break; sleep 1; done
+          for path in /health /works /tracks /readers /reflections; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8000$path")
+            [ "$code" = "200" ] || { echo "::error::$path returned HTTP $code"; exit 1; }
+            echo "OK  $path → $code"
+          done
+
+  # =========================
+  # Build: the image, pushed to Azure Container Registry. Pushes to main only, after the tests are
+  # green. Its own job, so the image lands in the registry even if the rollout below fails.
+  # =========================
+  build:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: test
+    outputs:
+      image_tag: ${{ steps.vars.outputs.image_tag }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set short SHA
+        id: vars
+        shell: bash
+        run: |
+          echo "image_tag=${GITHUB_RUN_NUMBER}-${GITHUB_SHA::6}" >> "$GITHUB_OUTPUT"
+
+      - name: Login to Azure Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+
+      - name: Build and push (amd64)
+        uses: docker/build-push-action@v6
+        with:
+          # the project root: the image has the API and db/, its migrations
+          context: .
+          file: docker/api.Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ env.REGISTRY }}/openread:${{ steps.vars.outputs.image_tag }}
+
+  # =========================
+  # Deploy: point App Service at the freshly built image tag, then smoke test it.
+  # =========================
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    # One deploy at a time; a queued push waits for the current rollout + smoke test to finish
+    # instead of racing it.
+    concurrency:
+      group: openread-api-deploy
+      cancel-in-progress: false
+    env:
+      IMAGE_TAG: ${{ needs.build.outputs.image_tag }}
+
+    steps:
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set IMAGE_TAG in App Service
+        run: |
+          az webapp config appsettings set \
+            --name "$APP_SERVICE" \
+            --resource-group "$RESOURCE_GROUP" \
+            --settings IMAGE_TAG="$IMAGE_TAG"
+
+      # The App Service runs a "sitecontainers" (sidecar) config whose image tag is pinned in the
+      # container spec — the IMAGE_TAG app-setting above is NOT interpolated into it. Updating the
+      # sitecontainer image is what actually rolls the app onto the new build (and triggers the
+      # pull + restart).
+      - name: Deploy new image to App Service
+        run: |
+          az webapp sitecontainers update \
+            --name "$APP_SERVICE" \
+            --resource-group "$RESOURCE_GROUP" \
+            --container-name main \
+            --image "$REGISTRY"/openread:"$IMAGE_TAG" \
+            --registry-username ${{ secrets.AZURE_REGISTRY_USERNAME }} \
+            --registry-password ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+
+      # =========================
+      # Smoke test: poll /health on the App Service's own address (it works before and after a
+      # custom domain) until the NEW build (matched by image tag) is serving and can reach Postgres,
+      # then check the catalogue answers. A failure fails the run, so a broken rollout is loud.
+      # =========================
+      - name: Smoke test the API
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://$(az webapp show --name "$APP_SERVICE" --resource-group "$RESOURCE_GROUP" --query defaultHostName -o tsv)"
+          TAG="$IMAGE_TAG"
+
+          echo "Waiting for $BASE/health to serve build $TAG…"
+          for i in $(seq 1 60); do
+            body=$(curl -fsS --max-time 10 "$BASE/health" || true)
+            version=$(echo "$body" | jq -r .version 2>/dev/null || true)
+            if [ "$version" = "$TAG" ]; then
+              echo "New build is live: $body"
+              for path in /works /tracks /readers; do
+                code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$BASE$path")
+                [ "$code" = "200" ] || { echo "::error::Smoke test failed: $path returned HTTP $code"; exit 1; }
+                echo "OK  $path → $code"
+              done
+              echo "Smoke test passed — build $TAG is serving."
+              exit 0
+            fi
+            echo "Attempt $i/60: live version is '${version:-unreachable}', want '$TAG'. Retrying in 10s…"
+            sleep 10
+          done
+
+          echo "::error::Deployment never became healthy: /health did not report build $TAG within 10 minutes."
+          exit 1
