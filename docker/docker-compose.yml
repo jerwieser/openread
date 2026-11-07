@@ -46,7 +46,7 @@ services:
       dockerfile: ../docker/fe.Dockerfile
       target: dev
     environment:
-      API_URL: http://api:8000
+      API_PROXY_URL: http://api:8000
     # Install on start so dependency changes are picked up (node_modules lives in its own volume).
     command: sh -c "npm install --no-audit --no-fund && npm run dev"
     ports:
