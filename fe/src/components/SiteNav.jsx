@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef } from "react";
-import { Badge, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
+import { Badge, Container, Dropdown, Nav, Navbar, Spinner } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useConversations } from "../data/inbox.js";
@@ -33,7 +33,7 @@ const Unread = ({ count }) =>
 
 // The account links, in groups, the same in the avatar's dropdown and the burger menu: logged out,
 // logging in and signing up; logged in, the reader's own pages, what they can start and logging out.
-// None while the site opens: who's logged in isn't known yet.
+// None while the site opens: who's logged in isn't known yet, and the avatar shows a spinner instead.
 function useAccountLinks() {
   const user = useUser();
   const opening = useCatalogue() === "loading";
@@ -43,7 +43,7 @@ function useAccountLinks() {
   const { unread } = useConversations();
   const waiting = suggestions.filter((s) => s.status === "pending").length;
 
-  if (opening) return { user: null, unread: 0, groups: [] };
+  if (opening) return { opening, user: null, unread: 0, groups: [] };
   if (!user) return { user, unread, groups: [[{ to: "/log-in", label: "Log in" }, { to: "/sign-up", label: "Sign up" }]] };
   // asks first, with the browser's own confirm dialog like the site's other second thoughts
   const logOutNow = async () => {
@@ -85,21 +85,38 @@ const NAV_LINK_COLOURS = {
   "--bs-btn-color": "var(--bs-navbar-color)",
   "--bs-btn-hover-color": "var(--bs-navbar-hover-color)",
   "--bs-btn-active-color": "var(--bs-navbar-active-color)",
+  // disabled while the site opens (its spinner showing), without fading
+  "--bs-btn-disabled-color": "var(--bs-navbar-color)",
+  "--bs-btn-disabled-opacity": 1,
 };
+
+// the spinner while the site opens, as big as the avatar it stands in for, like the pages' own
+// (Loading.jsx)
+const ACCOUNT_SPINNER = { width: 24, height: 24, borderWidth: 3 };
 
 function AccountDropdown() {
   const { pathname } = useLocation();
-  const { user, unread, groups } = useAccountLinks();
+  const { opening, user, unread, groups } = useAccountLinks();
   return (
     <Dropdown align="end">
       <Dropdown.Toggle
         variant="link"
         id="account-menu"
+        disabled={opening}
+        aria-busy={opening}
         className="navbar-account navbar-item d-flex flex-column align-items-center p-0 border-0 text-decoration-none"
         style={NAV_LINK_COLOURS}
       >
         <span className="position-relative d-inline-flex">
-          {user ? <Initials name={user.name} photo={user.photo} size={24} /> : <Icon name="person-circle" size={24} />}
+          {opening ? (
+            <Spinner animation="border" variant="primary" role="status" style={ACCOUNT_SPINNER}>
+              <span className="visually-hidden">Loading your account…</span>
+            </Spinner>
+          ) : user ? (
+            <Initials name={user.name} photo={user.photo} size={24} />
+          ) : (
+            <Icon name="person-circle" size={24} />
+          )}
           {unread > 0 && <Dot />}
         </span>
         <span className="nav-link-label dropdown-toggle mt-1" aria-hidden="true">
@@ -141,9 +158,16 @@ function AccountDropdown() {
 // Below lg: the same links as plain nav links at the bottom of the burger menu, under a line
 function AccountNav() {
   const { pathname } = useLocation();
-  const { groups } = useAccountLinks();
+  const { opening, groups } = useAccountLinks();
   return (
     <Nav className="border-top mt-2 pt-2">
+      {opening && (
+        <div className="py-2">
+          <Spinner animation="border" variant="primary" size="sm" role="status">
+            <span className="visually-hidden">Loading your account…</span>
+          </Spinner>
+        </div>
+      )}
       {groups.map((group, i) => (
         <Fragment key={i}>
           {i > 0 && <hr className="my-2" />}
