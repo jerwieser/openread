@@ -13,9 +13,8 @@ import { useCatalogue, useUser } from "./store.js";
 const AccountPage = lazyPage(() => import("./pages/AccountPage.jsx"));
 const AdminPage = lazyPage(() => import("./pages/AdminPage.jsx"));
 const BookPage = lazyPage(() => import("./pages/BookPage.jsx"));
-const BooksPage = lazyPage(() => import("./pages/BooksPage.jsx"));
 const BookshelfPage = lazyPage(() => import("./pages/BookshelfPage.jsx"));
-const DiscoverPage = lazyPage(() => import("./pages/DiscoverPage.jsx"));
+const DiscoverPage = lazyPage(() => import("./pages/discover/DiscoverPage.jsx"));
 const ForgotPasswordPage = lazyPage(() => import("./pages/ForgotPasswordPage.jsx"));
 const HomePage = lazyPage(() => import("./pages/HomePage.jsx"));
 const ImportPage = lazyPage(() => import("./pages/ImportPage.jsx"));
@@ -57,10 +56,13 @@ function ScrollToTop() {
   return null;
 }
 
-// /tracks?tags=… to /discover?tags=…, keeping the search
-function ToDiscover() {
+// The old lists to Discover, keeping their searches and filters: /tracks?tags=… to the Tracks view,
+// /books?category=… to the Books view
+function ToDiscover({ view }) {
   const { search } = useLocation();
-  return <Navigate to={{ pathname: "/discover", search }} replace />;
+  const params = new URLSearchParams(search);
+  if (view) params.set("view", view);
+  return <Navigate to={{ pathname: "/discover", search: `?${params}` }} replace />;
 }
 
 // The pages that show while the catalogue is still coming: their words and pictures are their own,
@@ -143,7 +145,8 @@ export default function App() {
         <Routes>
           <Route element={<SiteLayout />}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/books" element={<BooksPage />} />
+            {/* the books list is Discover's Books view now; old links, filters included, land there */}
+            <Route path="/books" element={<ToDiscover view="books" />} />
             <Route path="/books/suggest" element={<SuggestBookPage />} />
             <Route path="/books/:slug" element={<BookPage />} />
             <Route path="/discover" element={<DiscoverPage />} />

@@ -119,6 +119,8 @@ SORTS = {
     "title": [SORT_TITLE, Work.id],
     "oldest": [col(Work.year).asc().nulls_last(), SORT_TITLE],
     "newest": [col(Work.year).desc().nulls_last(), SORT_TITLE],
+    # the most recently added to OpenRead first, whatever their categories: an upload shows here
+    "added": [col(Work.created_at).desc(), col(Work.id).desc()],
 }
 
 
@@ -132,7 +134,7 @@ class Browse:
     year_until: int | None = Query(None, description="first published before this year")
     on_track: bool = Query(False, description="only the works on our reading tracks")
     category: str | None = Query(None, max_length=40, description='one of our categories: "classics"')
-    sort: Literal["popular", "title", "oldest", "newest"] = "popular"
+    sort: Literal["popular", "title", "oldest", "newest", "added"] = "popular"
 
     def query(self):
         """Return the works these filters leave, unsorted."""
@@ -155,10 +157,10 @@ class Browse:
             query = query.where(col(Work.id).in_(ON_OUR_TRACKS))
         if self.category:
             query = query.where(col(Work.categories).contains([self.category]))
-        elif self.sort == "popular":
-            # Only works on a bookshelf or not from the dataset, which has tens of thousands. A
-            # category has all its works, the dataset's last: there are fewer, and they fill its
-            # shelf.
+        elif self.sort in ("popular", "added"):
+            # Only works on a bookshelf or not from the dataset, which has tens of thousands (added
+            # all at once, so they'd fill the recently added too). A category has all its works, the
+            # dataset's last: there are fewer, and they fill its shelf.
             query = query.where(or_(Work.source != "dataset", col(Work.id).in_(select(Reading.work_id))))
         return query
 

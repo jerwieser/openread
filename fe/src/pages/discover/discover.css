@@ -1,0 +1,131 @@
+/* Discover: on the page's plain grey like every other page; the colour is in the topic chips. */
+
+/* the search: wide, with room for its icon on the left and the clear cross or the "/" on the right */
+.discover-search {
+  max-width: 44rem;
+}
+
+.discover-search .form-control {
+  padding-left: 3rem;
+  padding-right: 3rem;
+  border-color: transparent;
+}
+
+.discover-search .form-control:focus {
+  border-color: #86b7fe;
+}
+
+/* no browser cross of its own: ours does the same, in the same place on every browser */
+.discover-search input[type="search"]::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.discover-search-icon,
+.discover-search-end {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.discover-search-icon {
+  left: 1.25rem;
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.discover-search-end {
+  right: 1.25rem;
+  line-height: 1;
+}
+
+kbd.discover-search-end {
+  background: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+  border: 1px solid var(--bs-border-color);
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+
+.discover-views .nav-link {
+  color: var(--bs-secondary-color);
+  font-weight: 500;
+}
+
+.discover-views .nav-link:not(.active):hover {
+  color: var(--bs-emphasis-color);
+  background: var(--bs-secondary-bg);
+}
+
+.discover-view-count {
+  font-size: 0.75em;
+  padding: 0.1em 0.5em;
+  border-radius: 1em;
+  background: rgba(var(--bs-body-color-rgb), 0.08);
+}
+
+.discover-views .nav-link.active .discover-view-count {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* the topic chips: Bootstrap's subtle colours, lifting a little on hover */
+.discover-chip {
+  --bs-btn-padding-x: 0.8rem;
+  border-width: 1px;
+  border-style: solid;
+  font-weight: 500;
+  transition: transform 0.12s ease-in-out, box-shadow 0.12s ease-in-out;
+}
+
+.discover-chip:not(.picked):hover {
+  transform: translateY(-1px);
+  box-shadow: var(--bs-box-shadow-sm);
+  filter: saturate(1.3);
+}
+
+.discover-chip-count {
+  margin-left: 0.4rem;
+  font-size: 0.8em;
+  opacity: 0.65;
+}
+
+/* a section's icon in its circle */
+.discover-section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+/* Open Library's books, set apart as from elsewhere: a dashed edge on a faint tint */
+.discover-elsewhere {
+  border: 1px dashed var(--bs-border-color);
+  background: rgba(var(--bs-body-bg-rgb), 0.6);
+}
+
+/* the quick look's rows of small covers */
+.discover-strip {
+  scrollbar-width: thin;
+}
+
+.discover-strip-book {
+  width: 72px;
+  flex-shrink: 0;
+  transition: transform 0.12s ease-in-out;
+}
+
+.discover-strip-book:hover,
+.discover-strip-book:focus-visible {
+  transform: translateY(-3px);
+}
+
+/* a track as a line in the quick look: its shelf of covers, small */
+.discover-track-line-shelf {
+  width: 7.5rem;
+  height: 3.5rem;
+  min-height: 0;
+  padding: 0.25rem 0;
+}

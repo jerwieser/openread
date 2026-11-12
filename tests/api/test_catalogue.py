@@ -22,6 +22,13 @@ def test_filtering_by_difficulty(client, make_work):
     assert slugs(client.get("/works?difficulty=demanding")) == ["hard"]
 
 
+def test_the_most_recently_added_first(client, make_work):
+    make_work("Moby-Dick", year=1851)
+    make_work("Zeik", "Herman Brusselmans", year=2014)
+    make_work("Beowulf", "Anonymous", year=1000)
+    assert slugs(client.get("/works?sort=added")) == ["beowulf", "zeik", "moby-dick"]
+
+
 def test_searching_by_title_in_any_language(client, session, make_work):
     work = make_work("Crime and Punishment", "Fyodor Dostoevsky")
     expression(session, work, "nl").title = "Misdaad en straf"

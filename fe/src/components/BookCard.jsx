@@ -13,16 +13,31 @@ import { SeeAll } from "./PageHeader.jsx";
 // puts it on Want to read, or the icon of where the reader is with it. The rest is done on its own page.
 // showcase: on the home page, which shows OpenRead to newcomers, a "Details →" link instead of the
 // bookmark.
+// onOpen: on Discover, a click opens the book in a quick look over the page instead (with the keys
+// that open a link elsewhere, like Cmd-click, it still opens the book's own page).
 const TITLE = { fontSize: "0.8125rem" };
 const AUTHOR = { fontSize: "0.75rem" };
 
-export default function BookCard({ book, showcase = false }) {
+const elsewhere = (e) => e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
+
+export default function BookCard({ book, showcase = false, onOpen }) {
   return (
     <Card className="h-100 border-0 bg-transparent">
       <BookCover book={book} />
       <Card.Body className="px-0 pt-2 pb-0 d-flex flex-column">
         <Card.Title as="h3" className="fw-semibold lh-sm text-truncate mb-1" style={TITLE} title={book.title}>
-          <Link to={`/books/${book.slug}`} className="stretched-link link-body-emphasis text-decoration-none">
+          <Link
+            to={`/books/${book.slug}`}
+            className="stretched-link link-body-emphasis text-decoration-none"
+            onClick={
+              onOpen &&
+              ((e) => {
+                if (elsewhere(e)) return;
+                e.preventDefault();
+                onOpen(book);
+              })
+            }
+          >
             {book.title}
           </Link>
         </Card.Title>
