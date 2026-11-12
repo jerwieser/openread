@@ -56,6 +56,19 @@ COVERISH = re.compile(
 )
 
 
+def items_of_ol_works(ol_ids: list[str], run: Callable[[str], list[dict]] = query) -> dict[str, str]:
+    """Return the items that name these Open Library works in P648, { ol_id: item }, 100 per query:
+    item_of_ol_work for many at once.
+    """
+    ol_ids = [ol for ol in ol_ids if re.fullmatch(r"OL\d+W", ol)]
+    found: dict[str, str] = {}
+    for start in range(0, len(ol_ids), 100):
+        values = " ".join(f'"{ol}"' for ol in ol_ids[start : start + 100])
+        for row in run(f"SELECT ?item ?ol WHERE {{ VALUES ?ol {{ {values} }} ?item wdt:P648 ?ol }}"):
+            found.setdefault(row["ol"]["value"], _item(row))
+    return found
+
+
 def cover_of(item: str, run: Callable[[str], list[dict]] = query) -> str | None:
     """Return a Wikimedia Commons cover of the work, 500 pixels wide.
 

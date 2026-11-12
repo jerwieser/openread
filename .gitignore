@@ -2,12 +2,10 @@ envs/.env.local
 envs/.env.prod
 fe/node_modules
 fe/dist
+media/
+data/
 .venv
 __pycache__
 .ruff_cache
 .pytest_cache
 .DS_Store
-# pictures uploaded locally (api/clients/storage.py)
-media
-# local editor and tool settings
-.claude/
