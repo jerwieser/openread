@@ -3,11 +3,11 @@
 // at a time from the API; with a search, the API's best matches, then Open Library's books that
 // aren't on OpenRead yet, which a click puts on the reader's Want to read.
 import { useEffect, useMemo, useState } from "react";
-import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Button, Card, Col, Collapse, Form, Row, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import BookCard from "../../components/BookCard.jsx";
-import { IconCircle } from "../../components/Icon.jsx";
+import Icon, { IconCircle } from "../../components/Icon.jsx";
 import { BookCardPlaceholder, GridPlaceholder, Loader, PagedGrid, ScrollGrid } from "../../components/Loading.jsx";
 import { usePagedBooks } from "../../data/books.js";
 import { CATEGORIES, ERAS } from "../../data/catalogue.js";
@@ -97,6 +97,12 @@ export default function BooksView({ params, set, clear, onOpen }) {
   const difficulty = params.get("difficulty") ?? "";
   const sort = SORTS[params.get("sort")] ? params.get("sort") : "popular";
   const filtered = Boolean(category || era || onTrack || difficulty || params.get("sort"));
+  // the filters, folded away under "Advanced filters" until the reader asks for them, or one is set
+  // (as by a shelf's "See all" or a link)
+  const [showFilters, setShowFilters] = useState(filtered);
+  useEffect(() => {
+    if (filtered) setShowFilters(true);
+  }, [filtered]);
 
   const { typed, books: found, searching } = useFoundBooks(query);
   const searched = typed.length >= 2;
@@ -135,57 +141,77 @@ export default function BooksView({ params, set, clear, onOpen }) {
 
   return (
     <>
-      {/* the filters besides the search, always in sight: four small fields in a row */}
-      <Card body className="discover-filters mb-4 border-0 shadow-sm">
-        <Row className="g-3 align-items-end">
-          <Col xs={6} lg={3}>
-            <Form.Label htmlFor="book-category" className="small fw-medium mb-1">
-              Category
-            </Form.Label>
-            <Form.Select id="book-category" size="sm" value={category} onChange={(e) => set({ category: e.target.value })}>
-              <option value="">Any category</option>
-              {CATEGORIES.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.label}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col xs={6} lg={3}>
-            <Form.Label htmlFor="book-era" className="small fw-medium mb-1">
-              Period
-            </Form.Label>
-            <Form.Select id="book-era" size="sm" value={era} onChange={(e) => set({ era: e.target.value })}>
-              <option value="">Any period</option>
-              {ERAS.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.label}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col xs={6} lg={3}>
-            <Form.Label htmlFor="book-sort" className="small fw-medium mb-1">
-              Sort
-            </Form.Label>
-            <Form.Select id="book-sort" size="sm" value={sort} onChange={(e) => set({ sort: e.target.value === "popular" ? "" : e.target.value })}>
-              {Object.entries(SORTS).map(([key, [label]]) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col xs={6} lg={3} className="d-flex align-items-center justify-content-between gap-2">
-            <Form.Check type="switch" id="on-track" label="On a reading track" checked={onTrack} onChange={(e) => set({ track: e.target.checked ? "1" : "" })} />
-            {(filtered || query) && (
-              <Button variant="link" size="sm" className="p-0 text-decoration-none text-nowrap" onClick={clear}>
-                Clear all
-              </Button>
-            )}
-          </Col>
-        </Row>
-      </Card>
+      {/* the filters besides the search, under a link that shows them, and the way to clear them all */}
+      <div className="d-flex justify-content-center align-items-center gap-2 small mb-3">
+        <Button
+          variant="link"
+          className="p-0 small text-decoration-none"
+          aria-expanded={showFilters}
+          aria-controls="book-filters"
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          Advanced filters <Icon name={showFilters ? "chevron-up" : "chevron-down"} />
+        </Button>
+        {(filtered || query) && (
+          <>
+            <span className="text-body-secondary" aria-hidden="true">
+              ·
+            </span>
+            <Button variant="link" className="p-0 small text-decoration-none" onClick={clear}>
+              Clear filters
+            </Button>
+          </>
+        )}
+      </div>
+      <Collapse in={showFilters}>
+        <div id="book-filters">
+          <Card body className="discover-filters mb-4 border-0 shadow-sm">
+            <Row className="g-3 align-items-end">
+              <Col xs={6} lg={3}>
+                <Form.Label htmlFor="book-category" className="small fw-medium mb-1">
+                  Category
+                </Form.Label>
+                <Form.Select id="book-category" size="sm" value={category} onChange={(e) => set({ category: e.target.value })}>
+                  <option value="">Any category</option>
+                  {CATEGORIES.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.label}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col xs={6} lg={3}>
+                <Form.Label htmlFor="book-era" className="small fw-medium mb-1">
+                  Period
+                </Form.Label>
+                <Form.Select id="book-era" size="sm" value={era} onChange={(e) => set({ era: e.target.value })}>
+                  <option value="">Any period</option>
+                  {ERAS.map((e) => (
+                    <option key={e.id} value={e.id}>
+                      {e.label}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col xs={6} lg={3}>
+                <Form.Label htmlFor="book-sort" className="small fw-medium mb-1">
+                  Sort
+                </Form.Label>
+                <Form.Select id="book-sort" size="sm" value={sort} onChange={(e) => set({ sort: e.target.value === "popular" ? "" : e.target.value })}>
+                  {Object.entries(SORTS).map(([key, [label]]) => (
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col xs={6} lg={3} className="d-flex align-items-center">
+                <Form.Check type="switch" id="on-track" label="On a reading track" checked={onTrack} onChange={(e) => set({ track: e.target.checked ? "1" : "" })} />
+              </Col>
+            </Row>
+          </Card>
+        </div>
+      </Collapse>
 
       {/* how many: a search's on OpenRead (at most the hundred best: "100+"), or all the filters leave */}
       <p className="small text-body-secondary d-flex justify-content-center align-items-center gap-2 mb-4" aria-live="polite">
