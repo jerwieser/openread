@@ -11,7 +11,7 @@ import { useMessage } from "./Messages.jsx";
 // through our API (api/routers/catalogue.py) once the reader stops typing. Picking one adds it to
 // OpenRead, the first time anyone does, and hands the book to onPick: the books page opens it, the
 // track editor puts it on the track. Logged-out readers log in first. Heading: its heading's level
-// where it sits ("h2" on a page, lower inside a card).
+// where it sits ("h2" on a page, lower inside a card). title: the section's heading, if not the usual.
 const plural = (n, one) => `${n} ${n === 1 ? one : `${one}s`}`;
 
 export function useOpenLibrary(query) {
@@ -39,7 +39,7 @@ export function useOpenLibrary(query) {
   return q.length < 3 ? { query: q, works: [], busy: false } : state;
 }
 
-export default function OpenLibraryResults({ id, query, pickLabel, onPick, Heading = "h2" }) {
+export default function OpenLibraryResults({ id, query, pickLabel, onPick, Heading = "h2", title = "More books from Open Library" }) {
   const found = useOpenLibrary(query);
   // the works picked since the search came back are on OpenRead now, among our own results
   const books = useBooks();
@@ -66,7 +66,7 @@ export default function OpenLibraryResults({ id, query, pickLabel, onPick, Headi
   return (
     <section id={id} className="mt-4" aria-live="polite">
       <Heading className="h6 text-body-secondary d-flex align-items-center gap-2">
-        More books from Open Library
+        {title}
         {busy && <Spinner animation="border" size="sm" role="status" aria-label="Searching Open Library" />}
       </Heading>
       {works === null ? (
