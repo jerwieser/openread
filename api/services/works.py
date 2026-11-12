@@ -186,6 +186,15 @@ def work_from_open_library(session: Session, ol_id: str) -> Work | None:
     except openlibrary.Unavailable:
         # better a work without its languages than none; the complete command adds them
         known = {}
+    return add_work(session, ol_id, doc, qid, known)
+
+
+def add_work(session: Session, ol_id: str, doc: dict, qid: str | None, known: dict) -> Work:
+    """Add an Open Library work from what was looked up: its search record (doc), its Wikidata item
+    and what Wikidata knows of it (known: wikidata.titles' entry). A duplicate of a work we have
+    returns that work, remembered in other_ol_works. Asks no one, so a file of works looked up
+    earlier can be added too (api/commands/upload_works.py). Flushes, doesn't commit.
+    """
     names = known.get("titles", {})
     ours = same_work(
         session,
