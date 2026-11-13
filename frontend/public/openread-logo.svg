@@ -10,7 +10,7 @@
        turn inside it, so the bend shows in its open middle, and the underline crosses behind the
        foot of the "p". The name is set in Bootstrap's own font stack and heading weight; "Open" in the flagpole's navy, "Read" in the track's blue
        (Bootstrap's primary), its capitals, the "O" and the "R", bigger than the other letters (as in
-       fe/src/components/Logo.jsx, PARTS). -->
+       frontend/src/components/Logo.jsx, PARTS). -->
   <style>
     .name { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif; font-weight: 700; letter-spacing: -0.02em; }
     .open { fill: #2b3a67; }

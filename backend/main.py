@@ -9,11 +9,11 @@ from slowapi.errors import RateLimitExceeded
 from sqlalchemy import text
 from sqlalchemy.exc import DataError
 
-from api.clients.storage import MEDIA_DIR, blob_service
-from api.config import get_settings
-from api.db import SessionDep
-from api.rate_limit import limiter, rate_limit_exceeded
-from api.routers import auth, catalogue, me, messages, reflections, suggestions, tracks
+from backend.clients.storage import MEDIA_DIR, blob_service
+from backend.config import get_settings
+from backend.db import SessionDep
+from backend.rate_limit import limiter, rate_limit_exceeded
+from backend.routers import auth, catalogue, me, messages, reflections, suggestions, tracks
 
 logger = logging.getLogger(__name__)
 

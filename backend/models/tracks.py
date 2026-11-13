@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import DateTime, Text, UniqueConstraint
 from sqlmodel import Field, SQLModel
 
-from api.models.base import ApiModel, Stripped, created_at_field, language_code, text_list, updated_at_field
+from backend.models.base import ApiModel, Stripped, created_at_field, language_code, text_list, updated_at_field
 
 
 class Track(SQLModel, table=True):

@@ -7,8 +7,8 @@ from pydantic import StringConstraints
 from sqlalchemy import DateTime, Text
 from sqlmodel import Field, SQLModel
 
-from api.models.base import ApiModel, Stripped, created_at_field, one_of, updated_at_field
-from api.models.works import Difficulty
+from backend.models.base import ApiModel, Stripped, created_at_field, one_of, updated_at_field
+from backend.models.works import Difficulty
 
 SuggestionStatus = Literal["pending", "approved", "rejected"]
 

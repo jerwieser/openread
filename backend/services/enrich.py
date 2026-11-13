@@ -18,14 +18,14 @@ import unicodedata
 
 from sqlmodel import Session, col, select
 
-from api.clients import openlibrary, wikidata
-from api.db import engine
-from api.models import AuthorName, Edition, Expression, Work
-from api.services.categories import from_subjects
-from api.services.editions import from_open_library, save_editions
-from api.services.expressions import UNDETERMINED, set_titles, shown_title, titles_of
-from api.services.languages import from_marc
-from api.services.works import item_of
+from backend.clients import openlibrary, wikidata
+from backend.db import engine
+from backend.models import AuthorName, Edition, Expression, Work
+from backend.services.categories import from_subjects
+from backend.services.editions import from_open_library, save_editions
+from backend.services.expressions import UNDETERMINED, set_titles, shown_title, titles_of
+from backend.services.languages import from_marc
+from backend.services.works import item_of
 
 # how alike titles must be (difflib's ratio, on main titles)
 SAME_TITLE = 0.85

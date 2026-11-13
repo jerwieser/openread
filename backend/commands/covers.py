@@ -8,7 +8,7 @@
 One book or picture per second. Only JPEG, PNG, WebP or GIF up to 5 MB is kept. Whatever fails waits
 for the next run. Runs in the background on every production start, after complete.
 
-    python -m api.commands.covers    look for the missing covers, then copy them (make covers)
+    python -m backend.commands.covers    look for the missing covers, then copy them (make covers)
     --limit N                        only the first N of each
     --again                          copy them all again, replacing ours (a source that changed)
 """
@@ -21,13 +21,13 @@ import urllib.request
 
 from sqlmodel import Session, col, or_, select
 
-from api.clients import openlibrary, wikidata
-from api.clients.openlibrary import USER_AGENT
-from api.clients.storage import delete_upload, picture_type, store_picture
-from api.db import engine
-from api.models import Edition, Expression, Work
-from api.services.enrich import ol_records
-from api.services.expressions import PICTURE, set_cover
+from backend.clients import openlibrary, wikidata
+from backend.clients.openlibrary import USER_AGENT
+from backend.clients.storage import delete_upload, picture_type, store_picture
+from backend.db import engine
+from backend.models import Edition, Expression, Work
+from backend.services.enrich import ol_records
+from backend.services.expressions import PICTURE, set_cover
 
 MAX_BYTES = 5 * 1024 * 1024
 SECONDS_BETWEEN = 1.0

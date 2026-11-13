@@ -5,13 +5,13 @@ through a link that carries the track itself.
 from fastapi import APIRouter, HTTPException, status
 from sqlmodel import delete, select
 
-from api.clients.storage import delete_upload, save_upload
-from api.db import SessionDep
-from api.deps import CurrentUser
-from api.models import OwnTrackRead, OwnTrackWrite, Track, TrackStop, User
-from api.serialize import own_tracks_read, works_by_slug
-from api.services.following import stops_changed
-from api.utils import new_slug
+from backend.clients.storage import delete_upload, save_upload
+from backend.db import SessionDep
+from backend.deps import CurrentUser
+from backend.models import OwnTrackRead, OwnTrackWrite, Track, TrackStop, User
+from backend.serialize import own_tracks_read, works_by_slug
+from backend.services.following import stops_changed
+from backend.utils import new_slug
 
 router = APIRouter(prefix="/tracks", tags=["tracks"])
 

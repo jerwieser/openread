@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import Depends
 from sqlmodel import Session, create_engine
 
-from api.config import get_settings
+from backend.config import get_settings
 
 engine = create_engine(get_settings().database_url, pool_pre_ping=True)
 

@@ -2,10 +2,10 @@
 
 from fastapi import APIRouter, HTTPException, status
 
-from api.db import SessionDep
-from api.deps import CurrentUser
-from api.models import DirectMessage, MessageRead, MessageWrite
-from api.serialize import messages_read, reader_by_handle
+from backend.db import SessionDep
+from backend.deps import CurrentUser
+from backend.models import DirectMessage, MessageRead, MessageWrite
+from backend.serialize import messages_read, reader_by_handle
 
 router = APIRouter(prefix="/messages", tags=["messages"])
 

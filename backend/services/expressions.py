@@ -4,8 +4,8 @@ reading titles back.
 
 from sqlmodel import Session, col, select
 
-from api.clients.storage import delete_upload
-from api.models import Edition, Expression, Work
+from backend.clients.storage import delete_upload
+from backend.models import Edition, Expression, Work
 
 # an edition that's a work's cover picture, not a publication
 PICTURE = col(Edition.isbn).is_(None) & col(Edition.ol_edition).is_(None) & col(Edition.cover_source).is_not(None)

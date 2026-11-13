@@ -8,7 +8,7 @@ from datetime import datetime
 from sqlalchemy import Index, Text, UniqueConstraint, text
 from sqlmodel import Field, SQLModel
 
-from api.models.base import ApiModel, created_at_field, language_code, updated_at_field
+from backend.models.base import ApiModel, created_at_field, language_code, updated_at_field
 
 
 class Expression(SQLModel, table=True):

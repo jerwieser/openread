@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 
-from api.db import SessionDep
-from api.models import User
-from api.security import decode_token
+from backend.db import SessionDep
+from backend.models import User
+from backend.security import decode_token
 
 COOKIE_NAME = "access_token"
 

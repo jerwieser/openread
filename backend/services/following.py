@@ -7,8 +7,8 @@ on Want to read, and a track with every stop done is completed.
 
 from sqlmodel import Session, col, delete, select
 
-from api.models import Reading, TrackFollow, TrackSkip, TrackStop
-from api.utils import now
+from backend.models import Reading, TrackFollow, TrackSkip, TrackStop
+from backend.utils import now
 
 
 def stops(session: Session, track_id: int) -> list[int]:

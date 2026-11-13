@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import DateTime, Text
 from sqlmodel import Field, SQLModel
 
-from api.models.base import ApiModel, Stripped, created_at_field
+from backend.models.base import ApiModel, Stripped, created_at_field
 
 # Who a message without a sender is from, in the API. Readers' handles always end in a suffix, so
 # this can't be one of theirs.

@@ -1,30 +1,30 @@
-name: openread api — test, build and deploy
+name: backend — test, build and deploy
 
-# OpenRead's API: lint, migrations up to date with the models, the tests, and the API answering; then,
+# OpenRead's backend (backend/), the API: lint, migrations up to date with the models, the tests, and the API answering; then,
 # on pushes to main, build the image, point App Service at it and wait for it to serve. Pull requests
 # run the checks only.
 on:
   push:
     branches: [ main ]
     paths:
-      - 'api/**'
+      - 'backend/**'
       - 'db/**'
       - 'tests/**'
-      - 'docker/api.Dockerfile*'
+      - 'docker/backend.Dockerfile*'
       - 'pyproject.toml'
       - 'uv.lock'
       - 'DATAMODEL.md'
-      - '.github/workflows/openread-api.yml'
+      - '.github/workflows/backend.yml'
   pull_request:
     paths:
-      - 'api/**'
+      - 'backend/**'
       - 'db/**'
       - 'tests/**'
-      - 'docker/api.Dockerfile*'
+      - 'docker/backend.Dockerfile*'
       - 'pyproject.toml'
       - 'uv.lock'
       - 'DATAMODEL.md'
-      - '.github/workflows/openread-api.yml'
+      - '.github/workflows/backend.yml'
   workflow_dispatch:
 
 permissions:
@@ -91,7 +91,7 @@ jobs:
         run: uv run alembic -c db/alembic.ini check
 
       - name: The data model's drawing is up to date (make erd)
-        run: uv run python -m api.commands.erd --check
+        run: uv run python -m backend.commands.erd --check
 
       - name: Tests
         run: uv run pytest
@@ -102,7 +102,7 @@ jobs:
           set -euo pipefail
           # Straight from the venv, not `uv run`, and stopped at the end: a `uv run` left running
           # holds uv's cache lock, and setup-uv's post-job cache prune then fails (exit code 2).
-          .venv/bin/uvicorn api.main:app --port 8000 &
+          .venv/bin/uvicorn backend.main:app --port 8000 &
           server=$!
           trap 'kill "$server"' EXIT
           for _ in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/health && break; sleep 1; done
@@ -147,7 +147,7 @@ jobs:
         with:
           # the project root: the image has the API and db/, its migrations
           context: .
-          file: docker/api.Dockerfile
+          file: docker/backend.Dockerfile
           push: true
           platforms: linux/amd64
           tags: |
@@ -162,7 +162,7 @@ jobs:
     # One deploy at a time; a queued push waits for the current rollout + smoke test to finish
     # instead of racing it.
     concurrency:
-      group: openread-api-deploy
+      group: backend-deploy
       cancel-in-progress: false
     env:
       IMAGE_TAG: ${{ needs.build.outputs.image_tag }}

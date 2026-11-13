@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from api.models import DirectMessage, User
+from backend.models import DirectMessage, User
 
 
 @pytest.fixture

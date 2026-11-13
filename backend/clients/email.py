@@ -7,7 +7,7 @@ from functools import lru_cache
 
 from azure.communication.email import EmailClient
 
-from api.config import get_settings
+from backend.config import get_settings
 
 logger = logging.getLogger(__name__)
 

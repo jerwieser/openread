@@ -2,7 +2,7 @@
 
 import pytest
 
-from api.services.expressions import expression
+from backend.services.expressions import expression
 
 
 def slugs(response) -> list[str]:

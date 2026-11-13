@@ -8,16 +8,16 @@ suggested: approving it promotes that work instead of adding a second one.
 from fastapi import APIRouter, HTTPException, status
 from sqlmodel import Session, col, select
 
-from api.clients import openlibrary
-from api.db import SessionDep
-from api.deps import AdminUser, CurrentUser
-from api.models import Expression, Suggestion, SuggestionDecision, SuggestionRead, SuggestionWrite, Work
-from api.serialize import suggestions_read
-from api.services.authors import set_authors, split_names
-from api.services.expressions import UNDETERMINED, cover_edition, expression, set_cover
-from api.services.following import stops_changed, tracks_with_work
-from api.services.works import by_ol_work, same_work, work_from_open_library
-from api.utils import now, slugify
+from backend.clients import openlibrary
+from backend.db import SessionDep
+from backend.deps import AdminUser, CurrentUser
+from backend.models import Expression, Suggestion, SuggestionDecision, SuggestionRead, SuggestionWrite, Work
+from backend.serialize import suggestions_read
+from backend.services.authors import set_authors, split_names
+from backend.services.expressions import UNDETERMINED, cover_edition, expression, set_cover
+from backend.services.following import stops_changed, tracks_with_work
+from backend.services.works import by_ol_work, same_work, work_from_open_library
+from backend.utils import now, slugify
 
 router = APIRouter(prefix="/suggestions", tags=["suggestions"])
 

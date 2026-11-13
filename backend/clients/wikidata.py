@@ -11,9 +11,9 @@ import urllib.parse
 import urllib.request
 from collections.abc import Callable
 
-from api.clients.openlibrary import USER_AGENT, Unavailable
-from api.models.base import LANGUAGE_CODE
-from api.services.languages import main_language as main
+from backend.clients.openlibrary import USER_AGENT, Unavailable
+from backend.models.base import LANGUAGE_CODE
+from backend.services.languages import main_language as main
 
 SPARQL = "https://query.wikidata.org/sparql"
 

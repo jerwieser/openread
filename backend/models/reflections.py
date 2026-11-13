@@ -6,7 +6,7 @@ from typing import Literal
 from sqlalchemy import Text
 from sqlmodel import Field, SQLModel
 
-from api.models.base import ApiModel, Stripped, created_at_field, one_of, updated_at_field
+from backend.models.base import ApiModel, Stripped, created_at_field, one_of, updated_at_field
 
 ReflectionStatus = Literal["draft", "published"]
 

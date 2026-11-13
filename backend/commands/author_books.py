@@ -1,5 +1,5 @@
 """List an author's books on Open Library, and save them to data/ to add to a database later
-(api/commands/upload_works.py). Never touches a database itself.
+(backend/commands/upload_works.py). Never touches a database itself.
 
 Finds the author by name (the best match, the others named as alternatives) or by their Open Library
 key, then all their works, most editions first, 100 per request.
@@ -9,8 +9,8 @@ book from Open Library on the site does, in a couple of requests for all of them
 data/openlibrary/<author>-<key>.json. Nothing goes into a database: that's upload_works. The upload then needs neither Open Library nor Wikidata, and
 adds exactly what the file says, so look it over first.
 
-    uv run python -m api.commands.author_books "Theodoor Kars"    a table of their works
-    uv run python -m api.commands.author_books OL52989A           the same, by key
+    uv run python -m backend.commands.author_books "Theodoor Kars"    a table of their works
+    uv run python -m backend.commands.author_books OL52989A           the same, by key
     --save                                                        also save them for the upload
 
 Or make author-books author="Theodoor Kars" save=1. Listing works with plain python3 too; saving needs
@@ -24,8 +24,8 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
-from api.clients.openlibrary import BASE, SEARCH_FIELDS, Unavailable, get_json
-from api.utils import slugify
+from backend.clients.openlibrary import BASE, SEARCH_FIELDS, Unavailable, get_json
+from backend.utils import slugify
 
 PAGE = 100
 DATA = Path("data/openlibrary")
@@ -75,13 +75,13 @@ def ol_id(doc: dict) -> str:
 
 def with_wikidata(docs: list[dict]) -> list[dict]:
     """Return each work as the upload adds it: its Open Library record, its Wikidata item and what
-    Wikidata knows of it, as api.services.works.work_from_open_library looks them up, but for all of
+    Wikidata knows of it, as backend.services.works.work_from_open_library looks them up, but for all of
     them at once. (The site also checks the work's own Open Library record for an item, one request
     per work; Wikidata knows nearly all of those.) Stops if Wikidata doesn't answer, rather than save
     the works without what it knows.
     """
     # here, not at the top: it needs the project's packages, which listing doesn't
-    from api.clients import wikidata
+    from backend.clients import wikidata
 
     # a query for a hundred works takes longer than the site's few seconds
     def run(text: str) -> list[dict]:

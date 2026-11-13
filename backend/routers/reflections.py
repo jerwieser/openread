@@ -3,11 +3,11 @@
 from fastapi import APIRouter, HTTPException, status
 from sqlmodel import select
 
-from api.db import SessionDep
-from api.deps import CurrentUser
-from api.models import Reflection, ReflectionRead, ReflectionWrite, User
-from api.serialize import reflections_read, work_by_slug
-from api.utils import new_slug, now
+from backend.db import SessionDep
+from backend.deps import CurrentUser
+from backend.models import Reflection, ReflectionRead, ReflectionWrite, User
+from backend.serialize import reflections_read, work_by_slug
+from backend.utils import new_slug, now
 
 router = APIRouter(prefix="/reflections", tags=["reflections"])
 

@@ -8,7 +8,7 @@ finds "Leo Tolstoi".
 from sqlalchemy import text
 from sqlmodel import Session, col, select
 
-from api.models import Work
+from backend.models import Work
 
 # each piece of text a work can be found by
 SEARCH = text("""

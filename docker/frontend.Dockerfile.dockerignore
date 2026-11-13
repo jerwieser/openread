@@ -1,4 +1,4 @@
-# Used automatically for docker/fe.Dockerfile (named after it). Paths are relative to the build
-# context (fe/).
+# Used automatically for docker/frontend.Dockerfile (named after it). Paths are relative to the build
+# context (frontend/).
 node_modules
 dist

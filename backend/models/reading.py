@@ -6,7 +6,7 @@ from typing import Literal
 from sqlalchemy import CheckConstraint, DateTime
 from sqlmodel import Field, SQLModel
 
-from api.models.base import ApiModel, created_at_field, one_of, updated_at_field
+from backend.models.base import ApiModel, created_at_field, one_of, updated_at_field
 
 # Only reading and finished are visible to other readers.
 ReadingStatus = Literal["want", "reading", "paused", "finished", "stopped"]

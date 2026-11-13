@@ -3,7 +3,7 @@
 import pytest
 from sqlmodel import select
 
-from api.models import Work
+from backend.models import Work
 
 
 def suggest(api, title="A New Book", author="Ann Author", **fields):

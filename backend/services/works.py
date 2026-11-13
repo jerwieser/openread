@@ -8,14 +8,14 @@ import unicodedata
 from sqlalchemy import text
 from sqlmodel import Session, col, or_, select
 
-from api.clients import openlibrary, wikidata
-from api.models import Author, AuthorName, Edition, Expression, Work, WorkAuthor
-from api.services.authors import set_authors
-from api.services.categories import from_subjects
-from api.services.expressions import UNDETERMINED, expression, set_cover, set_titles
-from api.services.languages import from_marc
-from api.services.search import escape_like
-from api.utils import now, slugify
+from backend.clients import openlibrary, wikidata
+from backend.models import Author, AuthorName, Edition, Expression, Work, WorkAuthor
+from backend.services.authors import set_authors
+from backend.services.categories import from_subjects
+from backend.services.expressions import UNDETERMINED, expression, set_cover, set_titles
+from backend.services.languages import from_marc
+from backend.services.search import escape_like
+from backend.utils import now, slugify
 
 
 def item_of(ol_id: str) -> str | None:
@@ -193,7 +193,7 @@ def add_work(session: Session, ol_id: str, doc: dict, qid: str | None, known: di
     """Add an Open Library work from what was looked up: its search record (doc), its Wikidata item
     and what Wikidata knows of it (known: wikidata.titles' entry). A duplicate of a work we have
     returns that work, remembered in other_ol_works. Asks no one, so a file of works looked up
-    earlier can be added too (api/commands/upload_works.py). Flushes, doesn't commit.
+    earlier can be added too (backend/commands/upload_works.py). Flushes, doesn't commit.
     """
     names = known.get("titles", {})
     ours = same_work(

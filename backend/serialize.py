@@ -3,8 +3,8 @@
 from fastapi import HTTPException, status
 from sqlmodel import Session, col, select
 
-from api.clients.storage import public_url
-from api.models import (
+from backend.clients.storage import public_url
+from backend.models import (
     OPENREAD,
     DirectMessage,
     MeRead,
@@ -27,7 +27,7 @@ from api.models import (
     User,
     Work,
 )
-from api.services.works import by_ol_work, same_work
+from backend.services.works import by_ol_work, same_work
 
 
 def work_by_slug(session: Session, slug: str) -> Work:

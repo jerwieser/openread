@@ -20,14 +20,14 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlmodel import Session, SQLModel
 
-from api.config import get_settings
-from api.db import engine
-from api.main import app
-from api.models import Expression, Track, TrackStop, User, Work
-from api.rate_limit import limiter
-from api.security import create_access_token, hash_password
-from api.services.authors import set_authors
-from api.utils import new_slug, slugify
+from backend.config import get_settings
+from backend.db import engine
+from backend.main import app
+from backend.models import Expression, Track, TrackStop, User, Work
+from backend.rate_limit import limiter
+from backend.security import create_access_token, hash_password
+from backend.services.authors import set_authors
+from backend.utils import new_slug, slugify
 
 
 @dataclass
@@ -77,7 +77,7 @@ def offline(monkeypatch):
 def mailbox(monkeypatch) -> list[Mail]:
     """The emails sent during a test, newest last."""
     sent = []
-    monkeypatch.setattr("api.clients.email.send_email", lambda to, subject, body: sent.append(Mail(to, subject, body)))
+    monkeypatch.setattr("backend.clients.email.send_email", lambda to, subject, body: sent.append(Mail(to, subject, body)))
     return sent
 
 

@@ -1,17 +1,17 @@
 """Database tables and API schemas, defined together with SQLModel, one module per subject.
 
-Import from here (`from api.models import Work`): that registers every table for Alembic.
+Import from here (`from backend.models import Work`): that registers every table for Alembic.
 
 Columns are snake_case. The API uses camelCase (see ApiModel) and readable public ids ("moby-dick"),
 and integer ids stay internal. DATAMODEL.md explains the words work, expression and edition.
 """
 
-from api.models.auth import EmailRequest, Message, PasswordReset, Token, TokenRequest, UserRegister
-from api.models.authors import Author, AuthorName, AuthorRead
-from api.models.base import ApiModel, created_at_field, text_list, updated_at_field
-from api.models.expressions import Edition, EditionRead, Expression, ExpressionRead
-from api.models.messages import OPENREAD, DirectMessage, MarkRead, MessageRead, MessageWrite
-from api.models.reading import (
+from backend.models.auth import EmailRequest, Message, PasswordReset, Token, TokenRequest, UserRegister
+from backend.models.authors import Author, AuthorName, AuthorRead
+from backend.models.base import ApiModel, created_at_field, text_list, updated_at_field
+from backend.models.expressions import Edition, EditionRead, Expression, ExpressionRead
+from backend.models.messages import OPENREAD, DirectMessage, MarkRead, MessageRead, MessageWrite
+from backend.models.reading import (
     FollowRead,
     FollowWrite,
     ImportedStatus,
@@ -25,9 +25,15 @@ from api.models.reading import (
     TrackFollowState,
     TrackSkip,
 )
-from api.models.reflections import Reflection, ReflectionRead, ReflectionStatus, ReflectionWrite
-from api.models.suggestions import Suggestion, SuggestionDecision, SuggestionRead, SuggestionStatus, SuggestionWrite
-from api.models.tracks import (
+from backend.models.reflections import Reflection, ReflectionRead, ReflectionStatus, ReflectionWrite
+from backend.models.suggestions import (
+    Suggestion,
+    SuggestionDecision,
+    SuggestionRead,
+    SuggestionStatus,
+    SuggestionWrite,
+)
+from backend.models.tracks import (
     OwnTrackRead,
     OwnTrackWrite,
     Source,
@@ -38,8 +44,8 @@ from api.models.tracks import (
     TrackStopTranslation,
     TrackTranslation,
 )
-from api.models.users import MeRead, MeUpdate, ProfileFields, ReaderRead, Role, User
-from api.models.works import (
+from backend.models.users import MeRead, MeUpdate, ProfileFields, ReaderRead, Role, User
+from backend.models.works import (
     BookToMatch,
     Difficulty,
     OpenLibraryWork,

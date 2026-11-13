@@ -3,7 +3,7 @@
 from pydantic import EmailStr
 from sqlmodel import Field
 
-from api.models.base import ApiModel, Stripped
+from backend.models.base import ApiModel, Stripped
 
 
 class UserRegister(ApiModel):

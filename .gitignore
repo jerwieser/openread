@@ -1,7 +1,7 @@
 envs/.env.local
 envs/.env.prod
-fe/node_modules
-fe/dist
+frontend/node_modules
+frontend/dist
 media/
 data/
 .venv

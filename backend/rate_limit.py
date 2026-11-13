@@ -8,7 +8,7 @@ from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
-from api.config import get_settings
+from backend.config import get_settings
 
 
 def client_ip(request: Request) -> str:

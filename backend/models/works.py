@@ -6,8 +6,8 @@ from typing import Literal
 from sqlalchemy import DateTime, Index, Text
 from sqlmodel import Field, Relationship, SQLModel
 
-from api.models.authors import Author, AuthorRead
-from api.models.base import ApiModel, created_at_field, one_of, text_list, updated_at_field
+from backend.models.authors import Author, AuthorRead
+from backend.models.base import ApiModel, created_at_field, one_of, text_list, updated_at_field
 
 Difficulty = Literal["approachable", "challenging", "demanding"]
 

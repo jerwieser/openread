@@ -1,6 +1,6 @@
 # Data model
 
-The tables in the database, drawn from `api/models/` by `make erd`. Don't edit this file: change the
+The tables in the database, drawn from `backend/models/` by `make erd`. Don't edit this file: change the
 models and run it again. CI checks it's up to date.
 
 ## Terms
@@ -76,7 +76,7 @@ erDiagram
   works ||--o{ work_authors : "work_id"
 ```
 
-## Users (`api/models/users.py`)
+## Users (`backend/models/users.py`)
 
 Readers: the user table, public profiles and account settings.
 
@@ -103,7 +103,7 @@ erDiagram
   }
 ```
 
-## Works (`api/models/works.py`)
+## Works (`backend/models/works.py`)
 
 Works: what readers call books. Their titles are on their expressions.
 
@@ -136,7 +136,7 @@ erDiagram
   works ||--o{ work_authors : "work_id"
 ```
 
-## Authors (`api/models/authors.py`)
+## Authors (`backend/models/authors.py`)
 
 Authors of works, and their names in other languages.
 
@@ -158,7 +158,7 @@ erDiagram
   authors ||--o{ author_names : "author_id"
 ```
 
-## Expressions (`api/models/expressions.py`)
+## Expressions (`backend/models/expressions.py`)
 
 A work's expressions and editions. An expression is one text of a work in one language, with its own title. An edition is one publication of an expression. A work's cover is a special edition without an ISBN: a work has one cover, not one per edition or language.
 
@@ -191,7 +191,7 @@ erDiagram
   works ||--o{ expressions : "work_id"
 ```
 
-## Tracks (`api/models/tracks.py`)
+## Tracks (`backend/models/tracks.py`)
 
 Reading tracks: ours and the ones readers make, and their stops in reading order.
 
@@ -248,7 +248,7 @@ erDiagram
   users |o--o{ tracks : "owner_id"
 ```
 
-## Reading (`api/models/reading.py`)
+## Reading (`backend/models/reading.py`)
 
 A reader's bookshelf: their status for each work, and the tracks they keep.
 
@@ -293,7 +293,7 @@ erDiagram
   works ||--o{ track_skips : "work_id"
 ```
 
-## Reflections (`api/models/reflections.py`)
+## Reflections (`backend/models/reflections.py`)
 
 Reflections: essays readers write about works they read.
 
@@ -317,7 +317,7 @@ erDiagram
   works ||--o{ reflections : "work_id"
 ```
 
-## Messages (`api/models/messages.py`)
+## Messages (`backend/models/messages.py`)
 
 Messages between readers, plain text only, and from OpenRead itself.
 
@@ -336,7 +336,7 @@ erDiagram
   users |o--o{ messages : "sender_id"
 ```
 
-## Suggestions (`api/models/suggestions.py`)
+## Suggestions (`backend/models/suggestions.py`)
 
 Works readers suggest for the catalogue, and the admins who review them.
 

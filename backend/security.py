@@ -11,7 +11,7 @@ from typing import Any, Literal
 import jwt
 from pwdlib import PasswordHash
 
-from api.config import get_settings
+from backend.config import get_settings
 
 ALGORITHM = "HS256"
 password_hash = PasswordHash.recommended()  # Argon2

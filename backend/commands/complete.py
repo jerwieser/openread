@@ -6,7 +6,7 @@
 At most one request per second to each service, with retries. A book that fails waits for the next
 run. Runs in the background on every production start, before covers.
 
-    python -m api.commands.complete    fill in what's missing
+    python -m backend.commands.complete    fill in what's missing
     --limit N                          only the first N works of each
 """
 
@@ -20,13 +20,13 @@ import urllib.request
 
 from sqlmodel import Session, col, func, select
 
-from api.clients import openlibrary, wikidata
-from api.clients.openlibrary import USER_AGENT
-from api.db import engine
-from api.models import Edition, Expression, Work
-from api.services.editions import from_open_library, save_editions
-from api.services.enrich import ol_records
-from api.services.expressions import set_titles
+from backend.clients import openlibrary, wikidata
+from backend.clients.openlibrary import USER_AGENT
+from backend.db import engine
+from backend.models import Edition, Expression, Work
+from backend.services.editions import from_open_library, save_editions
+from backend.services.enrich import ol_records
+from backend.services.expressions import set_titles
 
 SECONDS_BETWEEN = 1.0
 _last = 0.0

@@ -2,8 +2,8 @@
 
 import pytest
 
-from api.models import User
-from api.security import create_token, verify_password
+from backend.models import User
+from backend.security import create_token, verify_password
 
 PASSWORD = "correct-horse"
 

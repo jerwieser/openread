@@ -3,7 +3,7 @@
 import pytest
 from sqlmodel import select
 
-from api.models import Reading, Track, User
+from backend.models import Reading, Track, User
 
 
 def statuses(api) -> dict[str, str]:

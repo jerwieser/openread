@@ -4,8 +4,8 @@ import re
 
 from sqlmodel import Session, delete, func, select
 
-from api.models import Author, Work, WorkAuthor
-from api.utils import slugify
+from backend.models import Author, Work, WorkAuthor
+from backend.utils import slugify
 
 
 def byline(names: list[str]) -> str:

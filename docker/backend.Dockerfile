@@ -11,14 +11,14 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-# Built from the project root (see docker-compose.yml and the CI workflow): the API needs the database
+# Built from the project root (see docker-compose.yml and the CI workflow): the backend needs the database
 # folder too (db/), for its migrations. Dependencies first (cached layer),
 # then the code.
 COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --no-install-project
 
-COPY api api
+COPY backend backend
 COPY db db
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
@@ -29,4 +29,4 @@ USER app
 EXPOSE 8000
 # Production (Azure App Service): migrate and serve. Locally
 # docker-compose.yml runs its own command instead, with hot reload.
-CMD ["api/start.sh"]
+CMD ["backend/start.sh"]

@@ -10,16 +10,16 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request,
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import select
 
-from api.clients.email import (
+from backend.clients.email import (
     send_email_change_email,
     send_email_change_notice,
     send_password_reset_email,
     send_verification_email,
 )
-from api.config import get_settings
-from api.db import SessionDep
-from api.deps import COOKIE_NAME, LoggedInUser
-from api.models import (
+from backend.config import get_settings
+from backend.db import SessionDep
+from backend.deps import COOKIE_NAME, LoggedInUser
+from backend.models import (
     DirectMessage,
     EmailRequest,
     MeRead,
@@ -30,8 +30,8 @@ from api.models import (
     User,
     UserRegister,
 )
-from api.rate_limit import limiter
-from api.security import (
+from backend.rate_limit import limiter
+from backend.security import (
     create_access_token,
     create_token,
     decode_token,
@@ -39,8 +39,8 @@ from api.security import (
     password_fingerprint,
     verify_password,
 )
-from api.serialize import me_read
-from api.utils import new_slug
+from backend.serialize import me_read
+from backend.utils import new_slug
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

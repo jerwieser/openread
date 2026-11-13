@@ -8,11 +8,11 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Path, Query, Request, status
 from sqlmodel import col, exists, func, or_, select
 
-from api.clients import openlibrary
-from api.clients.storage import public_url
-from api.db import SessionDep
-from api.deps import CurrentUser
-from api.models import (
+from backend.clients import openlibrary
+from backend.clients.storage import public_url
+from backend.db import SessionDep
+from backend.deps import CurrentUser
+from backend.models import (
     Author,
     AuthorName,
     AuthorRead,
@@ -36,12 +36,12 @@ from api.models import (
     WorkMatches,
     WorkRead,
 )
-from api.rate_limit import limiter
-from api.serialize import readers_read, reflections_read, tracks_read, work_by_slug
-from api.services.enrich import enrich_later
-from api.services.expressions import PICTURE, shown_title, titles_of
-from api.services.search import find_works
-from api.services.works import by_ol_work, match, same_work, work_from_open_library
+from backend.rate_limit import limiter
+from backend.serialize import readers_read, reflections_read, tracks_read, work_by_slug
+from backend.services.enrich import enrich_later
+from backend.services.expressions import PICTURE, shown_title, titles_of
+from backend.services.search import find_works
+from backend.services.works import by_ol_work, match, same_work, work_from_open_library
 
 router = APIRouter(tags=["catalogue"])
 

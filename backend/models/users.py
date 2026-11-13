@@ -7,7 +7,7 @@ from pydantic import StringConstraints
 from sqlalchemy import Index, Text, text
 from sqlmodel import Field, SQLModel
 
-from api.models.base import (
+from backend.models.base import (
     LANGUAGE_CODE,
     ApiModel,
     Stripped,

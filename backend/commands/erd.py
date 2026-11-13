@@ -1,9 +1,9 @@
-"""Generate DATAMODEL.md: Mermaid diagrams of the tables in api/models/.
+"""Generate DATAMODEL.md: Mermaid diagrams of the tables in backend/models/.
 
 One diagram of all the tables, then one per module, introduced by the module's docstring.
 
-    python -m api.commands.erd           write DATAMODEL.md (make erd)
-    python -m api.commands.erd --check   fail if it's out of date (CI)
+    python -m backend.commands.erd           write DATAMODEL.md (make erd)
+    python -m backend.commands.erd --check   fail if it's out of date (CI)
 """
 
 import argparse
@@ -14,7 +14,7 @@ from pathlib import Path
 from sqlalchemy import ARRAY, Boolean, Column, Date, DateTime, Integer, Table, Text
 from sqlmodel import SQLModel
 
-import api.models  # noqa: F401  (registers every table on SQLModel.metadata)
+import backend.models  # noqa: F401  (registers every table on SQLModel.metadata)
 
 OUT = Path(__file__).parents[2] / "DATAMODEL.md"
 
@@ -23,7 +23,7 @@ ORDER = ["users", "works", "authors", "expressions", "tracks", "reading", "refle
 
 HEADER = """# Data model
 
-The tables in the database, drawn from `api/models/` by `make erd`. Don't edit this file: change the
+The tables in the database, drawn from `backend/models/` by `make erd`. Don't edit this file: change the
 models and run it again. CI checks it's up to date.
 
 ## Terms
@@ -109,20 +109,20 @@ def diagram(lines: list[str]) -> str:
 
 
 def subjects() -> list[tuple[str, str, list[Table]]]:
-    """Return (name, description, tables) for each module of api/models/ with tables."""
+    """Return (name, description, tables) for each module of backend/models/ with tables."""
     tables_of: dict[str, list[Table]] = {}
     for mapper in sorted(SQLModel._sa_registry.mappers, key=lambda m: m.class_.__name__):
         module = mapper.class_.__module__
-        if module.startswith("api.models."):
+        if module.startswith("backend.models."):
             tables_of.setdefault(module, []).append(mapper.local_table)
-    names = [module.removeprefix("api.models.") for module in tables_of]
+    names = [module.removeprefix("backend.models.") for module in tables_of]
     order = sorted(names, key=lambda n: (ORDER.index(n) if n in ORDER else len(ORDER), n))
     found = []
     for name in order:
-        module = sys.modules[f"api.models.{name}"]
+        module = sys.modules[f"backend.models.{name}"]
         # the first paragraph, on one line
         description = " ".join((inspect.getdoc(module) or "").split("\n\n")[0].split())
-        tables = sorted(tables_of[f"api.models.{name}"], key=lambda t: t.name)
+        tables = sorted(tables_of[f"backend.models.{name}"], key=lambda t: t.name)
         found.append((name, description, tables))
     return found
 
@@ -142,7 +142,7 @@ def render() -> str:
         own = {t.name for t in tables}
         others = sorted({fk.column.table.name for t in tables for fk in t.foreign_keys} - own)
         lines = [line for t in tables for line in entity(t)] + [f"  {o}" for o in others] + links(tables)
-        parts += [f"## {name.capitalize()} (`api/models/{name}.py`)", "", description, "", diagram(lines), ""]
+        parts += [f"## {name.capitalize()} (`backend/models/{name}.py`)", "", description, "", diagram(lines), ""]
     return "\n".join(parts)
 
 
@@ -153,7 +153,7 @@ def main() -> None:
     text = render()
     if args.check:
         if not OUT.exists() or OUT.read_text() != text:
-            sys.exit("./DATAMODEL.md is out of date with api/models/: run make erd and commit it.")
+            sys.exit("./DATAMODEL.md is out of date with backend/models/: run make erd and commit it.")
         print("./DATAMODEL.md is up to date.")
         return
     OUT.write_text(text)

@@ -8,10 +8,10 @@ from fastapi import APIRouter, BackgroundTasks, HTTPException, Response, status
 from sqlalchemy import or_
 from sqlmodel import col, select, update
 
-from api.clients.storage import delete_upload, save_upload
-from api.db import SessionDep
-from api.deps import COOKIE_NAME, CurrentUser
-from api.models import (
+from backend.clients.storage import delete_upload, save_upload
+from backend.db import SessionDep
+from backend.deps import COOKIE_NAME, CurrentUser
+from backend.models import (
     OPENREAD,
     DirectMessage,
     FollowRead,
@@ -36,8 +36,8 @@ from api.models import (
     User,
     Work,
 )
-from api.models.base import LANGUAGE_CODE
-from api.serialize import (
+from backend.models.base import LANGUAGE_CODE
+from backend.serialize import (
     me_read,
     messages_read,
     own_tracks_read,
@@ -47,9 +47,9 @@ from api.serialize import (
     work_by_slug,
     works_by_slug,
 )
-from api.services.enrich import enrich_later
-from api.services.following import advance, following_with_work, skips_by_track, stops
-from api.utils import now
+from backend.services.enrich import enrich_later
+from backend.services.following import advance, following_with_work, skips_by_track, stops
+from backend.utils import now
 
 router = APIRouter(prefix="/me", tags=["me"])
 

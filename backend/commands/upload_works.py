@@ -1,7 +1,7 @@
 """Add the works saved by author_books --save (data/openlibrary/*.json) to a database: the local one
 or production's, by its env file (envs/.env.local or envs/.env.prod).
 
-Each work is added as a reader adding it from Open Library would add it (api.services.works.add_work),
+Each work is added as a reader adding it from Open Library would add it (backend.services.works.add_work),
 from what the file says: no Open Library or Wikidata requests. A work we already have is skipped, and
 a duplicate of one (the same titles and author, or Wikidata item) is remembered on that work, so
 running it again changes nothing. Each work is committed on its own, so a run that stops halfway
@@ -10,7 +10,7 @@ keeps what it added.
 Editions and covers come afterwards, from the complete and covers commands: production runs them on
 every start, locally run make complete and make covers.
 
-    uv run python -m api.commands.upload_works FILE... --env local     add them to the local database
+    uv run python -m backend.commands.upload_works FILE... --env local     add them to the local database
     --env prod                                                  production's (asks first)
     --dry-run                                                   show what would happen, change nothing
     --yes                                                       don't ask before writing to production
@@ -30,7 +30,7 @@ FORMAT = "openread-openlibrary-works/1"
 
 def use_env(name: str) -> None:
     """Point the settings at this environment's file. Its values go into the process's environment,
-    which the settings read before envs/.env.local, so this has to happen before api.db is imported.
+    which the settings read before envs/.env.local, so this has to happen before backend.db is imported.
     """
     path = ENV_FILES[name]
     if not path.exists():
@@ -59,9 +59,9 @@ def main() -> int:
     # only now: the engine is made from the settings when it's imported
     from sqlmodel import Session
 
-    from api.config import get_settings
-    from api.db import engine
-    from api.services.works import add_work, by_ol_work
+    from backend.config import get_settings
+    from backend.db import engine
+    from backend.services.works import add_work, by_ol_work
 
     settings = get_settings()
     total = sum(len(content["works"]) for _, content in files)

@@ -17,7 +17,7 @@ from pathlib import Path
 from azure.storage.blob import BlobServiceClient, ContentSettings
 from fastapi import HTTPException, status
 
-from api.config import get_settings
+from backend.config import get_settings
 
 logger = logging.getLogger(__name__)
 
