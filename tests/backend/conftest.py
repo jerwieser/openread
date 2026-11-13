@@ -77,7 +77,9 @@ def offline(monkeypatch):
 def mailbox(monkeypatch) -> list[Mail]:
     """The emails sent during a test, newest last."""
     sent = []
-    monkeypatch.setattr("backend.clients.email.send_email", lambda to, subject, body: sent.append(Mail(to, subject, body)))
+    monkeypatch.setattr(
+        "backend.clients.email.send_email", lambda to, subject, body: sent.append(Mail(to, subject, body))
+    )
     return sent
 
 
