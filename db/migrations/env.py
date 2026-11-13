@@ -4,8 +4,8 @@ from alembic import context
 from sqlalchemy import create_engine, pool
 from sqlmodel import SQLModel
 
-import api.models  # noqa: F401  (registers all tables on SQLModel.metadata)
-from api.config import get_settings
+import backend.models  # noqa: F401  (registers all tables on SQLModel.metadata)
+from backend.config import get_settings
 
 config = context.config
 

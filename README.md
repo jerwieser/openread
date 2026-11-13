@@ -1,4 +1,4 @@
-<img src="fe/public/favicon.svg" alt="OpenRead icon" width="96">
+<img src="frontend/public/favicon.svg" alt="OpenRead icon" width="96">
 
 # OpenRead
 
@@ -15,8 +15,8 @@ Live at [openread.cloud](https://www.openread.cloud).
 
 ## Built with
 
-- `fe/`: the site, in React and Vite
-- `api/`: the API, in FastAPI and SQLModel
+- `frontend/`: the site, in React and Vite
+- `backend/`: the API, in FastAPI and SQLModel
 - `db/`: PostgreSQL migrations, with Alembic
 
 ## Getting started

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 40 388 84" width="388" height="84" role="img" aria-label="OpenRead">
+  <!-- OpenRead's full logo: the mark (public/favicon.svg), a winding reading track with books along it
+       and a flag at the end, its top two rows a little longer so their bend reaches into the "O",
+       more books along it,
+       its bottom row run out to the right under the name, underlining it, with
+       the start dot under the end of "Read". The line sits where a text underline would, crossing the
+       foot of the "p". The name is a little smaller than the mark, whose flag rises above the
+       capitals, so the track leads. The name stands in front of the track, with a thin gap cut
+       into the line and the books around its letters: the top and middle rows run behind the "O"'s left side and
+       turn inside it, so the bend shows in its open middle, and the underline crosses behind the
+       foot of the "p". The name is set in Bootstrap's own font stack and heading weight; "Open" in the flagpole's navy, "Read" in the track's blue
+       (Bootstrap's primary), its capitals, the "O" and the "R", bigger than the other letters (as in
+       frontend/src/components/Logo.jsx, PARTS). -->
+  <style>
+    .name { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+    .open { fill: #2b3a67; }
+    .read { fill: #0d6efd; }
+  </style>
+  <mask id="gap" maskUnits="userSpaceOnUse" x="0" y="40" width="388" height="84">
+    <rect x="0" y="40" width="388" height="84" fill="white"/>
+    <text x="55" y="105.2" class="name" fill="black" stroke="black" stroke-width="7" stroke-linejoin="round"><tspan font-size="80">O</tspan><tspan font-size="64">pen</tspan><tspan font-size="80">R</tspan><tspan font-size="64">ead</tspan></text>
+  </mask>
+  <g mask="url(#gap)">
+    <rect x="24" y="97.2" width="8" height="13.5" rx="1.8" fill="#e8705a"/>
+    <rect x="34" y="95.2" width="7.5" height="15.5" rx="1.8" fill="#2b3a67"/>
+    <rect x="43.5" y="98.2" width="8.5" height="12.5" rx="1.8" fill="#f2b84b"/>
+    <rect x="29" y="73" width="8" height="12.5" rx="1.8" fill="#2f9e7a"/>
+    <rect x="39" y="70.5" width="8.5" height="15" rx="1.8" fill="#e8705a"/>
+    <rect x="49" y="47.4" width="7.5" height="13" rx="1.8" fill="#2b3a67"/>
+    <path d="M377 114.9H18.7A12.56 12.56 0 0 1 18.7 89.7H70.7A12.56 12.56 0 0 0 70.7 64.6H24.2" fill="none" stroke="#0d6efd" stroke-width="8.3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <circle cx="377" cy="114.9" r="6.6" fill="#0d6efd"/>
+  <line x1="24.2" y1="64.6" x2="24.2" y2="45" stroke="#2b3a67" stroke-width="4.4" stroke-linecap="round"/>
+  <path d="M26.2 45.3L44.9 51.9L26.2 58.5Z" fill="#e8705a"/>
+  <text x="55" y="105.2" class="name"><tspan class="open" font-size="80">O</tspan><tspan class="open" font-size="64">pen</tspan><tspan class="read" font-size="80">R</tspan><tspan class="read" font-size="64">ead</tspan></text>
+</svg>

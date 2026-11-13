@@ -1,0 +1,9 @@
+# Used automatically for docker/backend.Dockerfile (named after it), whose build context is the project root: only what the backend
+# image needs goes in.
+*
+!pyproject.toml
+!uv.lock
+!backend
+!db
+**/__pycache__
+**/*.pyc

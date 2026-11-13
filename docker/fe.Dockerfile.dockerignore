@@ -1,4 +1,0 @@
-# Used automatically for docker/fe.Dockerfile (named after it). Paths are relative to the build
-# context (fe/).
-node_modules
-dist
