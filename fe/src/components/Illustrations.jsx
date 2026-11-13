@@ -2,16 +2,19 @@
 // the home headline, a wide banner for the call to make a track and small pictures for the steps. They share one palette, so they read as a set.
 // All are decorative: the text beside them says the same thing.
 
+// The blues are the site's own (Bootstrap's primary, #0d6efd), so the pictures match the buttons, the
+// logo's tile and the band the desk scene continues: the line, the shirts and the books in the
+// primary blue, a shade darker for lines on it, the sky and clouds in its palest tints.
 const C = {
-  sky: "#eaf0ff",
-  skyDeep: "#d6e2fb",
+  sky: "#e7f1ff",
+  skyDeep: "var(--bs-primary-bg-subtle)",
   cream: "#fdf3e1",
   paper: "#fffaf0",
   rule: "#dccfb6",
   sun: "#ffe3a3",
   ink: "#2b3a67",
-  blue: "#3b6fe0",
-  blueDark: "#2c58bd",
+  blue: "var(--bs-primary)",
+  blueDark: "#0a58ca",
   coral: "#e8705a",
   coralLight: "#f0998a",
   mustard: "#f2b84b",
@@ -264,7 +267,7 @@ export function FollowTheTrack({ className, style }) {
 // tabs. The wall is the site's primary blue, so it continues the band above it.
 export function DeskBanner() {
   return (
-    <Banner fill="#0d6efd">
+    <Banner fill="var(--bs-primary)">
       <Sparkle x={420} y={90} r={8} fill="#fff" />
       <Sparkle x={1000} y={60} r={6} fill="#fff" />
       <Sparkle x={1560} y={100} r={7} fill="#fff" />
