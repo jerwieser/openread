@@ -35,7 +35,9 @@ function BookStrip({ books, onOpen }) {
   );
 }
 
-function Body({ book, onOpen, onClose }) {
+// Its links to the book's and the tracks' pages just go there: leaving Discover closes the quick look,
+// and Back brings it back. (Closing it as well would go back a step, and undo the link.)
+function Body({ book, onOpen }) {
   const authors = (book.authors ?? []).map((p) => p.slug).join(",");
   const byAuthor = usePagedBooks(authors ? { author: authors, sort: "popular" } : null, 13);
   const category = book.categories?.[0];
@@ -71,7 +73,7 @@ function Body({ book, onOpen, onClose }) {
           {/* the one main action: every shelf, as on the book's page */}
           <div className="d-flex flex-wrap align-items-center gap-2">
             <BookStatusButton book={book} />
-            <Button as={Link} to={`/books/${book.slug}`} variant="link" className="icon-link icon-link-hover text-decoration-none" onClick={onClose}>
+            <Button as={Link} to={`/books/${book.slug}`} variant="link" className="icon-link icon-link-hover text-decoration-none">
               Open its page
               <Icon name="arrow-right" />
             </Button>
@@ -91,7 +93,7 @@ function Body({ book, onOpen, onClose }) {
               <li key={t.id} className="discover-track-line d-flex align-items-center gap-3 rounded-3 border bg-body p-2">
                 <TrackShelf track={t} className="discover-track-line-shelf flex-shrink-0 rounded-2" />
                 <div className="min-w-0 me-auto">
-                  <Link to={`/tracks/${t.id}`} className="fw-semibold link-body-emphasis text-decoration-none d-block text-truncate" onClick={onClose}>
+                  <Link to={`/tracks/${t.id}`} className="fw-semibold link-body-emphasis text-decoration-none d-block text-truncate">
                     {t.title}
                   </Link>
                   <span className="small text-body-secondary d-block text-truncate">
@@ -130,7 +132,7 @@ export default function BookQuickLook({ slug, onOpen, onClose }) {
       <Modal.Header closeButton className="border-0 pb-0" />
       <Modal.Body className="pt-0 px-4 pb-4">
         {book ? (
-          <Body key={book.slug} book={book} onOpen={onOpen} onClose={onClose} />
+          <Body key={book.slug} book={book} onOpen={onOpen} />
         ) : book === null ? (
           <p className="text-center text-body-secondary py-5 mb-0">That book isn&apos;t on OpenRead.</p>
         ) : (

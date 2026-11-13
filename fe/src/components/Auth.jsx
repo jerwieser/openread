@@ -4,7 +4,7 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 
 import { useUser } from "../store.js";
 import "./Auth.css";
-import Logo from "./Logo.jsx";
+import { Brand } from "./Logo.jsx";
 import { usePageTitle } from "./PageHeader.jsx";
 
 // Where to go after logging in: the ?next= page when it's one of ours, otherwise the fallback
@@ -15,14 +15,14 @@ export function nextPath(params, fallback = "/bookshelf") {
 
 // The page for logging in, signing up and resetting a password, after Bootstrap's sign-in example
 // (getbootstrap.com/docs/5.3/examples/sign-in): one narrow column in the middle of a light grey
-// page, the logo above the title. switchLink is the "New here? Sign up" line under the form.
+// page, the logo and name above the title, as in the navbar. switchLink is the "New here? Sign up" line under the form.
 export function AuthPage({ title, lead, switchLink, width = 330, children }) {
   usePageTitle(title);
   return (
     <div className="d-flex align-items-center py-4 min-vh-100">
       <main className="form-signin w-100 m-auto p-3" style={{ maxWidth: width }}>
-        <Link to="/" className="d-inline-block mb-4" aria-label="OpenRead: home">
-          <Logo size={56} />
+        <Link to="/" className="d-inline-flex fs-4 fw-semibold link-body-emphasis text-decoration-none mb-4">
+          <Brand size={30} />
         </Link>
         <h1 className="h3 mb-3 fw-normal">{title}</h1>
         {lead && <p className="text-body-secondary">{lead}</p>}

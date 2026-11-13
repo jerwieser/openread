@@ -2,7 +2,7 @@ import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import Icon from "./Icon.jsx";
-import { FullLogo } from "./Logo.jsx";
+import { Brand } from "./Logo.jsx";
 
 const LINK = "link-secondary link-underline-opacity-0 link-underline-opacity-100-hover";
 
@@ -17,15 +17,15 @@ const SOCIAL = [
   ["https://x.com/", "twitter-x", "X"],
 ];
 
-// The footer as one centred column, all in the same small type: the logo and name, what OpenRead is,
+// The footer as one centred column, all in the same small type: the logo and name as in the navbar, what OpenRead is,
 // the legal pages and the source code, its social pages as icons, then the copyright, the licences
 // and where the covers come from. Links to other sites open in a new tab.
 export default function SiteFooter() {
   return (
     <footer className="bg-body border-top small text-body-secondary text-center">
       <Container className="d-flex flex-column align-items-center gap-3 py-5">
-        <Link to="/" className="d-inline-flex">
-          <FullLogo height={24} />
+        <Link to="/" className="d-inline-flex fw-semibold link-body-emphasis text-decoration-none">
+          <Brand size={24} />
         </Link>
         <p className="mb-0" style={{ maxWidth: "24rem" }}>
           Reading tracks for whatever you want to know more about, and readers who have read them to talk to.
