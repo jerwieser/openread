@@ -22,7 +22,7 @@ const SOCIAL = [
 // and where the covers come from. Links to other sites open in a new tab.
 export default function SiteFooter() {
   return (
-    <footer className="border-top small text-center">
+    <footer className="bg-body border-top small text-body-secondary text-center">
       <Container className="d-flex flex-column align-items-center gap-3 py-5">
         <Link to="/" className="d-inline-flex fw-semibold link-body-emphasis text-decoration-none">
           <Brand size={24} />

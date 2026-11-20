@@ -44,12 +44,11 @@ const TagsPlaceholder = () => (
 // what OpenRead has that Goodreads doesn't, in a few words each
 const DIFFERENT = ["No books to sell", "No ads", "No multinational"];
 
-// One band of the page. The open bands stay on the primary field. The ones that used to be white
-// are warning yellow, so the home page uses both grounds and the cards still sit on a sheet of
-// their own.
-function Section({ warning, label, children }) {
+// One band of the page. The open bands stay on the primary field. The others are white, so the
+// page is only blue and white and the cards still sit on a sheet of their own.
+function Section({ white, label, children }) {
   return (
-    <section aria-label={label} className={`py-5 ${warning ? "ground-warning" : ""}`}>
+    <section aria-label={label} className={`py-5 ${white ? "bg-body" : ""}`}>
       <Container className="py-lg-3">{children}</Container>
     </section>
   );
@@ -231,7 +230,7 @@ export default function HomePage() {
       </section>
 
       {sections.map(([label, content], i) => (
-        <Section key={label} label={label} warning={i % 2 === 0}>
+        <Section key={label} label={label} white={i % 2 === 0}>
           {content}
         </Section>
       ))}
