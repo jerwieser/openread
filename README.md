@@ -1,4 +1,4 @@
-<img src="frontend/public/favicon.svg" alt="OpenRead icon" width="96">
+<img src="frontend/public/logo-new-light.jpg" alt="OpenRead icon" width="96">
 
 # OpenRead
 
