@@ -1,16 +1,16 @@
-// The mark's colours. plain: on a light page, a blue track and navy flagpole. tile: on the site's
-// primary blue (the navbar's tile, and the browser-tab icon, public/favicon.svg), the track and
-// the flagpole white, and the books in light tints of the plain ones (coral, a yellow for the navy,
-// amber's yellow and a mint for the green), so each stands out on the blue as the plain ones do on white.
+// The mark's colours. light: the version for a light page, a blue track and a navy flagpole, used
+// everywhere on the site and in the browser-tab icon (public/favicon.svg). dark: the same drawing
+// for a blue ground, the track and the flagpole white and the books in light tints, so each still
+// reads on the blue. The site uses the light one.
 const COLOURS = {
-  plain: { track: "#0d6efd", pole: "#2b3a67", coral: "#e8705a", navy: "#2b3a67", amber: "#f2b84b", green: "#2f9e7a" },
-  tile: { track: "#fff", pole: "#fff", coral: "#ffa08c", navy: "#ffe28a", amber: "#ffc94d", green: "#8ee6c0" },
+  light: { track: "#0d6efd", pole: "#2b3a67", coral: "#e8705a", navy: "#2b3a67", amber: "#f2b84b", green: "#2f9e7a" },
+  dark: { track: "#fff", pole: "#fff", coral: "#ffa08c", navy: "#ffe28a", amber: "#ffc94d", green: "#8ee6c0" },
 };
 
 // OpenRead's mark: a reading track, after the home page's picture. A line starts from a dot at the
 // bottom right and winds up in three rows to a coral flag at the top left, with six books standing
 // along it: three on the bottom row, two on the middle one and one past the flag. Drawn on a 32 × 32
-// grid; the browser-tab icon (public/favicon.svg) is the same drawing on its blue tile.
+// grid; the browser-tab icon (public/favicon.svg) is the same light drawing on a white tile.
 function Mark({ colours: c }) {
   return (
     <>
@@ -35,24 +35,23 @@ function Mark({ colours: c }) {
   );
 }
 
-// The mark on its own. Decorative here: it always sits next to the name, or inside a link that says
-// where it goes. tile: drawn for the blue tile (.site-logo) rather than a light page.
-export default function Logo({ size = 32, tile = false, className = "" }) {
+// The mark on its own, in the light colours. Decorative here: it always sits next to the name, or
+// inside a link that says where it goes.
+export default function Logo({ size = 32, className = "" }) {
   return (
     <svg viewBox="0 0 32 32" width={size} height={size} className={className} aria-hidden="true" focusable="false">
-      <Mark colours={COLOURS[tile ? "tile" : "plain"]} />
+      <Mark colours={COLOURS.light} />
     </svg>
   );
 }
 
-// The site's name beside the mark, as in the navbar (daygame.pro's lockup): the mark on a rounded
-// tile of the site's primary blue (layout.css, .site-logo), then "Open" in the text's colour and
-// "Read" in the primary blue (layout.css, .brand-accent).
-// size: the mark's, in px; the name takes the size of the text around it.
+// The site's name beside the mark: the light mark, then "Open" in the text's colour and "Read" in
+// the primary blue (layout.css, .brand-accent). size: the mark's, in px; the name takes the size
+// of the text around it.
 export function Brand({ size = 24, className = "" }) {
   return (
     <span className={`d-inline-flex align-items-center gap-2 ${className}`}>
-      <Logo size={size} tile className="site-logo rounded-2" />
+      <Logo size={size} />
       <span>
         Open<span className="brand-accent">Read</span>
       </span>

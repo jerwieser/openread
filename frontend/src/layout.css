@@ -388,13 +388,6 @@ body {
   display: none;
 }
 
-/* The square logo (the favicon's drawing) on a tile of the site's primary blue, as an app icon, its
-   track white (components/Logo.jsx, tile) */
-.site-logo {
-  box-sizing: border-box;
-  padding: 2px;
-  background-color: var(--bs-primary);
-}
 
 /* A field holding chips and a text field (the suggest form's authors, components/Combobox.jsx): the
    focus ring of the field inside shows on the whole box, as on any other field. */
