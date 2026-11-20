@@ -201,12 +201,6 @@ footer.bg-body a:not(.btn):not(.nav-link):not(.dropdown-item) {
   color: var(--bs-link-color);
 }
 
-/* The bar is a deeper blue than the page, so it still reads as a bar. */
-.navbar.bg-black {
-  background-color: #052c65 !important;
-  border-color: #052c65 !important;
-}
-
 /* The closing band on the home page would otherwise disappear into the field. */
 section[aria-label="Make a track"] {
   background-color: #052c65 !important;
