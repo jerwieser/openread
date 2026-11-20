@@ -202,11 +202,6 @@ footer.bg-body a:not(.btn):not(.nav-link):not(.dropdown-item) {
   color: var(--bs-link-color);
 }
 
-/* The closing band on the home page would otherwise disappear into the field. */
-section[aria-label="Make a track"] {
-  background-color: #052c65 !important;
-}
-
 .form-signin {
   background-color: #fff;
   border-radius: 1rem;
