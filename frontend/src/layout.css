@@ -174,10 +174,32 @@ body .btn-outline-primary {
   --bs-btn-active-border-color: var(--bs-primary);
 }
 
-body .nav-pills .nav-link.active,
-body .nav-pills .show > .nav-link {
+/* Shelf tabs sit straight on the blue. An unselected label is light, with a white count, and the
+   selected tab is a white pill with blue type and a blue count. Discover's tabs are a white capsule
+   of their own (.discover-views.bg-body) and keep Bootstrap's colours. */
+body .nav-pills:not(.bg-body) .nav-link {
+  color: #fff;
+}
+
+body .nav-pills:not(.bg-body) .nav-link:hover,
+body .nav-pills:not(.bg-body) .nav-link:focus {
+  color: #fff;
+}
+
+body .nav-pills:not(.bg-body) .nav-link.active,
+body .nav-pills:not(.bg-body) .show > .nav-link {
   background-color: #fff;
   color: var(--bs-primary);
+}
+
+body .nav-pills:not(.bg-body) .nav-link:not(.active) .badge {
+  background-color: #fff !important;
+  color: var(--bs-primary) !important;
+}
+
+body .nav-pills:not(.bg-body) .nav-link.active .badge {
+  background-color: var(--bs-primary) !important;
+  color: #fff !important;
 }
 
 .bg-body .nav-pills .nav-link.active,
