@@ -96,6 +96,16 @@ function Opened({ spinner, children }) {
   return children;
 }
 
+// Primary is the catalogue. Warning is the reader's own pages, and the long legal pages, where
+// dark type on yellow is easier to read than light type on blue.
+function groundOf(pathname) {
+  if (pathname === "/terms" || pathname === "/privacy") return "warning";
+  const yours = ["/bookshelf", "/messages", "/account", "/import", "/admin", "/books/suggest", "/tracks/new", "/reflections/new"];
+  if (yours.some((p) => pathname === p || pathname.startsWith(`${p}/`))) return "warning";
+  if (/^\/tracks\/[^/]+\/edit$/.test(pathname) || /^\/reflections\/[^/]+\/edit$/.test(pathname)) return "warning";
+  return "primary";
+}
+
 // The menu and the footer around every page except the account pages, which are full pages of their
 // own. The menu and footer show straight away and stay put while the catalogue or a page's code
 // loads, and the page fills at least the height of the window, so on a short page the footer is
@@ -106,7 +116,7 @@ function SiteLayout() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <SiteNav />
-      <main className="flex-grow-1">
+      <main className={`flex-grow-1 ground-${groundOf(pathname)}`}>
         <ErrorBoundary resetKey={pathname}>
           <Opened spinner={spinner}>
             <Suspense fallback={spinner}>

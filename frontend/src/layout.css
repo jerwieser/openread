@@ -1,25 +1,96 @@
-/* The page itself is Bootstrap's primary blue, so the site reads as one colour from the first
-   screen. --bs-body-bg stays white: cards, fields, menus and the footer keep that, and sit on the
-   blue the way a sheet of paper sits on a cloth. Type that is still on the blue is light; a white
-   surface puts the dark type back. */
+/* Three grounds, and white only for the things you use. Primary is the catalogue (finding and
+   reading). Warning is what is yours (the shelf, messages, account) and the home bands that break
+   the blue. Danger is the frame: the bar, the menu, the footer, and the page behind a log-in card.
+   --bs-body-bg stays white, so a search field, a card, a menu and a form stay a white sheet. Light
+   type on primary and danger; dark type on warning and on every white sheet. */
 body {
   background-color: var(--bs-primary);
   color: #fff;
+}
+
+.ground-primary {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+.ground-warning {
+  background-color: var(--bs-warning);
+  color: #000;
+}
+
+.ground-danger {
+  background-color: var(--bs-danger);
+  color: #fff;
+}
+
+/* The scrollbar gutters paint the page background, not the main column. Match them to the ground
+   in view, or a blue strip shows down each edge of a yellow or red page. */
+html:has(main.ground-warning),
+body:has(main.ground-warning) {
+  background-color: var(--bs-warning);
+}
+
+html:has(.auth-ground),
+body:has(.auth-ground) {
+  background-color: var(--bs-danger);
 }
 
 .bg-body,
 .card:not(.bg-transparent),
 .modal-content,
 .dropdown-menu,
-.offcanvas,
 .accordion,
 .list-group-item,
 .alert,
 .toast,
 .popover,
-.form-signin,
-footer.bg-body {
+.form-signin {
   color: var(--bs-body-color);
+}
+
+.form-control,
+.form-select {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+}
+
+.form-control input,
+.form-control textarea {
+  color: var(--bs-body-color);
+  background-color: transparent;
+}
+
+.form-control::placeholder,
+.form-control input::placeholder {
+  color: var(--bs-secondary-color);
+}
+
+/* A pale count chip keeps dark type. The light-on-blue rule would otherwise paint the number white. */
+.badge.bg-body-secondary,
+.bg-body-secondary.text-body-secondary {
+  color: var(--bs-secondary-color) !important;
+}
+
+/* A link-styled button is blue, which vanishes on the blue field and is faint on yellow. */
+.ground-primary .btn-link,
+.ground-danger .btn-link {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+}
+
+.ground-warning .btn-link {
+  --bs-btn-color: #000;
+  --bs-btn-hover-color: #000;
+}
+
+.bg-body .btn-link,
+.card .btn-link,
+.modal-content .btn-link,
+.accordion .btn-link,
+.form-signin .btn-link,
+.dropdown-menu .btn-link {
+  --bs-btn-color: var(--bs-link-color);
+  --bs-btn-hover-color: var(--bs-link-hover-color);
 }
 
 /* A cover with no card fill takes the colour of whatever it sits on. */
@@ -46,10 +117,19 @@ body .link-body-emphasis {
 .accordion .text-body-secondary,
 .form-signin .text-body-secondary,
 .form-signin .link-secondary,
-footer.bg-body.text-body-secondary,
-footer.bg-body .text-body-secondary,
-footer.bg-body .link-secondary {
+.form-control .text-body-secondary,
+.form-control .link-secondary,
+.discover-search .text-body-secondary,
+.discover-search .link-secondary,
+.ground-warning .text-body-secondary,
+.ground-warning .link-secondary {
   color: var(--bs-secondary-color) !important;
+}
+
+/* Secondary grey is too faint on yellow. */
+.ground-warning .text-body-secondary,
+.ground-warning .link-secondary {
+  color: rgba(0, 0, 0, 0.72) !important;
 }
 
 .bg-body .text-body-emphasis,
@@ -61,8 +141,8 @@ footer.bg-body .link-secondary {
 .accordion .text-body-emphasis,
 .form-signin .text-body-emphasis,
 .form-signin .link-body-emphasis,
-footer.bg-body .text-body-emphasis,
-footer.bg-body .link-body-emphasis {
+.ground-warning .text-body-emphasis,
+.ground-warning .link-body-emphasis {
   color: var(--bs-emphasis-color) !important;
 }
 
@@ -85,7 +165,8 @@ body .btn-primary {
 .modal-content .btn-primary,
 .dropdown-menu .btn-primary,
 .accordion .btn-primary,
-.form-signin .btn-primary {
+.form-signin .btn-primary,
+.ground-warning .btn-primary {
   --bs-btn-color: #fff;
   --bs-btn-bg: var(--bs-primary);
   --bs-btn-border-color: var(--bs-primary);
@@ -112,7 +193,8 @@ body .btn-outline-secondary {
 .card .btn-outline-secondary,
 .modal-content .btn-outline-secondary,
 .accordion .btn-outline-secondary,
-.form-signin .btn-outline-secondary {
+.form-signin .btn-outline-secondary,
+.ground-warning .btn-outline-secondary {
   --bs-btn-color: var(--bs-secondary);
   --bs-btn-border-color: var(--bs-secondary);
   --bs-btn-hover-color: #fff;
@@ -142,8 +224,8 @@ body .link-primary {
 .accordion .link-primary,
 .form-signin .text-primary,
 .form-signin .link-primary,
-footer.bg-body .text-primary,
-footer.bg-body .link-primary {
+.ground-warning .text-primary,
+.ground-warning .link-primary {
   color: var(--bs-primary) !important;
 }
 
@@ -163,7 +245,8 @@ body .btn-outline-primary {
 .modal-content .btn-outline-primary,
 .dropdown-menu .btn-outline-primary,
 .accordion .btn-outline-primary,
-.form-signin .btn-outline-primary {
+.form-signin .btn-outline-primary,
+.ground-warning .btn-outline-primary {
   --bs-btn-color: var(--bs-primary);
   --bs-btn-border-color: var(--bs-primary);
   --bs-btn-hover-color: #fff;
@@ -174,32 +257,86 @@ body .btn-outline-primary {
   --bs-btn-active-border-color: var(--bs-primary);
 }
 
-/* Shelf tabs sit straight on the blue. An unselected label is light, with a white count, and the
-   selected tab is a white pill with blue type and a blue count. Discover's tabs are a white capsule
-   of their own (.discover-views.bg-body) and keep Bootstrap's colours. */
-body .nav-pills:not(.bg-body) .nav-link {
+/* Shelf tabs sit on the ground, not in a white capsule (Discover's .discover-views.bg-body keeps
+   Bootstrap's colours). On blue or red the names are light. On yellow they are dark. The selected
+   tab is the inverse, and the count never matches its chip. */
+.ground-primary .nav-pills:not(.bg-body) .nav-link,
+.ground-danger .nav-pills:not(.bg-body) .nav-link,
+.ground-primary .nav-pills:not(.bg-body) .nav-link:hover,
+.ground-danger .nav-pills:not(.bg-body) .nav-link:hover,
+.ground-primary .nav-pills:not(.bg-body) .nav-link:focus,
+.ground-danger .nav-pills:not(.bg-body) .nav-link:focus {
   color: #fff;
 }
 
-body .nav-pills:not(.bg-body) .nav-link:hover,
-body .nav-pills:not(.bg-body) .nav-link:focus {
-  color: #fff;
-}
-
-body .nav-pills:not(.bg-body) .nav-link.active,
-body .nav-pills:not(.bg-body) .show > .nav-link {
+.ground-primary .nav-pills:not(.bg-body) .nav-link.active,
+.ground-danger .nav-pills:not(.bg-body) .nav-link.active,
+.ground-primary .nav-pills:not(.bg-body) .show > .nav-link,
+.ground-danger .nav-pills:not(.bg-body) .show > .nav-link {
   background-color: #fff;
   color: var(--bs-primary);
 }
 
-body .nav-pills:not(.bg-body) .nav-link:not(.active) .badge {
+.ground-primary .nav-pills:not(.bg-body) .nav-link:not(.active) .badge,
+.ground-danger .nav-pills:not(.bg-body) .nav-link:not(.active) .badge {
   background-color: #fff !important;
   color: var(--bs-primary) !important;
 }
 
-body .nav-pills:not(.bg-body) .nav-link.active .badge {
+.ground-primary .nav-pills:not(.bg-body) .nav-link.active .badge,
+.ground-danger .nav-pills:not(.bg-body) .nav-link.active .badge {
   background-color: var(--bs-primary) !important;
   color: #fff !important;
+}
+
+.ground-warning .nav-pills:not(.bg-body) .nav-link,
+.ground-warning .nav-pills:not(.bg-body) .nav-link:hover,
+.ground-warning .nav-pills:not(.bg-body) .nav-link:focus {
+  color: #000;
+}
+
+.ground-warning .nav-pills:not(.bg-body) .nav-link.active,
+.ground-warning .nav-pills:not(.bg-body) .show > .nav-link {
+  background-color: #000;
+  color: var(--bs-warning);
+}
+
+.ground-warning .nav-pills:not(.bg-body) .nav-link:not(.active) .badge {
+  background-color: #000 !important;
+  color: var(--bs-warning) !important;
+}
+
+.ground-warning .nav-pills:not(.bg-body) .nav-link.active .badge {
+  background-color: var(--bs-warning) !important;
+  color: #000 !important;
+}
+
+/* An outline button drawn for a blue field is white. On yellow that disappears, so it goes dark,
+   and a button inside a white sheet goes back to grey. */
+.ground-warning .btn-outline-secondary {
+  --bs-btn-color: #000;
+  --bs-btn-border-color: rgba(0, 0, 0, 0.55);
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: rgba(0, 0, 0, 0.08);
+  --bs-btn-hover-border-color: #000;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: rgba(0, 0, 0, 0.16);
+  --bs-btn-active-border-color: #000;
+}
+
+.ground-warning .bg-body .btn-outline-secondary,
+.ground-warning .card .btn-outline-secondary,
+.ground-warning .modal-content .btn-outline-secondary,
+.ground-warning .accordion .btn-outline-secondary,
+.ground-warning .form-signin .btn-outline-secondary {
+  --bs-btn-color: var(--bs-secondary);
+  --bs-btn-border-color: var(--bs-secondary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--bs-secondary);
+  --bs-btn-hover-border-color: var(--bs-secondary);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--bs-secondary);
+  --bs-btn-active-border-color: var(--bs-secondary);
 }
 
 .bg-body .nav-pills .nav-link.active,
@@ -214,13 +351,17 @@ main a:not(.btn):not(.nav-link):not(.dropdown-item) {
   color: #fff;
 }
 
+.ground-warning a:not(.btn):not(.nav-link):not(.dropdown-item) {
+  color: #000;
+}
+
 .bg-body a:not(.btn):not(.nav-link):not(.dropdown-item),
 .card:not(.bg-transparent) a:not(.btn):not(.nav-link):not(.dropdown-item),
 .modal-content a:not(.btn):not(.nav-link):not(.dropdown-item),
 .dropdown-menu a:not(.btn):not(.nav-link):not(.dropdown-item),
 .accordion a:not(.btn):not(.nav-link):not(.dropdown-item),
-main.form-signin a:not(.btn):not(.nav-link):not(.dropdown-item),
-footer.bg-body a:not(.btn):not(.nav-link):not(.dropdown-item) {
+.form-control a:not(.btn):not(.nav-link):not(.dropdown-item),
+main.form-signin a:not(.btn):not(.nav-link):not(.dropdown-item) {
   color: var(--bs-link-color);
 }
 
@@ -294,10 +435,25 @@ body {
   line-height: 1.2;
 }
 
-/* "Read" in the name (components/Logo.jsx, Brand): the site's primary blue, on the dark navbar as
-   everywhere else (Bootstrap's dark mode keeps --bs-primary the same) */
+/* "Read" in the name (components/Logo.jsx, Brand): the site's primary blue on a white sheet. On
+   the red bar and the red footer it is warning yellow, which is the one of the three that still
+   reads there. */
 .brand-accent {
   color: var(--bs-primary);
+}
+
+.navbar .brand-accent,
+footer.ground-danger .brand-accent {
+  color: var(--bs-warning);
+}
+
+.navbar.bg-danger {
+  background-color: var(--bs-danger) !important;
+}
+
+#site-menu.offcanvas {
+  background-color: var(--bs-danger) !important;
+  color: #fff;
 }
 
 .navbar-nav {
@@ -308,9 +464,10 @@ body {
    so the drawer gets the bar's link colours (Bootstrap's dark navbar's): dimmed, the current page in
    full. */
 #site-menu {
-  --bs-navbar-color: rgba(var(--bs-emphasis-color-rgb), 0.65);
-  --bs-navbar-hover-color: rgba(var(--bs-emphasis-color-rgb), 0.8);
-  --bs-navbar-active-color: var(--bs-emphasis-color);
+  --bs-navbar-color: rgba(255, 255, 255, 0.75);
+  --bs-navbar-hover-color: #fff;
+  --bs-navbar-active-color: #fff;
+  --bs-offcanvas-color: #fff;
 }
 
 /* The avatar's dropdown button in the navbar (SiteNav.jsx): the avatar alone, without Bootstrap's

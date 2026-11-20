@@ -19,7 +19,7 @@ const isPage = (pathname, to, also) => [to, ...also].some((p) => pathname === p 
 
 // Bootstrap's notification dot on the corner of the avatar or the burger button: there are new
 // messages (getbootstrap.com/docs/5.3/components/badge/#positioned). Ringed in the bar's black.
-const Dot = () => <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-2 border-black rounded-circle" />;
+const Dot = () => <span className="position-absolute top-0 start-100 translate-middle p-1 bg-warning border border-2 border-white rounded-circle" />;
 
 const Unread = ({ count }) =>
   count > 0 && (
@@ -163,19 +163,20 @@ function useNewMessageAlert() {
   return unread;
 }
 
-// daygame.pro's navbar: a dark bar stuck to the top of the window (black at 90%), the square logo and
-// the name on the left, the pages as plain links and the avatar's dropdown on the right. Below md
-// they move into an offcanvas drawer from the right, opened by the burger button, which gets the dot
-// for new messages; choosing a link closes it. At Bootstrap's fixed level, so it and its menus are
-// above everything on the page: the messages (1025) sit just under it.
-const BAR = { zIndex: 1030, "--bs-bg-opacity": 0.9 };
+// The bar is Bootstrap's danger red, solid, so it stays a bar on the blue and on the yellow. The
+// square logo and the name on the left, the pages as plain links and the avatar's dropdown on the
+// right. Below md they move into an offcanvas drawer from the right, in the same red, opened by the
+// burger button, which gets the dot for new messages; choosing a link closes it. At Bootstrap's
+// fixed level, so it and its menus are above everything on the page: the messages (1025) sit just
+// under it.
+const BAR = { zIndex: 1030 };
 
 export default function SiteNav() {
   const { pathname } = useLocation();
   const unread = useNewMessageAlert();
 
   return (
-    <Navbar expand="md" sticky="top" className="bg-black border-bottom border-black" style={BAR} data-bs-theme="dark" collapseOnSelect>
+    <Navbar expand="md" sticky="top" className="bg-danger border-bottom border-danger" style={BAR} data-bs-theme="dark" collapseOnSelect>
       <Container fluid>
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
           <Brand size={30} />
@@ -186,7 +187,7 @@ export default function SiteNav() {
           <span className="visually-hidden">Menu{unread > 0 && `, ${unread} new ${unread === 1 ? "message" : "messages"}`}</span>
         </Navbar.Toggle>
         {/* the drawer is put on the page outside the bar, so it's told to be dark itself */}
-        <Navbar.Offcanvas id="site-menu" placement="end" aria-labelledby="site-menu-title" data-bs-theme="dark">
+        <Navbar.Offcanvas id="site-menu" placement="end" aria-labelledby="site-menu-title" className="text-bg-danger" data-bs-theme="dark">
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id="site-menu-title">OpenRead</Offcanvas.Title>
           </Offcanvas.Header>
