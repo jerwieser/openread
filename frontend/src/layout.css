@@ -46,6 +46,7 @@ body .link-body-emphasis {
 .accordion .text-body-secondary,
 .form-signin .text-body-secondary,
 .form-signin .link-secondary,
+footer.bg-body.text-body-secondary,
 footer.bg-body .text-body-secondary,
 footer.bg-body .link-secondary {
   color: var(--bs-secondary-color) !important;
