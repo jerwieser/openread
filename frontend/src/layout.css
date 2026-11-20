@@ -1,8 +1,221 @@
-/* Facebook's layering: the footer white, the page above it a light gray (under the dark navbar), so the
-   cards on it (white, like the fields and menus) stand out. Only the page's own background: Bootstrap's
-   --bs-body-bg stays white, and everything that uses it with it. */
+/* The page itself is Bootstrap's primary blue, so the site reads as one colour from the first
+   screen. --bs-body-bg stays white: cards, fields, menus and the footer keep that, and sit on the
+   blue the way a sheet of paper sits on a cloth. Type that is still on the blue is light; a white
+   surface puts the dark type back. */
 body {
-  background-color: #f0f2f5;
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+.bg-body,
+.card:not(.bg-transparent),
+.modal-content,
+.dropdown-menu,
+.offcanvas,
+.accordion,
+.list-group-item,
+.alert,
+.toast,
+.popover,
+.form-signin,
+footer.bg-body {
+  color: var(--bs-body-color);
+}
+
+/* A cover with no card fill takes the colour of whatever it sits on. */
+.card.bg-transparent {
+  color: inherit;
+}
+
+body .text-body-secondary,
+body .link-secondary {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+body .text-body-emphasis,
+body .link-body-emphasis {
+  color: #fff !important;
+}
+
+.bg-body .text-body-secondary,
+.bg-body .link-secondary,
+.card:not(.bg-transparent) .text-body-secondary,
+.card:not(.bg-transparent) .link-secondary,
+.modal-content .text-body-secondary,
+.dropdown-menu .text-body-secondary,
+.accordion .text-body-secondary,
+.form-signin .text-body-secondary,
+.form-signin .link-secondary,
+footer.bg-body .text-body-secondary,
+footer.bg-body .link-secondary {
+  color: var(--bs-secondary-color) !important;
+}
+
+.bg-body .text-body-emphasis,
+.bg-body .link-body-emphasis,
+.card:not(.bg-transparent) .text-body-emphasis,
+.card:not(.bg-transparent) .link-body-emphasis,
+.modal-content .text-body-emphasis,
+.dropdown-menu .text-body-emphasis,
+.accordion .text-body-emphasis,
+.form-signin .text-body-emphasis,
+.form-signin .link-body-emphasis,
+footer.bg-body .text-body-emphasis,
+footer.bg-body .link-body-emphasis {
+  color: var(--bs-emphasis-color) !important;
+}
+
+/* A filled primary button is the same blue as the page. On the field it turns white, and goes
+   back to blue once it sits on a white surface. */
+body .btn-primary {
+  --bs-btn-color: var(--bs-primary);
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #fff;
+  --bs-btn-hover-color: var(--bs-primary);
+  --bs-btn-hover-bg: #e7f1ff;
+  --bs-btn-hover-border-color: #e7f1ff;
+  --bs-btn-active-color: var(--bs-primary);
+  --bs-btn-active-bg: #d6e6ff;
+  --bs-btn-active-border-color: #d6e6ff;
+}
+
+.bg-body .btn-primary,
+.card .btn-primary,
+.modal-content .btn-primary,
+.dropdown-menu .btn-primary,
+.accordion .btn-primary,
+.form-signin .btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #0b5ed7;
+  --bs-btn-hover-border-color: #0a58ca;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #0a58ca;
+  --bs-btn-active-border-color: #0a53be;
+}
+
+body .btn-outline-secondary {
+  --bs-btn-color: #fff;
+  --bs-btn-border-color: rgba(255, 255, 255, 0.75);
+  --bs-btn-hover-color: var(--bs-primary);
+  --bs-btn-hover-bg: #fff;
+  --bs-btn-hover-border-color: #fff;
+  --bs-btn-active-color: var(--bs-primary);
+  --bs-btn-active-bg: #fff;
+  --bs-btn-active-border-color: #fff;
+}
+
+.bg-body .btn-outline-secondary,
+.card .btn-outline-secondary,
+.modal-content .btn-outline-secondary,
+.accordion .btn-outline-secondary,
+.form-signin .btn-outline-secondary {
+  --bs-btn-color: var(--bs-secondary);
+  --bs-btn-border-color: var(--bs-secondary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--bs-secondary);
+  --bs-btn-hover-border-color: var(--bs-secondary);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--bs-secondary);
+  --bs-btn-active-border-color: var(--bs-secondary);
+}
+
+/* Primary type and outline buttons are the same blue as the page. On the field they go light, and
+   stay blue on a white surface. */
+body .text-primary,
+body .link-primary {
+  color: #fff !important;
+}
+
+.bg-body .text-primary,
+.bg-body .link-primary,
+.card:not(.bg-transparent) .text-primary,
+.card:not(.bg-transparent) .link-primary,
+.modal-content .text-primary,
+.modal-content .link-primary,
+.dropdown-menu .text-primary,
+.dropdown-menu .link-primary,
+.accordion .text-primary,
+.accordion .link-primary,
+.form-signin .text-primary,
+.form-signin .link-primary,
+footer.bg-body .text-primary,
+footer.bg-body .link-primary {
+  color: var(--bs-primary) !important;
+}
+
+body .btn-outline-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-border-color: rgba(255, 255, 255, 0.85);
+  --bs-btn-hover-color: var(--bs-primary);
+  --bs-btn-hover-bg: #fff;
+  --bs-btn-hover-border-color: #fff;
+  --bs-btn-active-color: var(--bs-primary);
+  --bs-btn-active-bg: #fff;
+  --bs-btn-active-border-color: #fff;
+}
+
+.bg-body .btn-outline-primary,
+.card .btn-outline-primary,
+.modal-content .btn-outline-primary,
+.dropdown-menu .btn-outline-primary,
+.accordion .btn-outline-primary,
+.form-signin .btn-outline-primary {
+  --bs-btn-color: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--bs-primary);
+  --bs-btn-hover-border-color: var(--bs-primary);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--bs-primary);
+  --bs-btn-active-border-color: var(--bs-primary);
+}
+
+body .nav-pills .nav-link.active,
+body .nav-pills .show > .nav-link {
+  background-color: #fff;
+  color: var(--bs-primary);
+}
+
+.bg-body .nav-pills .nav-link.active,
+.card:not(.bg-transparent) .nav-pills .nav-link.active,
+.modal-content .nav-pills .nav-link.active,
+.accordion .nav-pills .nav-link.active {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+main a:not(.btn):not(.nav-link):not(.dropdown-item) {
+  color: #fff;
+}
+
+.bg-body a:not(.btn):not(.nav-link):not(.dropdown-item),
+.card:not(.bg-transparent) a:not(.btn):not(.nav-link):not(.dropdown-item),
+.modal-content a:not(.btn):not(.nav-link):not(.dropdown-item),
+.dropdown-menu a:not(.btn):not(.nav-link):not(.dropdown-item),
+.accordion a:not(.btn):not(.nav-link):not(.dropdown-item),
+main.form-signin a:not(.btn):not(.nav-link):not(.dropdown-item),
+footer.bg-body a:not(.btn):not(.nav-link):not(.dropdown-item) {
+  color: var(--bs-link-color);
+}
+
+/* The bar is a deeper blue than the page, so it still reads as a bar. */
+.navbar.bg-black {
+  background-color: #052c65 !important;
+  border-color: #052c65 !important;
+}
+
+/* The closing band on the home page would otherwise disappear into the field. */
+section[aria-label="Make a track"] {
+  background-color: #052c65 !important;
+}
+
+.form-signin {
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(5, 44, 101, 0.25);
 }
 
 /* The scrollbar's space is kept on every page, scrolling or not, so the page is as wide on a short
