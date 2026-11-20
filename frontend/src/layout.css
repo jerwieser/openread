@@ -1,8 +1,8 @@
-/* Three grounds, and white only for the things you use. Primary is the catalogue (finding and
-   reading). Warning is what is yours (the shelf, messages, account) and the home bands that break
-   the blue. Danger is the frame: the bar, the menu, the footer, and the page behind a log-in card.
-   --bs-body-bg stays white, so a search field, a card, a menu and a form stay a white sheet. Light
-   type on primary and danger; dark type on warning and on every white sheet. */
+/* Two grounds, and white only for the things you use. Primary is the catalogue (finding and
+   reading). Warning is the bar, the menu, what is yours (the shelf, messages, account), and the
+   home bands that break the blue. The footer takes whichever of the two the page is not, so it
+   still reads as a band. --bs-body-bg stays white, so a search field, a card, and a form stay a
+   white sheet. Light type on primary; dark type on warning and on every white sheet. */
 body {
   background-color: var(--bs-primary);
   color: #fff;
@@ -18,21 +18,13 @@ body {
   color: #000;
 }
 
-.ground-danger {
-  background-color: var(--bs-danger);
-  color: #fff;
-}
-
 /* The scrollbar gutters paint the page background, not the main column. Match them to the ground
-   in view, or a blue strip shows down each edge of a yellow or red page. */
+   in view, or a blue strip shows down each edge of a yellow page. */
 html:has(main.ground-warning),
-body:has(main.ground-warning) {
-  background-color: var(--bs-warning);
-}
-
+body:has(main.ground-warning),
 html:has(.auth-ground),
 body:has(.auth-ground) {
-  background-color: var(--bs-danger);
+  background-color: var(--bs-warning);
 }
 
 .bg-body,
@@ -72,8 +64,7 @@ body:has(.auth-ground) {
 }
 
 /* A link-styled button is blue, which vanishes on the blue field and is faint on yellow. */
-.ground-primary .btn-link,
-.ground-danger .btn-link {
+.ground-primary .btn-link {
   --bs-btn-color: #fff;
   --bs-btn-hover-color: #fff;
 }
@@ -258,33 +249,26 @@ body .btn-outline-primary {
 }
 
 /* Shelf tabs sit on the ground, not in a white capsule (Discover's .discover-views.bg-body keeps
-   Bootstrap's colours). On blue or red the names are light. On yellow they are dark. The selected
-   tab is the inverse, and the count never matches its chip. */
+   Bootstrap's colours). On blue the names are light. On yellow they are dark. The selected tab is
+   the inverse, and the count never matches its chip. */
 .ground-primary .nav-pills:not(.bg-body) .nav-link,
-.ground-danger .nav-pills:not(.bg-body) .nav-link,
 .ground-primary .nav-pills:not(.bg-body) .nav-link:hover,
-.ground-danger .nav-pills:not(.bg-body) .nav-link:hover,
-.ground-primary .nav-pills:not(.bg-body) .nav-link:focus,
-.ground-danger .nav-pills:not(.bg-body) .nav-link:focus {
+.ground-primary .nav-pills:not(.bg-body) .nav-link:focus {
   color: #fff;
 }
 
 .ground-primary .nav-pills:not(.bg-body) .nav-link.active,
-.ground-danger .nav-pills:not(.bg-body) .nav-link.active,
-.ground-primary .nav-pills:not(.bg-body) .show > .nav-link,
-.ground-danger .nav-pills:not(.bg-body) .show > .nav-link {
+.ground-primary .nav-pills:not(.bg-body) .show > .nav-link {
   background-color: #fff;
   color: var(--bs-primary);
 }
 
-.ground-primary .nav-pills:not(.bg-body) .nav-link:not(.active) .badge,
-.ground-danger .nav-pills:not(.bg-body) .nav-link:not(.active) .badge {
+.ground-primary .nav-pills:not(.bg-body) .nav-link:not(.active) .badge {
   background-color: #fff !important;
   color: var(--bs-primary) !important;
 }
 
-.ground-primary .nav-pills:not(.bg-body) .nav-link.active .badge,
-.ground-danger .nav-pills:not(.bg-body) .nav-link.active .badge {
+.ground-primary .nav-pills:not(.bg-body) .nav-link.active .badge {
   background-color: var(--bs-primary) !important;
   color: #fff !important;
 }
@@ -435,25 +419,76 @@ body {
   line-height: 1.2;
 }
 
-/* "Read" in the name (components/Logo.jsx, Brand): the site's primary blue on a white sheet. On
-   the red bar and the red footer it is warning yellow, which is the one of the three that still
-   reads there. */
+/* "Read" in the name (components/Logo.jsx, Brand) is the primary blue, which reads on yellow and
+   on white. On a blue footer it would vanish, so there it is warning yellow. */
 .brand-accent {
   color: var(--bs-primary);
 }
 
-.navbar .brand-accent,
-footer.ground-danger .brand-accent {
+main.ground-warning + footer .brand-accent {
   color: var(--bs-warning);
 }
 
-.navbar.bg-danger {
-  background-color: var(--bs-danger) !important;
+/* The bar and the phone menu are warning yellow, with dark type. A filled button stays blue, and
+   an outline button goes dark, so neither disappears on the yellow. */
+.navbar.bg-warning,
+#site-menu.offcanvas {
+  background-color: var(--bs-warning) !important;
+  color: #000;
 }
 
-#site-menu.offcanvas {
-  background-color: var(--bs-danger) !important;
+.navbar.bg-warning .btn-primary,
+#site-menu .btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #0b5ed7;
+  --bs-btn-hover-border-color: #0a58ca;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #0a58ca;
+  --bs-btn-active-border-color: #0a53be;
+}
+
+.navbar.bg-warning .btn-outline-secondary,
+#site-menu .btn-outline-secondary {
+  --bs-btn-color: #000;
+  --bs-btn-border-color: rgba(0, 0, 0, 0.55);
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: rgba(0, 0, 0, 0.08);
+  --bs-btn-hover-border-color: #000;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: rgba(0, 0, 0, 0.16);
+  --bs-btn-active-border-color: #000;
+}
+
+.navbar .text-primary,
+#site-menu .text-primary {
+  color: var(--bs-primary) !important;
+}
+
+/* The footer is the ground the page is not: yellow under a blue page, blue under a yellow one. */
+main.ground-primary + footer {
+  background-color: var(--bs-warning);
+  color: #000;
+}
+
+main.ground-warning + footer {
+  background-color: var(--bs-primary);
   color: #fff;
+}
+
+main.ground-primary + footer .link-secondary {
+  color: rgba(0, 0, 0, 0.72) !important;
+}
+
+main.ground-primary + footer .link-body-emphasis,
+main.ground-primary + footer a:not(.btn) {
+  color: #000;
+}
+
+main.ground-primary + footer .brand-accent {
+  color: var(--bs-primary);
 }
 
 .navbar-nav {
@@ -464,10 +499,10 @@ footer.ground-danger .brand-accent {
    so the drawer gets the bar's link colours (Bootstrap's dark navbar's): dimmed, the current page in
    full. */
 #site-menu {
-  --bs-navbar-color: rgba(255, 255, 255, 0.75);
-  --bs-navbar-hover-color: #fff;
-  --bs-navbar-active-color: #fff;
-  --bs-offcanvas-color: #fff;
+  --bs-navbar-color: rgba(0, 0, 0, 0.7);
+  --bs-navbar-hover-color: #000;
+  --bs-navbar-active-color: #000;
+  --bs-offcanvas-color: #000;
 }
 
 /* The avatar's dropdown button in the navbar (SiteNav.jsx): the avatar alone, without Bootstrap's
