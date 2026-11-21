@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <img src="frontend/public/logo.png" alt="OpenRead icon" width="96">
+=======
+<img src="frontend/public/logo-new-light.jpg" alt="OpenRead icon" width="96">
+>>>>>>> befb2ef961bc3f19e85e039c4eae6ab0b14dde8a
 
 # OpenRead
 
