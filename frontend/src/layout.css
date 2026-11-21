@@ -1,5 +1,92 @@
 /* The page is Bootstrap's dark (bg-dark). White is the other colour: the bar, the menu, the footer,
-   a band, a card, a search field, a form. Light type on the dark; dark type on every white sheet. */
+   a band, a card, a search field, a form. Light type on the dark; dark type on every white sheet.
+   The accent is black, not Bootstrap's blue: filled controls are black with white type on a white
+   sheet, and white with black type on the dark field. */
+:root {
+  --bs-primary: #000;
+  --bs-primary-rgb: 0, 0, 0;
+  --bs-primary-text-emphasis: #000;
+  --bs-primary-bg-subtle: #f2f2f2;
+  --bs-primary-border-subtle: #d0d0d0;
+  --bs-link-color: #000;
+  --bs-link-hover-color: #000;
+  --bs-link-color-rgb: 0, 0, 0;
+  --bs-link-hover-color-rgb: 0, 0, 0;
+  --bs-focus-ring-color: rgba(0, 0, 0, 0.25);
+  --bs-nav-pills-link-active-bg: #000;
+  --bs-dropdown-link-active-bg: #000;
+  --bs-pagination-active-bg: #000;
+  --bs-pagination-active-border-color: #000;
+  --bs-progress-bar-bg: #000;
+  --bs-list-group-active-bg: #000;
+  --bs-list-group-active-border-color: #000;
+}
+
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #000;
+  --bs-btn-border-color: #000;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #333;
+  --bs-btn-hover-border-color: #333;
+  --bs-btn-focus-shadow-rgb: 0, 0, 0;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #000;
+  --bs-btn-active-border-color: #000;
+  --bs-btn-disabled-bg: #000;
+  --bs-btn-disabled-border-color: #000;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #000;
+  --bs-btn-border-color: #000;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #000;
+  --bs-btn-hover-border-color: #000;
+  --bs-btn-focus-shadow-rgb: 0, 0, 0;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #000;
+  --bs-btn-active-border-color: #000;
+  --bs-btn-disabled-color: #000;
+  --bs-btn-disabled-border-color: #000;
+}
+
+.dropdown-menu,
+.nav-pills,
+.pagination,
+.progress,
+.progress-stacked,
+.list-group {
+  --bs-dropdown-link-active-bg: #000;
+  --bs-nav-pills-link-active-bg: #000;
+  --bs-pagination-active-bg: #000;
+  --bs-pagination-active-border-color: #000;
+  --bs-progress-bar-bg: #000;
+  --bs-list-group-active-bg: #000;
+  --bs-list-group-active-border-color: #000;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: #000;
+  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.15);
+}
+
+.form-check-input:checked {
+  background-color: #000;
+  border-color: #000;
+}
+
+.form-switch .form-check-input:focus {
+  --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23000'/%3e%3c/svg%3e");
+}
+
+.form-range::-webkit-slider-thumb,
+.form-range::-moz-range-thumb {
+  background-color: #000;
+}
+
 body {
   background-color: var(--bs-dark);
   color: #fff;
@@ -41,7 +128,7 @@ body {
   color: var(--bs-secondary-color) !important;
 }
 
-/* A link-styled button is blue, which vanishes on the dark field. On a white sheet it stays blue. */
+/* A link-styled button is black, which vanishes on the dark field. On a white sheet it stays black. */
 main.bg-dark .btn-link {
   --bs-btn-color: #fff;
   --bs-btn-hover-color: #fff;
@@ -57,6 +144,45 @@ main.bg-dark .btn-link {
 .dropdown-menu .btn-link {
   --bs-btn-color: var(--bs-link-color);
   --bs-btn-hover-color: var(--bs-link-hover-color);
+}
+
+/* A cover rests in grey, and its colour comes back when the reader is on the cover or on the card
+   it belongs to. A phone has no hover, so the colour stays there: otherwise a cover could never
+   show it. */
+.book-cover img,
+img.book-cover {
+  filter: grayscale(1);
+  transition: filter 0.35s ease;
+}
+
+@media (hover: hover) {
+  .book-cover:hover img,
+  .book-cover:focus-within img,
+  .card:hover .book-cover img,
+  .card:focus-within .book-cover img,
+  .track-card:hover .book-cover img,
+  .track-card:focus-within .book-cover img,
+  .track-card-band:hover .book-cover img,
+  .list-group-item:hover img.book-cover,
+  a:hover > .book-cover img,
+  button:hover .book-cover img,
+  button:focus-visible .book-cover img {
+    filter: none;
+  }
+}
+
+@media (hover: none) {
+  .book-cover img,
+  img.book-cover {
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-cover img,
+  img.book-cover {
+    transition: none;
+  }
 }
 
 /* A cover with no card fill takes the colour of whatever it sits on. */
@@ -116,17 +242,17 @@ footer.bg-body .link-body-emphasis {
 }
 
 /* A filled primary button on the field turns white (the open field's filled CTA), and goes back to
-   blue once it sits on a white surface. */
+   black once it sits on a white surface. */
 body .btn-primary {
-  --bs-btn-color: var(--bs-primary);
+  --bs-btn-color: #000;
   --bs-btn-bg: #fff;
   --bs-btn-border-color: #fff;
-  --bs-btn-hover-color: var(--bs-primary);
-  --bs-btn-hover-bg: #e7f1ff;
-  --bs-btn-hover-border-color: #e7f1ff;
-  --bs-btn-active-color: var(--bs-primary);
-  --bs-btn-active-bg: #d6e6ff;
-  --bs-btn-active-border-color: #d6e6ff;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #f2f2f2;
+  --bs-btn-hover-border-color: #f2f2f2;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #e6e6e6;
+  --bs-btn-active-border-color: #e6e6e6;
 }
 
 .bg-body .btn-primary,
@@ -138,14 +264,14 @@ body .btn-primary {
 .navbar .btn-primary,
 #site-menu .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: var(--bs-primary);
-  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-bg: #000;
+  --bs-btn-border-color: #000;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #0b5ed7;
-  --bs-btn-hover-border-color: #0a58ca;
+  --bs-btn-hover-bg: #333;
+  --bs-btn-hover-border-color: #333;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #0a58ca;
-  --bs-btn-active-border-color: #0a53be;
+  --bs-btn-active-bg: #000;
+  --bs-btn-active-border-color: #000;
 }
 
 body .btn-outline-secondary {
@@ -176,7 +302,7 @@ body .btn-outline-secondary {
   --bs-btn-active-border-color: var(--bs-secondary);
 }
 
-/* Primary type would sit fine on the dark field, but outline-primary shares the old light-on-field
+/* Primary type would sit fine on the dark field, but outline-primary shares the light-on-field
    treatment so the stroke stays visible. Text-primary on the field stays light for the same reason. */
 body .text-primary,
 body .link-primary {
@@ -284,7 +410,7 @@ main.form-signin a:not(.btn):not(.nav-link):not(.dropdown-item) {
 .form-signin {
   background-color: #fff;
   border-radius: 1rem;
-  box-shadow: 0 0.5rem 1.5rem rgba(5, 44, 101, 0.25);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
 }
 
 /* The scrollbar's space is kept on every page, scrolling or not, so the page is as wide on a short
@@ -406,8 +532,8 @@ body {
 /* A field holding chips and a text field (the suggest form's authors, components/Combobox.jsx): the
    focus ring of the field inside shows on the whole box, as on any other field. */
 .form-select:focus-within {
-  border-color: #86b7fe;
-  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+  border-color: #000;
+  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.15);
   outline: 0;
 }
 .form-select.is-invalid:focus-within {

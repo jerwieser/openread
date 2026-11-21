@@ -9,14 +9,8 @@ import Icon from "./Icon.jsx";
 import Initials from "./Initials.jsx";
 import "./ReflectionCard.css";
 
-// the band's colour for books without a cover, from the illustrations' palette
-const BANDS = ["#2b3a67", "#e8705a", "#2f9e7a", "#3b6fe0", "#c7962f"];
-
-function bandFor(title) {
-  let hash = 0;
-  for (const ch of title) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
-  return BANDS[hash % BANDS.length];
-}
+// the band behind a reflection's title: black, so a missing cover still sits with the rest of the site
+const BAND = "#111";
 
 // "(JL) Jonas Lind · 28 September 2026 · 2 min read", the name linking to their profile when they have one
 export function Byline({ reflection: r, className = "" }) {
@@ -56,7 +50,7 @@ export default function ReflectionCard({ reflection: r, showBook = true }) {
       <div
         className="reflection-card-band"
         style={{
-          "--band": book ? bandFor(book.catalogueTitle ?? book.title) : BANDS[0],
+          "--band": BAND,
           "--cover": book?.cover ? `url("${book.cover}")` : "none",
         }}
       >

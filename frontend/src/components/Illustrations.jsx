@@ -2,20 +2,19 @@
 // the home headline, a wide banner for the call to make a track and small pictures for the steps. They share one palette, so they read as a set.
 // All are decorative: the text beside them says the same thing.
 
-// The blues are the site's own (Bootstrap's primary, #0d6efd), so the pictures match the buttons:
-// shirts and books in the primary blue, a shade darker for lines on it, the sky and clouds in its
-// palest tints. The home track is drawn in white, because it sits on the dark field. The desk
-// banner's wall uses Bootstrap's dark so it continues that field.
+// Shirts and books in black, lines in black, the sky and clouds in grey. The home track is drawn
+// in white, because it sits on the dark field. The desk banner's wall uses Bootstrap's dark so it
+// continues that field.
 const C = {
-  sky: "#e7f1ff",
-  skyDeep: "var(--bs-primary-bg-subtle)",
+  sky: "#f2f2f2",
+  skyDeep: "#e6e6e6",
   cream: "#fdf3e1",
   paper: "#fffaf0",
   rule: "#dccfb6",
   sun: "#ffe3a3",
-  ink: "#2b3a67",
-  blue: "var(--bs-primary)",
-  blueDark: "#0a58ca",
+  ink: "#000",
+  blue: "#000",
+  blueDark: "#000",
   coral: "#e8705a",
   coralLight: "#f0998a",
   mustard: "#f2b84b",

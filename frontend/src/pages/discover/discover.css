@@ -12,7 +12,8 @@
 }
 
 .discover-search .form-control:focus {
-  border-color: #86b7fe;
+  border-color: #000;
+  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.15);
 }
 
 /* no browser cross of its own: ours does the same, in the same place on every browser */
@@ -67,19 +68,41 @@ kbd.discover-search-end {
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* the topic chips: Bootstrap's subtle colours, lifting a little on hover */
+/* the topic chips: white with black type, black once picked, lifting a little on hover */
 .discover-chip {
   --bs-btn-padding-x: 0.8rem;
+  --bs-btn-color: #000;
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #000;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #f2f2f2;
+  --bs-btn-hover-border-color: #000;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #000;
+  --bs-btn-active-border-color: #000;
   border-width: 1px;
   border-style: solid;
+  color: #000;
+  background-color: #fff;
+  border-color: #000;
   font-weight: 500;
   transition: transform 0.12s ease-in-out, box-shadow 0.12s ease-in-out;
+}
+
+.discover-chip.picked,
+.discover-chip.picked:hover {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #000;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #333;
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
 }
 
 .discover-chip:not(.picked):hover {
   transform: translateY(-1px);
   box-shadow: var(--bs-box-shadow-sm);
-  filter: saturate(1.3);
 }
 
 .discover-chip-count {
