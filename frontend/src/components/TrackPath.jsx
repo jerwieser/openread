@@ -15,6 +15,8 @@ const LINE_Y = 168; // the line's height in each row, just under the covers
 const SIDE = 44; // room at either side for the turns
 const TURN = 36; // radius of the turns
 const STROKE = 6;
+// The page behind the track is the primary blue, so the line is white. 
+const LINE = "#fff";
 // at most three books to a row, in a centred column narrow enough that each keeps about the width it
 // had at four across the full page
 const MAX_WIDTH = "54rem";
@@ -100,10 +102,10 @@ function Winding({ stops, states, onSkip, width, cols }) {
   return (
     <div className="position-relative" style={{ height: rows * rowHeight }}>
       <svg className="position-absolute top-0 start-0" width={width} height={rows * rowHeight} aria-hidden="true">
-        <path d={d} fill="none" stroke="var(--bs-primary)" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx={left + TURN} cy={LINE_Y} r={9} fill="var(--bs-primary)" />
+        <path d={d} fill="none" stroke={LINE} strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx={left + TURN} cy={LINE_Y} r={9} fill={LINE} />
         {/* a flag where the track ends */}
-        <line x1={end} y1={last.y} x2={end} y2={last.y - 44} stroke="var(--bs-primary)" strokeWidth={3} strokeLinecap="round" />
+        <line x1={end} y1={last.y} x2={end} y2={last.y - 44} stroke={LINE} strokeWidth={3} strokeLinecap="round" />
         <path d={`M${end} ${last.y - 44}l${last.row % 2 === 0 ? 24 : -24} 8l${last.row % 2 === 0 ? -24 : 24} 8Z`} fill="#e8705a" />
       </svg>
       <ol className="list-unstyled m-0">
@@ -127,11 +129,11 @@ function Winding({ stops, states, onSkip, width, cols }) {
 
 function Straight({ stops, states, onSkip }) {
   return (
-    <ol className="list-unstyled m-0 ms-2" style={{ borderLeft: `${STROKE}px solid var(--bs-primary)` }}>
+    <ol className="list-unstyled m-0 ms-2" style={{ borderLeft: `${STROKE}px solid ${LINE}` }}>
       {stops.map((stop, i) => (
         <li key={stop.book.slug} className="d-flex gap-3 ps-3 pb-4 position-relative">
           <span
-            className="position-absolute rounded-circle bg-primary"
+            className="position-absolute rounded-circle bg-white"
             style={{ width: 14, height: 14, left: -(STROKE / 2) - 7, top: 8 }}
             aria-hidden="true"
           />

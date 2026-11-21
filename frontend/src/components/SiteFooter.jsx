@@ -24,7 +24,7 @@ export default function SiteFooter() {
   return (
     <footer className="bg-body border-top small text-body-secondary text-center">
       <Container className="d-flex flex-column align-items-center gap-3 py-5">
-        <Link to="/" className="d-inline-flex fw-semibold link-body-emphasis text-decoration-none">
+        <Link to="/" className="d-inline-flex fw-bold link-body-emphasis text-decoration-none">
           <Brand size={24} />
         </Link>
         <p className="mb-0" style={{ maxWidth: "24rem" }}>

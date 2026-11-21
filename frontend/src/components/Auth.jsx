@@ -21,7 +21,7 @@ export function AuthPage({ title, lead, switchLink, width = 330, children }) {
   return (
     <div className="d-flex align-items-center py-4 min-vh-100">
       <main className="form-signin w-100 m-auto p-3" style={{ maxWidth: width }}>
-        <Link to="/" className="d-inline-flex fs-4 fw-semibold link-body-emphasis text-decoration-none mb-4">
+        <Link to="/" className="d-inline-flex fs-4 fw-bold link-body-emphasis text-decoration-none mb-4">
           <Brand size={30} />
         </Link>
         <h1 className="h3 mb-3 fw-normal">{title}</h1>

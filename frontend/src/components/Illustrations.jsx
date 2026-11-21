@@ -2,9 +2,10 @@
 // the home headline, a wide banner for the call to make a track and small pictures for the steps. They share one palette, so they read as a set.
 // All are decorative: the text beside them says the same thing.
 
-// The blues are the site's own (Bootstrap's primary, #0d6efd), so the pictures match the buttons, the
-// logo's tile and the band the desk scene continues: the line, the shirts and the books in the
-// primary blue, a shade darker for lines on it, the sky and clouds in its palest tints.
+// The blues are the site's own (Bootstrap's primary, #0d6efd), so the pictures match the buttons and
+// the band the desk scene continues: shirts and books in the primary blue, a shade darker for lines
+// on it, the sky and clouds in its palest tints. The home track is drawn in white, because it sits
+// on that same blue.
 const C = {
   sky: "#e7f1ff",
   skyDeep: "var(--bs-primary-bg-subtle)",
@@ -208,10 +209,11 @@ function Cloud({ x, y, s = 1, fill = "#fff" }) {
   );
 }
 
-// Home: a reading track as a path. A blue line winds up the picture, like the track on a track's own
+// Home: a reading track as a path. A white line winds up the picture, like the track on a track's own
 // page, with books standing along it in order; a reader walks it with a book under one arm, from a
 // signpost of tags at the start to a flag at the end. The tags are the coral of the search demo above
-// the picture. It stands under the headline with no background of its own, on the white page.
+// the picture. It stands under the headline on the blue page, so the line, the reader's arms and the
+// sparkle are white: the page's own blue would hide them.
 export function FollowTheTrack({ className, style }) {
   // the line's three rows, from the bottom up, joined by round turns; the bottom one runs much further
   // out than the two above, and a plant stands on the ground past the turn, so the drawing stands on a
@@ -223,7 +225,7 @@ export function FollowTheTrack({ className, style }) {
       <circle cx="300" cy="118" r="56" fill={C.sun} />
       <Cloud x={52} y={96} fill={C.skyDeep} />
       <Sparkle x={42} y={250} r={9} />
-      <Sparkle x={196} y={92} r={7} fill={C.skyDeep} />
+      <Sparkle x={196} y={92} r={7} fill="#fff" />
       <Sparkle x={372} y={292} r={8} />
       <ellipse cx="148" cy="450" rx="268" ry="9" fill={C.skyDeep} />
       <Plant x={372} base={446} />
@@ -236,8 +238,8 @@ export function FollowTheTrack({ className, style }) {
       <Spine x={134} base={325} w={18} h={46} fill={C.green} />
       <Spine x={184} base={215} w={20} h={52} fill={C.plum} />
 
-      <path d={line} fill="none" stroke={C.blue} strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="-90" cy="440" r="11" fill={C.blue} />
+      <path d={line} fill="none" stroke="#fff" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="-90" cy="440" r="11" fill="#fff" />
 
       {/* the flag where the track ends */}
       <line x1="282" y1="216" x2="282" y2="146" stroke={C.ink} strokeWidth="3.5" strokeLinecap="round" />
@@ -254,10 +256,10 @@ export function FollowTheTrack({ className, style }) {
 
       {/* the reader, halfway along, a book under one arm */}
       <rect x="164" y="282" width="16" height="20" rx="2.5" fill={C.mustard} transform="rotate(-12 172 292)" />
-      <Figure x={192} feet={325} shirt={C.blue} hair={C.hairBrown} ponytail />
+      <Figure x={192} feet={325} shirt={C.coral} hair={C.hairBrown} ponytail />
       <g strokeWidth="8" strokeLinecap="round">
-        <line x1="182" y1="270" x2="174" y2="290" stroke={C.blueDark} />
-        <line x1="202" y1="270" x2="212" y2="292" stroke={C.blueDark} />
+        <line x1="182" y1="270" x2="174" y2="290" stroke="#fff" />
+        <line x1="202" y1="270" x2="212" y2="292" stroke="#fff" />
       </g>
     </Art>
   );
