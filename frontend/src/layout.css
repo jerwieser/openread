@@ -1,12 +1,7 @@
-/* The page is Bootstrap's primary blue. White is the other colour: the bar, the menu, the footer,
-   a band, a card, a search field, a form. Light type on the blue; dark type on every white sheet. */
+/* The page is Bootstrap's dark (bg-dark). White is the other colour: the bar, the menu, the footer,
+   a band, a card, a search field, a form. Light type on the dark; dark type on every white sheet. */
 body {
-  background-color: var(--bs-primary);
-  color: #fff;
-}
-
-.ground-primary {
-  background-color: var(--bs-primary);
+  background-color: var(--bs-dark);
   color: #fff;
 }
 
@@ -40,14 +35,14 @@ body {
   color: var(--bs-secondary-color);
 }
 
-/* A pale count chip keeps dark type. The light-on-blue rule would otherwise paint the number white. */
+/* A pale count chip keeps dark type. The light-on-dark rule would otherwise paint the number white. */
 .badge.bg-body-secondary,
 .bg-body-secondary.text-body-secondary {
   color: var(--bs-secondary-color) !important;
 }
 
-/* A link-styled button is blue, which vanishes on the blue field. On a white sheet it stays blue. */
-.ground-primary .btn-link {
+/* A link-styled button is blue, which vanishes on the dark field. On a white sheet it stays blue. */
+main.bg-dark .btn-link {
   --bs-btn-color: #fff;
   --bs-btn-hover-color: #fff;
 }
@@ -120,8 +115,8 @@ footer.bg-body .link-body-emphasis {
   color: var(--bs-emphasis-color) !important;
 }
 
-/* A filled primary button is the same blue as the page. On the field it turns white, and goes
-   back to blue once it sits on a white surface. */
+/* A filled primary button on the field turns white (the open field's filled CTA), and goes back to
+   blue once it sits on a white surface. */
 body .btn-primary {
   --bs-btn-color: var(--bs-primary);
   --bs-btn-bg: #fff;
@@ -181,8 +176,8 @@ body .btn-outline-secondary {
   --bs-btn-active-border-color: var(--bs-secondary);
 }
 
-/* Primary type and outline buttons are the same blue as the page. On the field they go light, and
-   stay blue on a white surface. */
+/* Primary type would sit fine on the dark field, but outline-primary shares the old light-on-field
+   treatment so the stroke stays visible. Text-primary on the field stays light for the same reason. */
 body .text-primary,
 body .link-primary {
   color: #fff !important;
@@ -238,27 +233,27 @@ body .btn-outline-primary {
   --bs-btn-active-border-color: var(--bs-primary);
 }
 
-/* Shelf tabs sit on the blue, not in a white capsule (Discover's .discover-views.bg-body keeps
+/* Shelf tabs sit on the dark field, not in a white capsule (Discover's .discover-views.bg-body keeps
    Bootstrap's colours). Names are light, the selected tab is a white pill, and the count never
    matches its chip. */
-.ground-primary .nav-pills:not(.bg-body) .nav-link,
-.ground-primary .nav-pills:not(.bg-body) .nav-link:hover,
-.ground-primary .nav-pills:not(.bg-body) .nav-link:focus {
+main.bg-dark .nav-pills:not(.bg-body) .nav-link,
+main.bg-dark .nav-pills:not(.bg-body) .nav-link:hover,
+main.bg-dark .nav-pills:not(.bg-body) .nav-link:focus {
   color: #fff;
 }
 
-.ground-primary .nav-pills:not(.bg-body) .nav-link.active,
-.ground-primary .nav-pills:not(.bg-body) .show > .nav-link {
+main.bg-dark .nav-pills:not(.bg-body) .nav-link.active,
+main.bg-dark .nav-pills:not(.bg-body) .show > .nav-link {
   background-color: #fff;
   color: var(--bs-primary);
 }
 
-.ground-primary .nav-pills:not(.bg-body) .nav-link:not(.active) .badge {
+main.bg-dark .nav-pills:not(.bg-body) .nav-link:not(.active) .badge {
   background-color: #fff !important;
   color: var(--bs-primary) !important;
 }
 
-.ground-primary .nav-pills:not(.bg-body) .nav-link.active .badge {
+main.bg-dark .nav-pills:not(.bg-body) .nav-link.active .badge {
   background-color: var(--bs-primary) !important;
   color: #fff !important;
 }
@@ -380,7 +375,7 @@ body {
   line-height: 1.2;
 }
 
-/* The bar and the phone menu are white, so they read as a bar on the blue. */
+/* The bar and the phone menu are white, so they read as a bar on the dark field. */
 .navbar.bg-white,
 #site-menu.offcanvas {
   background-color: #fff !important;

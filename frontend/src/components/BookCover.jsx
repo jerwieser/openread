@@ -3,8 +3,8 @@ import { Ratio, Spinner } from "react-bootstrap";
 
 // The book's real cover when Wikipedia has one and it loads; otherwise (no cover, or one that doesn't
 // load) a plain cover in one of Bootstrap's colours, so every book still looks like a book. Not the
-// page's own primary blue: a cover in that colour disappears into the field.
-const VARIANTS = ["dark", "warning", "secondary", "success", "danger", "info"];
+// page's own dark: a cover in that colour disappears into the field.
+const VARIANTS = ["primary", "warning", "secondary", "success", "danger", "info"];
 const WIDTHS = { sm: 72, lg: 170, xl: 260, hero: 280 };
 
 function variantFor(title) {

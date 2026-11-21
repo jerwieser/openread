@@ -44,8 +44,8 @@ const TagsPlaceholder = () => (
 // what OpenRead has that Goodreads doesn't, in a few words each
 const DIFFERENT = ["No books to sell", "No ads", "No multinational"];
 
-// One band of the page. The open bands stay on the primary field. The others are white, so the
-// page is only blue and white and the cards still sit on a sheet of their own.
+// One band of the page. The open bands stay on the dark field. The others are white, so the
+// page is only dark and white and the cards still sit on a sheet of their own.
 function Section({ white, label, children }) {
   return (
     <section aria-label={label} className={`py-5 ${white ? "bg-body" : ""}`}>
@@ -235,9 +235,9 @@ export default function HomePage() {
         </Section>
       ))}
 
-      {/* the heroes example's "dark color hero", in the site's blue; the desk scene's wall is the same
-          blue, so the text sits on the wall above the desk and its well-read, annotated book */}
-      <section aria-label="Make a track" className="bg-primary text-white text-center">
+      {/* the heroes example's "dark color hero"; the desk scene's wall is the same dark, so the
+          text sits on the wall above the desk and its well-read, annotated book */}
+      <section aria-label="Make a track" className="bg-dark text-white text-center">
         <Container className="pt-5">
           <div className="pt-lg-5 pb-4">
             <h2 className="display-5 fw-bold text-white">Know a subject inside out?</h2>

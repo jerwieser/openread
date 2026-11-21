@@ -106,7 +106,7 @@ function SiteLayout() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <SiteNav />
-      <main className="flex-grow-1 ground-primary">
+      <main className="flex-grow-1 bg-dark">
         <ErrorBoundary resetKey={pathname}>
           <Opened spinner={spinner}>
             <Suspense fallback={spinner}>
