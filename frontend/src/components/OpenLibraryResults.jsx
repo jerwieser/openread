@@ -78,7 +78,7 @@ export default function OpenLibraryResults({ id, query, pickLabel, onPick, Headi
           {works.map((w) => (
             <ListGroup.Item key={w.olWork} className="d-flex align-items-center gap-3">
               {w.cover ? (
-                <img src={w.cover} alt="" width={36} height={54} className="rounded object-fit-cover flex-shrink-0 bg-body-tertiary" loading="lazy" />
+                <img src={w.cover} alt="" width={36} height={54} className="book-cover rounded object-fit-cover flex-shrink-0 bg-body-tertiary" loading="lazy" />
               ) : (
                 <span className="rounded bg-body-tertiary flex-shrink-0" style={{ width: 36, height: 54 }} aria-hidden="true" />
               )}

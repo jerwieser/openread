@@ -31,16 +31,7 @@ export function findTracks(query, tags = []) {
 
 // --- topics
 
-// Our topics: the tracks' tags (with how many tracks have each) and the books' categories. Each has a
-// colour of Bootstrap's, the same every time, so the chips make a lively row without meaning
-// anything by it.
-const TONES = ["primary", "success", "danger", "warning", "info", "secondary"];
-export function toneOf(id) {
-  let hash = 0;
-  for (const ch of id) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
-  return TONES[hash % TONES.length];
-}
-
+// Our topics: the tracks' tags (with how many tracks have each) and the books' categories.
 export const categoryTopics = () => CATEGORIES.map((c) => ({ kind: "category", id: c.id, label: c.label }));
 export const tagTopics = () => trackTags().map(({ tag, count }) => ({ kind: "tag", id: tag, label: tag, count }));
 

@@ -63,14 +63,14 @@
 }
 
 /* the shelf the covers stand on, drawn over the corners that tilt into it. On a card the shelf is
-   the primary blue. On the track page the ground is that same blue, so the shelf there is white. */
+   Bootstrap's dark. On the track page the ground is that same dark, so the shelf there is white. */
 .track-card-band::after {
   content: "";
   position: absolute;
   inset: auto 0 0 0;
   z-index: 20;
   height: 6px;
-  background: var(--bs-primary);
+  background: var(--bs-dark);
 }
 
 .track-shelf-on-field::after {

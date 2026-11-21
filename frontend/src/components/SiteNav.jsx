@@ -163,7 +163,7 @@ function useNewMessageAlert() {
   return unread;
 }
 
-// The bar is white, so it stays a bar on the blue. The square logo and the name on the left, the
+// The bar is white, so it stays a bar on the dark field. The square logo and the name on the left, the
 // pages as plain links and the avatar's dropdown on the right. Below md they move into an offcanvas
 // drawer from the right, white as well, opened by the burger button, which gets the dot for new
 // messages; choosing a link closes it. At Bootstrap's fixed level, so it and its menus are above

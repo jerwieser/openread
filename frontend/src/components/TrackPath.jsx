@@ -15,7 +15,7 @@ const LINE_Y = 168; // the line's height in each row, just under the covers
 const SIDE = 44; // room at either side for the turns
 const TURN = 36; // radius of the turns
 const STROKE = 6;
-// The page behind the track is the primary blue, so the line is white. 
+// The page behind the track is Bootstrap's dark, so the line is white.
 const LINE = "#fff";
 // at most three books to a row, in a centred column narrow enough that each keeps about the width it
 // had at four across the full page

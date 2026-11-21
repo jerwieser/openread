@@ -2,16 +2,10 @@ import { useState } from "react";
 import { Ratio, Spinner } from "react-bootstrap";
 
 // The book's real cover when Wikipedia has one and it loads; otherwise (no cover, or one that doesn't
-// load) a plain cover in one of Bootstrap's colours, so every book still looks like a book. Not the
-// page's own primary blue: a cover in that colour disappears into the field.
-const VARIANTS = ["dark", "warning", "secondary", "success", "danger", "info"];
+// load) a black cover with the title in white, so it still looks like a book and stays with the
+// rest of the site. Not the page's own dark: a cover in that colour disappears into the field.
+// The picture itself rests in grey and returns to colour when the reader is on it (layout.css).
 const WIDTHS = { sm: 72, lg: 170, xl: 260, hero: 280 };
-
-function variantFor(title) {
-  let hash = 0;
-  for (const ch of title) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
-  return VARIANTS[hash % VARIANTS.length];
-}
 
 // While a cover loads: a small spinner on the cover's grey, where the cover will be, which fades in
 // over it once it's there. Only when the page reaches it (loading="lazy"), and not for one the browser
@@ -48,13 +42,13 @@ export default function BookCover({ book, size = "md", className = "" }) {
   // the cover that didn't load, if one didn't (kept per address, so a new cover is tried again)
   const [failed, setFailed] = useState(null);
   return (
-    <div className={`flex-shrink-0 ${className}`} style={width ? { width, maxWidth: "100%" } : undefined}>
+    <div className={`book-cover flex-shrink-0 ${className}`} style={width ? { width, maxWidth: "100%" } : undefined}>
       <Ratio aspectRatio={150} className="rounded shadow-sm overflow-hidden bg-body-secondary">
         {book.cover && book.cover !== failed ? (
           <Picture key={book.cover} src={book.cover} title={book.title} onError={() => setFailed(book.cover)} />
         ) : (
           <div
-            className={`d-flex flex-column align-items-center justify-content-center text-center p-2 text-bg-${variantFor(book.catalogueTitle ?? book.title)}`}
+            className="d-flex flex-column align-items-center justify-content-center text-center p-2 bg-black text-white"
             role="img"
             aria-label={`${book.title} by ${book.author}`}
           >

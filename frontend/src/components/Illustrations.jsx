@@ -2,20 +2,19 @@
 // the home headline, a wide banner for the call to make a track and small pictures for the steps. They share one palette, so they read as a set.
 // All are decorative: the text beside them says the same thing.
 
-// The blues are the site's own (Bootstrap's primary, #0d6efd), so the pictures match the buttons and
-// the band the desk scene continues: shirts and books in the primary blue, a shade darker for lines
-// on it, the sky and clouds in its palest tints. The home track is drawn in white, because it sits
-// on that same blue.
+// Shirts and books in black, lines in black, the sky and clouds in grey. The home track is drawn
+// in white, because it sits on the dark field. The desk banner's wall uses Bootstrap's dark so it
+// continues that field.
 const C = {
-  sky: "#e7f1ff",
-  skyDeep: "var(--bs-primary-bg-subtle)",
+  sky: "#f2f2f2",
+  skyDeep: "#e6e6e6",
   cream: "#fdf3e1",
   paper: "#fffaf0",
   rule: "#dccfb6",
   sun: "#ffe3a3",
-  ink: "#2b3a67",
-  blue: "var(--bs-primary)",
-  blueDark: "#0a58ca",
+  ink: "#000",
+  blue: "#000",
+  blueDark: "#000",
   coral: "#e8705a",
   coralLight: "#f0998a",
   mustard: "#f2b84b",
@@ -212,8 +211,8 @@ function Cloud({ x, y, s = 1, fill = "#fff" }) {
 // Home: a reading track as a path. A white line winds up the picture, like the track on a track's own
 // page, with books standing along it in order; a reader walks it with a book under one arm, from a
 // signpost of tags at the start to a flag at the end. The tags are the coral of the search demo above
-// the picture. It stands under the headline on the blue page, so the line, the reader's arms and the
-// sparkle are white: the page's own blue would hide them.
+// the picture. It stands under the headline on the dark field, so the line, the reader's arms and the
+// sparkle are white: the page's own dark would hide them.
 export function FollowTheTrack({ className, style }) {
   // the line's three rows, from the bottom up, joined by round turns; the bottom one runs much further
   // out than the two above, and a plant stands on the ground past the turn, so the drawing stands on a
@@ -266,10 +265,10 @@ export function FollowTheTrack({ className, style }) {
 }
 
 // "Know a subject inside out?": a well-read copy on a desk, highlighted, annotated and full of
-// tabs. The wall is the site's primary blue, so it continues the band above it.
+// tabs. The wall is Bootstrap's dark, so it continues the band above it.
 export function DeskBanner() {
   return (
-    <Banner fill="var(--bs-primary)">
+    <Banner fill="var(--bs-dark)">
       <Sparkle x={420} y={90} r={8} fill="#fff" />
       <Sparkle x={1000} y={60} r={6} fill="#fff" />
       <Sparkle x={1560} y={100} r={7} fill="#fff" />
