@@ -341,24 +341,43 @@ body {
   overflow-x: clip;
 }
 
-/* The navbar (SiteNav.jsx), as daygame.pro's: sized like the header of Bootstrap's cheatsheet example,
-   a 30px logo beside the name and 8px above and below, the links 16px apart. */
+/* The navbar (SiteNav.jsx). One height on every width: the desktop bar, as on openread.cloud.
+   The name at its largest (1.75rem, line-height 1.2), 8px above and below, and the 1px border.
+   The burger is the logo's size, so on a phone it sits in that height instead of making the bar
+   taller. nowrap, so a narrow window can't fold the bar onto a second row. */
 .navbar {
   --bs-navbar-brand-padding-y: 0;
   --bs-navbar-nav-link-padding-x: 0.5rem;
+  --bs-navbar-padding-y: 0.5rem;
+  box-sizing: border-box;
+  flex-wrap: nowrap;
+  height: calc(1.75rem * 1.2 + 1rem + 1px);
 }
 
-/* The name in the bar as daygame.pro writes it: medium weight, at Bootstrap 6's fs-xl size (1.5rem
-   on a phone, growing with the window to 1.75rem) */
+/* The burger (SiteNav.jsx), below md. The logo's 30px, so it lines up with the mark and stays
+   inside the bar. */
+.navbar-toggler {
+  --bs-navbar-toggler-padding-y: 0;
+  --bs-navbar-toggler-padding-x: 0;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-toggler-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* The name in the bar: bold, at Bootstrap 6's fs-xl size (1.5rem on a phone, growing with the
+   window to 1.75rem). The word itself is also bold in Brand (components/Logo.jsx). */
 .navbar-brand {
   font-size: clamp(1.5rem, 1.1rem + 0.75vw, 1.75rem);
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.2;
-}
-
-/* "Read" in the name (components/Logo.jsx, Brand): the primary blue, on the white bar as on a card. */
-.brand-accent {
-  color: var(--bs-primary);
 }
 
 /* The bar and the phone menu are white, so they read as a bar on the blue. */

@@ -62,7 +62,8 @@
   background: var(--bs-tertiary-bg) center / cover no-repeat;
 }
 
-/* the shelf the covers stand on, drawn over the corners that tilt into it */
+/* the shelf the covers stand on, drawn over the corners that tilt into it. On a card the shelf is
+   the primary blue. On the track page the ground is that same blue, so the shelf there is white. */
 .track-card-band::after {
   content: "";
   position: absolute;
@@ -70,6 +71,10 @@
   z-index: 20;
   height: 6px;
   background: var(--bs-primary);
+}
+
+.track-shelf-on-field::after {
+  background: #fff;
 }
 
 /* the same share of the card's width each, so every shelf is the same height, overlapping their

@@ -82,7 +82,7 @@ function TrackView({ track, kind, code }) {
 
   return (
     <Container className="py-5">
-      <TrackShelf track={track} large className="rounded-4 border" />
+      <TrackShelf track={track} large className="rounded-4 border track-shelf-on-field" />
 
       {/* the track in one centred column under its shelf, like the book page: the title and what it is,
           then the follow card, the books in order and the rest one under the other */}

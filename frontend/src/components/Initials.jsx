@@ -1,5 +1,5 @@
 // A reader's round avatar: the photo they uploaded, or else a badge with their first and last
-// initials ("Sanne de Vries" → SV) in the primary blue. On cards, messages and the menu.
+// initials ("Sanne de Vries" → SV) in white on black. On cards, messages and the menu.
 export default function Initials({ name, photo, size = 32 }) {
   if (photo) {
     return (
@@ -10,7 +10,7 @@ export default function Initials({ name, photo, size = 32 }) {
   const initials = (parts[0][0] + (parts.length > 1 ? parts.at(-1)[0] : "")).toUpperCase();
   return (
     <span
-      className={`rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0 fw-semibold text-bg-primary`}
+      className="rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0 fw-semibold bg-black text-white"
       style={{ width: size, height: size, fontSize: size * 0.38 }}
       aria-hidden="true"
     >
