@@ -152,52 +152,6 @@ main.bg-dark .btn-link {
   --bs-btn-hover-color: var(--bs-link-hover-color);
 }
 
-/* A cover rests in grey, and its colour comes back when the reader is on the cover or on the card
-   it belongs to. A phone has no hover, so the colour stays there: otherwise a cover could never
-   show it. */
-.book-cover img,
-img.book-cover {
-  filter: grayscale(1);
-  transition: filter 0.35s ease;
-}
-
-@media (hover: hover) {
-  .book-cover:hover img,
-  .book-cover:focus-within img,
-  .card:hover .book-cover img,
-  .card:focus-within .book-cover img,
-  .track-card:hover .book-cover img,
-  .track-card:focus-within .book-cover img,
-  .track-card-band:hover .book-cover img,
-  .list-group-item:hover img.book-cover,
-  a:hover > .book-cover img,
-  button:hover .book-cover img,
-  button:focus-visible .book-cover img {
-    filter: none;
-  }
-}
-
-@media (hover: none) {
-  .book-cover img,
-  img.book-cover {
-    filter: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .book-cover img,
-  img.book-cover {
-    transition: none;
-  }
-}
-
-/* On the book's own page the cover is already what you came to see, so it stays in colour. */
-.book-cover.book-cover-color img,
-.book-cover.book-cover-color:hover img,
-.book-cover.book-cover-color:focus-within img {
-  filter: none;
-}
-
 /* A cover with no card fill takes the colour of whatever it sits on. */
 .card.bg-transparent {
   color: inherit;
@@ -211,6 +165,29 @@ body .link-secondary {
 body .text-body-emphasis,
 body .link-body-emphasis {
   color: #fff !important;
+}
+
+/* Bootstrap's hover for these links is a darker shade of the colour (a dark emphasis, a dark grey,
+   a darker red). On the dark page that shade disappears: a track title turns dark on the dark
+   ground. The hover stays light here, and a white sheet below puts the dark hover back. */
+body .link-body-emphasis:hover,
+body .link-body-emphasis:focus,
+body .link-primary:hover,
+body .link-primary:focus {
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-decoration-color: rgba(255, 255, 255, 0.75) !important;
+}
+
+body .link-secondary:hover,
+body .link-secondary:focus {
+  color: #fff !important;
+  text-decoration-color: #fff !important;
+}
+
+body .link-danger:hover,
+body .link-danger:focus {
+  color: #ffb3ba !important;
+  text-decoration-color: #ffb3ba !important;
 }
 
 .bg-body .text-body-secondary,
@@ -250,8 +227,81 @@ footer.bg-body .link-secondary {
 #site-menu .text-body-emphasis,
 #site-menu .link-body-emphasis,
 footer.bg-body .text-body-emphasis,
-footer.bg-body .link-body-emphasis {
+footer.bg-body .link-body-emphasis,
+.bg-body .link-body-emphasis:hover,
+.bg-body .link-body-emphasis:focus,
+.card:not(.bg-transparent) .link-body-emphasis:hover,
+.card:not(.bg-transparent) .link-body-emphasis:focus,
+.modal-content .link-body-emphasis:hover,
+.modal-content .link-body-emphasis:focus,
+.dropdown-menu .link-body-emphasis:hover,
+.dropdown-menu .link-body-emphasis:focus,
+.accordion .link-body-emphasis:hover,
+.accordion .link-body-emphasis:focus,
+.form-signin .link-body-emphasis:hover,
+.form-signin .link-body-emphasis:focus,
+.navbar .link-body-emphasis:hover,
+.navbar .link-body-emphasis:focus,
+#site-menu .link-body-emphasis:hover,
+#site-menu .link-body-emphasis:focus,
+footer.bg-body .link-body-emphasis:hover,
+footer.bg-body .link-body-emphasis:focus,
+.bg-body .link-primary:hover,
+.bg-body .link-primary:focus,
+.card:not(.bg-transparent) .link-primary:hover,
+.card:not(.bg-transparent) .link-primary:focus,
+.modal-content .link-primary:hover,
+.modal-content .link-primary:focus,
+.dropdown-menu .link-primary:hover,
+.dropdown-menu .link-primary:focus,
+.accordion .link-primary:hover,
+.accordion .link-primary:focus,
+.form-signin .link-primary:hover,
+.form-signin .link-primary:focus,
+.navbar .link-primary:hover,
+.navbar .link-primary:focus,
+#site-menu .link-primary:hover,
+#site-menu .link-primary:focus,
+footer.bg-body .link-primary:hover,
+footer.bg-body .link-primary:focus {
   color: var(--bs-emphasis-color) !important;
+  text-decoration-color: var(--bs-emphasis-color) !important;
+}
+
+.bg-body .link-secondary:hover,
+.bg-body .link-secondary:focus,
+.card:not(.bg-transparent) .link-secondary:hover,
+.card:not(.bg-transparent) .link-secondary:focus,
+.form-signin .link-secondary:hover,
+.form-signin .link-secondary:focus,
+.form-control .link-secondary:hover,
+.form-control .link-secondary:focus,
+.discover-search .link-secondary:hover,
+.discover-search .link-secondary:focus,
+.navbar .link-secondary:hover,
+.navbar .link-secondary:focus,
+#site-menu .link-secondary:hover,
+#site-menu .link-secondary:focus,
+footer.bg-body .link-secondary:hover,
+footer.bg-body .link-secondary:focus {
+  color: var(--bs-secondary-color) !important;
+  text-decoration-color: var(--bs-secondary-color) !important;
+}
+
+.bg-body .link-danger:hover,
+.bg-body .link-danger:focus,
+.card:not(.bg-transparent) .link-danger:hover,
+.card:not(.bg-transparent) .link-danger:focus,
+.modal-content .link-danger:hover,
+.modal-content .link-danger:focus,
+.dropdown-menu .link-danger:hover,
+.dropdown-menu .link-danger:focus,
+.form-signin .link-danger:hover,
+.form-signin .link-danger:focus,
+.navbar .link-danger:hover,
+.navbar .link-danger:focus {
+  color: #b02a37 !important;
+  text-decoration-color: #b02a37 !important;
 }
 
 /* A filled primary button on the field turns white (the open field's filled CTA), and goes back to
