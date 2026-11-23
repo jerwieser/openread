@@ -2,13 +2,13 @@
 // guard that sends logged-out readers from pages that need an account to the log-in page.
 import { Link, Navigate, useLocation } from "react-router-dom";
 
-import { useUser } from "../store.js";
+import { TRACKS_HOME, useUser } from "../store.js";
 import "./Auth.css";
 import { Brand } from "./Logo.jsx";
 import { usePageTitle } from "./PageHeader.jsx";
 
 // Where to go after logging in: the ?next= page when it's one of ours, otherwise the fallback
-export function nextPath(params, fallback = "/bookshelf") {
+export function nextPath(params, fallback = TRACKS_HOME) {
   const next = params.get("next");
   return next && next.startsWith("/") && !next.startsWith("//") ? next : fallback;
 }

@@ -45,10 +45,11 @@ const TagsPlaceholder = () => (
 );
 
 // One band of the page. The open bands stay on the dark field. The others are white, so the
-// page is only dark and white and the cards still sit on a sheet of their own.
-function Section({ white, label, children }) {
+// page is only dark and white and the cards still sit on a sheet of their own. divided: a line
+// where two white bands meet, so they don't read as one.
+function Section({ white, divided, label, children }) {
   return (
-    <section aria-label={label} className={`py-5 ${white ? "bg-body" : ""}`}>
+    <section aria-label={label} className={`py-5 ${white ? "bg-body" : ""} ${divided ? "border-top" : ""}`}>
       <Container className="py-lg-3">{children}</Container>
     </section>
   );
@@ -66,7 +67,7 @@ function BookRow({ slugs }) {
       <Row {...BOOK_GRID}>
         {slugs.map((s, i) => (
           <Col key={s} className={i >= 6 ? "d-none d-xl-block" : undefined}>
-            <BookCard book={bookBySlug(s)} showcase />
+            <BookCard book={bookBySlug(s)} />
           </Col>
         ))}
       </Row>
@@ -86,10 +87,13 @@ export default function HomePage() {
   const featured = FEATURED_TRACKS.map(trackById).filter(Boolean);
   const highlights = [`${tracks.length} reading tracks`, `${trackTags().length} tags`];
 
-  // in page order; the backgrounds alternate by position, so the order can change freely
+  // in page order, then whether the band is white. The single-book band is white too, like the
+  // reading band above it: the close under it ("Know a subject well?") is the dark field, and two
+  // dark bands in a row read as one.
   const sections = [
     [
       "Reading tracks",
+      true,
       <>
         <SectionHeader title="Reading tracks" link={<SeeAll to="/discover?view=tracks">{loaded ? `All ${tracks.length} tracks` : "All tracks"}</SeeAll>}>
           Start here. Each track is one subject, a handful of books, in order.
@@ -125,6 +129,7 @@ export default function HomePage() {
     ],
     [
       "How it works",
+      false,
       <>
         <SectionHeader title="What to do">Two jobs. Explore a topic, then keep track of the reading.</SectionHeader>
         <Row className="gy-4 gx-lg-5 text-center">
@@ -142,6 +147,7 @@ export default function HomePage() {
     ],
     [
       "Your reading",
+      true,
       <>
         <SectionHeader title="Track your reading" link={<SeeAll to="/bookshelf">Open your bookshelf</SeeAll>}>
           Every book is one of three. The bookshelf is where you see them.
@@ -161,6 +167,7 @@ export default function HomePage() {
     ],
     [
       "A single book",
+      true,
       <>
         <SectionHeader title="Or start with one book" link={<SeeAll to="/discover?view=books">All books</SeeAll>}>
           A track is the way in. A single book still belongs on your bookshelf. {DIFFICULTY.approachable.why}
@@ -204,8 +211,8 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {sections.map(([label, content], i) => (
-        <Section key={label} label={label} white={i % 2 === 0}>
+      {sections.map(([label, white, content], i) => (
+        <Section key={label} label={label} white={white} divided={white && sections[i - 1]?.[1]}>
           {content}
         </Section>
       ))}

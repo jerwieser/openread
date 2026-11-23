@@ -3,7 +3,7 @@ import { Badge, Button, Container, Dropdown, Nav, Navbar, Offcanvas } from "reac
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useConversations } from "../data/inbox.js";
-import { isAdmin, logOut, useCatalogue, useSuggestions, useUser } from "../store.js";
+import { isAdmin, logOut, TRACKS_HOME, useCatalogue, useSuggestions, useUser } from "../store.js";
 import Initials from "./Initials.jsx";
 import { useMessage } from "./Messages.jsx";
 import { Brand } from "./Logo.jsx";
@@ -11,7 +11,7 @@ import { Brand } from "./Logo.jsx";
 // Tracks first, then books, then the bookshelf where a reader marks want / reading / finished.
 // A track's own page counts as Tracks; a book's own page counts as Books.
 const PAGES = [
-  ["tracks", "Tracks", "/discover?view=tracks"],
+  ["tracks", "Tracks", TRACKS_HOME],
   ["books", "Books", "/discover?view=books"],
   ["bookshelf", "Bookshelf", "/bookshelf"],
 ];
@@ -180,11 +180,12 @@ const BAR = { zIndex: 1030 };
 export default function SiteNav() {
   const { pathname, search } = useLocation();
   const unread = useNewMessageAlert();
+  const home = useUser() ? TRACKS_HOME : "/";
 
   return (
     <Navbar expand="md" sticky="top" className="bg-white border-bottom" style={BAR} collapseOnSelect>
       <Container fluid>
-        <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+        <Navbar.Brand as={Link} to={home} className="d-flex align-items-center">
           <Brand size={30} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="site-menu" className="position-relative">

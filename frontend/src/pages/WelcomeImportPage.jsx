@@ -2,7 +2,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { AuthPage } from "../components/Auth.jsx";
 import ImportBooks from "../components/ImportBooks.jsx";
-import { useUser } from "../store.js";
+import { TRACKS_HOME, useUser } from "../store.js";
 
 // The step after the profile when signing up: bringing the reader's books over from Goodreads or
 // The StoryGraph, so
@@ -12,7 +12,7 @@ export default function WelcomeImportPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
   if (!user) return <Navigate to="/sign-up" replace />;
-  const onward = () => navigate(state?.next ?? "/bookshelf");
+  const onward = () => navigate(state?.next ?? TRACKS_HOME);
 
   return (
     <AuthPage

@@ -5,7 +5,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { AuthPage } from "../components/Auth.jsx";
 import BusyButton from "../components/BusyButton.jsx";
 import { useMessage } from "../components/Messages.jsx";
-import { resetPassword } from "../store.js";
+import { resetPassword, TRACKS_HOME } from "../store.js";
 
 // Where the link in the reset email leads (/reset-password?token=…): a new password, and the reader
 // is logged in with it
@@ -34,7 +34,7 @@ export default function ResetPasswordPage() {
       message(error.message, "danger");
       return;
     }
-    navigate("/bookshelf");
+    navigate(TRACKS_HOME);
     message("Your new password is set, and you're logged in.");
   }
 

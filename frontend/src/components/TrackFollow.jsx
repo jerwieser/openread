@@ -96,18 +96,21 @@ export function SkipButton({ book, skipped = false, onSkip, ...props }) {
   );
 }
 
-// One small block per stop, in order: finished and read ahead solid, skipped faint, up next
-// outlined, the rest empty. Each says which book it is on hover.
+// One block per stop, across the width of the page: finished solid, skipped faint, up next outlined,
+// the rest empty. The number shows while the blocks are wide enough to hold it.
 function StopBar({ stops }) {
+  const numbered = stops.length <= 18;
   return (
-    <div className="d-flex gap-1" aria-hidden="true">
+    <div className="d-flex gap-2" aria-hidden="true">
       {stops.map((s) => (
         <span
           key={s.book.slug}
           title={`${s.number} · ${s.book.title}`}
-          className={`flex-fill rounded-1 ${s.status === "finished" ? "bg-primary" : s.skipped ? "bg-secondary-subtle" : s.upNext ? "bg-primary-subtle border border-primary" : "bg-body-secondary"}`}
-          style={{ height: 8 }}
-        />
+          className={`flex-fill rounded-2 d-flex align-items-center justify-content-center fw-semibold ${s.status === "finished" ? "bg-primary text-white" : s.skipped ? "bg-secondary-subtle text-body-secondary" : s.upNext ? "bg-primary-subtle border border-primary" : "bg-body-secondary text-body-secondary"}`}
+          style={{ height: "2rem", fontSize: numbered ? "0.875rem" : 0 }}
+        >
+          {numbered ? s.number : ""}
+        </span>
       ))}
     </div>
   );
@@ -115,10 +118,15 @@ function StopBar({ stops }) {
 
 const counts = ({ finished, skipped }) => [`${finished} finished`, skipped > 0 && `${skipped} skipped`].filter(Boolean).join(", ");
 
+const PLACE = {
+  following: ["Following", "startedAt"],
+  paused: ["Paused", "pausedAt"],
+  completed: ["Completed", "completedAt"],
+};
+
 // Where the reader stands on a track's page. Not followed: one line on what following does, then
-// Start and Save, the same size as the page's other actions. Followed: how far they are, the book
-// up next with its own status control and a way to skip it here, and pausing or leaving. Paused
-// and completed say since when.
+// Start and Save, kept narrow. Followed: one short band the width of the page, with how far they
+// are and the book up next. Paused and completed say since when.
 export function FollowCard({ track }) {
   const { follow, progress, change, skip, changing } = useTrackFollow(track);
   const busy = changing !== undefined;
@@ -128,7 +136,7 @@ export function FollowCard({ track }) {
   // a retired track is only for the readers who already keep it
   if (track.retired && !state) {
     return (
-      <Card className="shadow-sm">
+      <Card className="shadow-sm mx-auto" style={{ maxWidth: "30rem" }}>
         <Card.Body className="p-4">
           <h2 className="h6">This track is retired</h2>
           <p className="small text-body-secondary mb-0">
@@ -141,7 +149,7 @@ export function FollowCard({ track }) {
 
   if (!state || state === "saved") {
     return (
-      <div className="text-center">
+      <div className="text-center mx-auto" style={{ maxWidth: "30rem" }}>
         <p className="small text-body-secondary mb-3">
           Read its books in order. The first goes on Want to read, and the next one when you finish it.
           {progress.finished > 0 && ` You've finished ${progress.finished} of its ${total} books already, and they count.`}
@@ -166,78 +174,102 @@ export function FollowCard({ track }) {
     );
   }
 
+  const [place, when] = PLACE[state];
   return (
-    <Card className="shadow-sm">
-      <Card.Body className="p-4">
-        <div className="d-flex justify-content-between small mb-2">
-          <span className="fw-semibold">
-            {state === "completed"
-              ? `Completed ${formatDate(follow.completedAt)}`
-              : state === "paused"
-                ? `Paused ${formatDate(follow.pausedAt)}`
-                : `Following since ${formatDate(follow.startedAt)}`}
-          </span>
-          <span className="text-body-secondary">
-            {done} of {total} done
-          </span>
+    <Card className="text-start rounded-4 shadow-sm">
+      <Card.Body className="p-3 px-lg-4">
+        <div className="d-flex flex-wrap align-items-baseline justify-content-between gap-2">
+          <div className="d-flex flex-wrap align-items-baseline gap-2">
+            <div className="text-uppercase fw-semibold text-body-secondary" style={{ letterSpacing: "0.08em", fontSize: "0.75rem" }}>
+              Your place
+            </div>
+            <h2 className="h4 fw-bold mb-0">{place}</h2>
+            <span className="text-body-secondary small">{state === "following" ? `since ${formatDate(follow[when])}` : formatDate(follow[when])}</span>
+          </div>
+          <div className="fw-bold fs-4 lh-1" style={{ fontVariantNumeric: "tabular-nums" }}>
+            {done}
+            <span className="text-body-secondary fw-normal"> / {total}</span>
+            {counts(progress) && <span className="text-body-secondary fw-normal small ms-2">· {counts(progress)}</span>}
+          </div>
         </div>
-        <StopBar stops={progress.stops} />
-        <p className="small text-body-secondary mt-2 mb-0">{counts(progress)}</p>
+        <div className="my-3">
+          <StopBar stops={progress.stops} />
+        </div>
 
-        {state === "following" && next && (
-          <div className="d-flex gap-3 align-items-center border-top mt-3 pt-3">
+        {next && state !== "completed" && (
+          <div className="d-flex flex-wrap align-items-center gap-3">
             <Link to={`/books/${next.book.slug}`} tabIndex={-1} className="flex-shrink-0">
               <BookCover book={next.book} size="sm" />
             </Link>
             <div className="min-w-0">
-              <div className="small text-primary">Up next · stop {next.number}</div>
-              <Link to={`/books/${next.book.slug}`} className="fw-semibold link-body-emphasis text-decoration-none">
+              <div className="text-uppercase fw-semibold text-body-secondary" style={{ letterSpacing: "0.08em", fontSize: "0.75rem" }}>
+                Up next · stop {next.number}
+              </div>
+              <Link to={`/books/${next.book.slug}`} className="fw-bold link-body-emphasis text-decoration-none">
                 {next.book.title}
               </Link>
-              <div className="small text-body-secondary mb-2">{next.book.author}</div>
-              <div className="d-flex flex-wrap align-items-center gap-2">
-                <BookStatusButton book={next.book} size="sm" />
-                <SkipButton book={next.book} onSkip={skip} size="sm" className="link-secondary" />
-              </div>
+              <span className="text-body-secondary small ms-2">{next.book.author}</span>
+            </div>
+            <div className="d-flex flex-wrap align-items-center gap-3 ms-lg-auto">
+              {state === "following" ? (
+                <>
+                  <BookStatusButton book={next.book} size="sm" />
+                  <SkipButton book={next.book} onSkip={skip} size="sm" className="link-secondary" />
+                </>
+              ) : (
+                <BusyButton size="sm" disabled={busy} busy={changing === "following"} busyText="Resuming…" onClick={() => change("following")}>
+                  Resume
+                </BusyButton>
+              )}
+              {state === "following" && (
+                <BusyButton variant="link" className="p-0 small link-secondary" disabled={busy} busy={changing === "paused"} busyText="Pausing…" onClick={() => change("paused")}>
+                  Pause track
+                </BusyButton>
+              )}
+              <BusyButton variant="link" className="p-0 small link-danger" disabled={busy} busy={changing === null} busyText="Leaving…" onClick={() => change(null)}>
+                Leave track
+              </BusyButton>
             </div>
           </div>
-        )}
-        {state === "paused" && (
-          <BusyButton className="w-100 mt-3" disabled={busy} busy={changing === "following"} busyText="Resuming…" onClick={() => change("following")}>
-            Resume
-          </BusyButton>
         )}
         {state === "completed" &&
           (next ? (
             // the track gained stops since the reader completed it: it stays completed until they
             // carry on
-            <>
-              <p className="mt-3 mb-2">
+            <div className="d-flex flex-wrap align-items-center gap-3">
+              <p className="mb-0">
                 <Icon name="flag-fill" className="text-primary me-2" />
                 The track has changed since you completed it: {total - done === 1 ? "1 stop isn't" : `${total - done} stops aren't`} done
                 yet.
               </p>
-              <BusyButton className="w-100" disabled={busy} busy={changing === "following"} busyText="Continuing…" onClick={() => change("following")}>
+              <BusyButton size="sm" disabled={busy} busy={changing === "following"} busyText="Continuing…" onClick={() => change("following")}>
                 Continue the track
               </BusyButton>
-            </>
+              <BusyButton variant="link" className="p-0 small link-danger" disabled={busy} busy={changing === null} busyText="Leaving…" onClick={() => change(null)}>
+                Leave track
+              </BusyButton>
+            </div>
           ) : (
-            <p className="mt-3 mb-0">
-              <Icon name="flag-fill" className="text-primary me-2" />
-              You&apos;ve been through the whole track.
-            </p>
+            <div className="d-flex flex-wrap align-items-center gap-3">
+              <p className="mb-0">
+                <Icon name="flag-fill" className="text-primary me-2" />
+                You&apos;ve been through the whole track.
+              </p>
+              <BusyButton variant="link" className="p-0 small link-danger" disabled={busy} busy={changing === null} busyText="Leaving…" onClick={() => change(null)}>
+                Leave track
+              </BusyButton>
+            </div>
           ))}
-
-        <div className="d-flex flex-wrap gap-3 small mt-3">
-          {state === "following" && (
-            <BusyButton variant="link" className="p-0 small link-secondary" disabled={busy} busy={changing === "paused"} busyText="Pausing…" onClick={() => change("paused")}>
-              Pause track
+        {state === "paused" && !next && (
+          <div className="d-flex flex-wrap align-items-center gap-3">
+            <BusyButton size="sm" disabled={busy} busy={changing === "following"} busyText="Resuming…" onClick={() => change("following")}>
+              Resume
             </BusyButton>
-          )}
-          <BusyButton variant="link" className="p-0 small link-danger" disabled={busy} busy={changing === null} busyText="Leaving…" onClick={() => change(null)}>
-            Leave track
-          </BusyButton>
-        </div>
+            <BusyButton variant="link" className="p-0 small link-danger" disabled={busy} busy={changing === null} busyText="Leaving…" onClick={() => change(null)}>
+              Leave track
+            </BusyButton>
+          </div>
+        )}
       </Card.Body>
     </Card>
   );

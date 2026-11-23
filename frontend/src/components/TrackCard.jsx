@@ -153,7 +153,6 @@ export function TrackShelf({ track, large = false, cover, withImage = true, scen
 // the rest a step under it
 const TITLE = { fontSize: "1.35rem" };
 const TEXT = { fontSize: "0.9375rem" };
-const SHOWN = 4; // titles of the books in order, the rest counted
 
 export default function TrackCard({ track, showcase = false }) {
   const { follow, progress } = useTrackFollow(track);
@@ -206,19 +205,6 @@ export default function TrackCard({ track, showcase = false }) {
             )}
           </div>
         )}
-        <ol className="list-unstyled mb-3">
-          {track.books.slice(0, SHOWN).map((stop, i) => (
-            <li key={stop.book.slug} className="d-flex gap-2 align-items-baseline py-1 border-top">
-              <span className="track-card-stop-num">{i + 1}</span>
-              <span className="text-truncate">{stop.book.title}</span>
-            </li>
-          ))}
-          {total > SHOWN && (
-            <li className="text-body-secondary border-top py-1" style={TEXT}>
-              +{total - SHOWN} more
-            </li>
-          )}
-        </ol>
         <div className="text-body-secondary mt-auto pt-2 border-top" style={TEXT}>
           <div className="d-flex align-items-center gap-2">
             <span className="me-auto">{trackSpan(track)}</span>
