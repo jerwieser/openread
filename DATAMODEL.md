@@ -38,6 +38,7 @@ erDiagram
   editions
   expressions
   messages
+  owned_works
   readings
   reflections
   suggestions
@@ -55,6 +56,8 @@ erDiagram
   works ||--o{ expressions : "work_id"
   users ||--o{ messages : "recipient_id"
   users |o--o{ messages : "sender_id"
+  users ||--o{ owned_works : "user_id"
+  works ||--o{ owned_works : "work_id"
   users ||--o{ readings : "user_id"
   works ||--o{ readings : "work_id"
   users ||--o{ reflections : "user_id"
@@ -254,6 +257,11 @@ A reader's bookshelf: their status for each work, and the tracks they keep.
 
 ```mermaid
 erDiagram
+  owned_works {
+    integer user_id PK,FK
+    integer work_id PK,FK
+    timestamptz created_at
+  }
   readings {
     integer user_id PK,FK
     integer work_id PK,FK
@@ -284,6 +292,8 @@ erDiagram
   tracks
   users
   works
+  users ||--o{ owned_works : "user_id"
+  works ||--o{ owned_works : "work_id"
   users ||--o{ readings : "user_id"
   works ||--o{ readings : "work_id"
   tracks ||--o{ track_follows : "track_id"
