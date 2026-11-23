@@ -130,13 +130,13 @@ export default function DiscoverPage() {
   return (
     <>
       <section>
-        <Container className="py-5 text-center position-relative">
-          <h1 className="display-5 fw-bold text-body-emphasis mb-2">{VIEWS[view].title}</h1>
-          <p className="lead text-body-secondary col-lg-7 mx-auto mb-4">{VIEWS[view].lead}</p>
+        <Container className="pt-4 pb-3 text-center position-relative">
+          <h1 className="display-6 fw-bold text-body-emphasis mb-2">{VIEWS[view].title}</h1>
+          <p className="lead text-body-secondary col-lg-7 mx-auto mb-3">{VIEWS[view].lead}</p>
           <SearchBox value={query} onChange={(q) => set({ q })} placeholder={VIEWS[view].placeholder} />
 
           {/* the three views, as one segmented control */}
-          <Nav variant="pills" className="discover-views d-inline-flex mt-4 p-1 bg-body rounded-pill shadow-sm" as="nav" aria-label="Show">
+          <Nav variant="pills" className="discover-views d-inline-flex mt-3 p-1 bg-body rounded-pill shadow-sm" as="nav" aria-label="Show">
             {Object.entries(VIEWS).map(([key, { label, icon }]) => (
               <Nav.Item key={key}>
                 <Nav.Link
@@ -156,7 +156,7 @@ export default function DiscoverPage() {
           </Nav>
 
           {view === "tracks" && !query.trim() && (
-            <div className="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-4 col-xl-10 mx-auto">
+            <div className="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-3 col-xl-10 mx-auto">
               <span className="small fw-semibold text-body-secondary me-1">Subjects</span>
               {tagTopics().slice(0, 8).map((topic) => (
                 <TopicChip key={topic.id} topic={{ ...topic, count: undefined }} onClick={() => onTopic(topic)} />
@@ -164,7 +164,7 @@ export default function DiscoverPage() {
             </div>
           )}
           {view === "books" && !query.trim() && (
-            <div className="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-4 col-xl-10 mx-auto">
+            <div className="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-3 col-xl-10 mx-auto">
               <span className="small fw-semibold text-body-secondary me-1">Shelves</span>
               {categoryTopics().slice(0, 6).map((topic) => (
                 <TopicChip key={topic.id} topic={{ ...topic, count: undefined }} onClick={() => onTopic(topic)} />
@@ -174,7 +174,7 @@ export default function DiscoverPage() {
         </Container>
       </section>
 
-      <Container className="py-4 py-lg-5">
+      <Container className="pb-5">
         <View params={params} set={set} show={show} clear={clear} onTopic={onTopic} onOpen={openBook} />
       </Container>
 
