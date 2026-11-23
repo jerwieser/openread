@@ -140,6 +140,13 @@ main.bg-dark .btn-link {
   --bs-btn-hover-color: #fff;
 }
 
+/* A language row is a white sheet on the dark page. Its "3 editions" link has to stay dark, or it
+   disappears into the row. */
+.list-group-item .btn.btn-link {
+  --bs-btn-color: var(--bs-dark);
+  --bs-btn-hover-color: #424649;
+}
+
 .bg-body .btn-link,
 .navbar .btn-link,
 #site-menu .btn-link,
@@ -203,6 +210,8 @@ body .link-danger:focus {
 .form-control .link-secondary,
 .discover-search .text-body-secondary,
 .discover-search .link-secondary,
+.list-group-item .text-body-secondary,
+.list-group-item .link-secondary,
 .navbar .text-body-secondary,
 .navbar .link-secondary,
 #site-menu .text-body-secondary,
@@ -278,6 +287,8 @@ footer.bg-body .link-primary:focus {
 .form-control .link-secondary:focus,
 .discover-search .link-secondary:hover,
 .discover-search .link-secondary:focus,
+.list-group-item .link-secondary:hover,
+.list-group-item .link-secondary:focus,
 .navbar .link-secondary:hover,
 .navbar .link-secondary:focus,
 #site-menu .link-secondary:hover,
