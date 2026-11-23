@@ -1,9 +1,9 @@
-/* The same dark and the same row of spines as the rest of the site. */
+/* The same dark and the same scattered covers as the rest of the site. */
 .auth-scene {
   background-color: #212529;
-  background-image: url("/patterns/spines.svg");
+  background-image: url("/patterns/covers.png");
   background-repeat: repeat;
-  background-size: 560px 413px;
+  background-size: 900px 700px;
 }
 
 /* From Bootstrap's sign-in example (getbootstrap.com/docs/5.3/examples/sign-in): floating-label
