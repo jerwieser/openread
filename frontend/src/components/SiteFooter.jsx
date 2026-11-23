@@ -28,7 +28,7 @@ export default function SiteFooter() {
           <Brand size={24} />
         </Link>
         <p className="mb-0" style={{ maxWidth: "24rem" }}>
-          Reading tracks for whatever you want to know more about, and readers who have read them to talk to.
+          Reading tracks through a subject, and a bookshelf for what you want to read, are reading and have finished.
         </p>
         <ul className="list-unstyled d-flex flex-wrap justify-content-center column-gap-4 row-gap-2 mb-0">
           <li>

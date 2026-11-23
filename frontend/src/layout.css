@@ -140,6 +140,13 @@ main.bg-dark .btn-link {
   --bs-btn-hover-color: #fff;
 }
 
+/* A language row is a white sheet on the dark page. Its "3 editions" link has to stay dark, or it
+   disappears into the row. */
+.list-group-item .btn.btn-link {
+  --bs-btn-color: var(--bs-dark);
+  --bs-btn-hover-color: #424649;
+}
+
 .bg-body .btn-link,
 .navbar .btn-link,
 #site-menu .btn-link,
@@ -150,6 +157,71 @@ main.bg-dark .btn-link {
 .dropdown-menu .btn-link {
   --bs-btn-color: var(--bs-link-color);
   --bs-btn-hover-color: var(--bs-link-hover-color);
+}
+
+/* A book with no picture: a white title page and a dark spine, the same black and white as the
+   sheets and the field. The title is clamped so a long one stays inside the cover. */
+.book-cover-fallback {
+  display: flex;
+  height: 100%;
+  background: #fff;
+  color: var(--bs-dark);
+  container-type: inline-size;
+}
+
+.book-cover-fallback-spine {
+  width: 7%;
+  min-width: 4px;
+  background: var(--bs-dark);
+  flex-shrink: 0;
+}
+
+.book-cover-fallback-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.45rem;
+  padding: 0.7rem 0.55rem;
+}
+
+.book-cover-fallback-rule {
+  width: clamp(0.8rem, 18cqi, 2rem);
+  height: 2px;
+  background: var(--bs-dark);
+  flex-shrink: 0;
+}
+
+.book-cover-fallback-title {
+  font-size: clamp(0.62rem, 9cqi, 1.5rem);
+  font-weight: 650;
+  line-height: 1.15;
+  overflow-wrap: normal;
+  word-break: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.book-cover-fallback-author {
+  font-size: clamp(0.5rem, 5.2cqi, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.book-cover-sm .book-cover-fallback-body {
+  gap: 0.25rem;
+  padding: 0.3rem 0.2rem;
+}
+
+.book-cover-sm .book-cover-fallback-title {
+  -webkit-line-clamp: 4;
 }
 
 /* A cover with no card fill takes the colour of whatever it sits on. */
@@ -203,6 +275,8 @@ body .link-danger:focus {
 .form-control .link-secondary,
 .discover-search .text-body-secondary,
 .discover-search .link-secondary,
+.list-group-item .text-body-secondary,
+.list-group-item .link-secondary,
 .navbar .text-body-secondary,
 .navbar .link-secondary,
 #site-menu .text-body-secondary,
@@ -278,6 +352,8 @@ footer.bg-body .link-primary:focus {
 .form-control .link-secondary:focus,
 .discover-search .link-secondary:hover,
 .discover-search .link-secondary:focus,
+.list-group-item .link-secondary:hover,
+.list-group-item .link-secondary:focus,
 .navbar .link-secondary:hover,
 .navbar .link-secondary:focus,
 #site-menu .link-secondary:hover,

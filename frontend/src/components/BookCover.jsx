@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Ratio, Spinner } from "react-bootstrap";
 
 // The book's real cover when Wikipedia has one and it loads; otherwise (no cover, or one that doesn't
-// load) a black cover with the title in white, so it still looks like a book and stays with the
-// rest of the site. Not the page's own dark: a cover in that colour disappears into the field.
+// load) a white title page with a dark spine (layout.css). White, like the site's sheets, so it
+// stays a book on the dark page instead of sinking into it.
 const WIDTHS = { sm: 72, lg: 170, xl: 260, hero: 340 };
 
 // While a cover loads: a small spinner on the cover's grey, where the cover will be, which fades in
@@ -41,18 +41,18 @@ export default function BookCover({ book, size = "md", className = "" }) {
   // the cover that didn't load, if one didn't (kept per address, so a new cover is tried again)
   const [failed, setFailed] = useState(null);
   return (
-    <div className={`book-cover flex-shrink-0 ${className}`} style={width ? { width, maxWidth: "100%" } : undefined}>
-      <Ratio aspectRatio={150} className="rounded shadow-sm overflow-hidden bg-body-secondary">
+    <div className={`book-cover book-cover-${size} flex-shrink-0 ${className}`} style={width ? { width, maxWidth: "100%" } : undefined}>
+      <Ratio aspectRatio={150} className="rounded shadow-sm overflow-hidden bg-white">
         {book.cover && book.cover !== failed ? (
           <Picture key={book.cover} src={book.cover} title={book.title} onError={() => setFailed(book.cover)} />
         ) : (
-          <div
-            className="d-flex flex-column align-items-center justify-content-center text-center p-2 bg-black text-white"
-            role="img"
-            aria-label={`${book.title} by ${book.author}`}
-          >
-            <span className={`fw-semibold ${size === "sm" ? "small" : size === "xl" || size === "hero" ? "fs-4" : ""}`}>{book.title}</span>
-            {size !== "sm" && <span className="small text-uppercase mt-2 opacity-75">{book.surname}</span>}
+          <div className="book-cover-fallback" role="img" aria-label={`${book.title} by ${book.author}`}>
+            <span className="book-cover-fallback-spine" aria-hidden="true" />
+            <span className="book-cover-fallback-body">
+              <span className="book-cover-fallback-rule" aria-hidden="true" />
+              <span className="book-cover-fallback-title">{book.title}</span>
+              {size !== "sm" && book.surname && <span className="book-cover-fallback-author">{book.surname}</span>}
+            </span>
           </div>
         )}
       </Ratio>

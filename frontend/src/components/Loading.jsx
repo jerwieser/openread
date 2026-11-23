@@ -57,12 +57,14 @@ export function BookCardPlaceholder() {
 export function TrackCardPlaceholder() {
   return (
     <Card className="h-100 rounded-4 overflow-hidden placeholder-glow">
-      <div className="placeholder w-100 bg-body-secondary" style={{ height: 144 }} />
-      <Card.Body className="p-3">
+      <div className="placeholder w-100 bg-body-secondary" style={{ height: 256 }} />
+      <Card.Body className="p-4">
         <Bar cols={4} size="sm" className="d-block mb-2" />
         <Bar cols={8} className="d-block mb-2" />
         <Bar cols={11} size="sm" className="d-block mb-3" />
-        <Bar cols={3} size="sm" className="d-block" />
+        <Bar cols={9} size="sm" className="d-block mb-1" />
+        <Bar cols={7} size="sm" className="d-block mb-3" />
+        <Bar cols={5} size="sm" className="d-block" />
       </Card.Body>
     </Card>
   );

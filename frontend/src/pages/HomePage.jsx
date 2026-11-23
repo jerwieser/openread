@@ -3,11 +3,8 @@ import { Link } from "react-router-dom";
 
 import BookCard from "../components/BookCard.jsx";
 import Icon from "../components/Icon.jsx";
-import { DeskBanner, FollowTheTrack, PickABook, ReadItTogether, TalkItThrough } from "../components/Illustrations.jsx";
-import {
-  BookCardPlaceholder, GridPlaceholder, Loader, LoadingSpinner, TrackCardPlaceholder,
-  lazyPage,
-} from "../components/Loading.jsx";
+import { DeskBanner, FollowTheTrack } from "../components/Illustrations.jsx";
+import { BookCardPlaceholder, GridPlaceholder, Loader, TrackCardPlaceholder } from "../components/Loading.jsx";
 import { BOOK_GRID, TRACK_GRID } from "../components/grids.js";
 import { SectionHeader, SeeAll, usePageTitle } from "../components/PageHeader.jsx";
 import TagSearchDemo from "../components/TagSearchDemo.jsx";
@@ -15,12 +12,18 @@ import TrackCard from "../components/TrackCard.jsx";
 import { bookBySlug, useBooks } from "../data/books.js";
 import { DIFFICULTY } from "../data/catalogue.js";
 import { readingTracks, trackById, trackTags } from "../data/tracks.js";
-import { useCatalogue, useReaders, useUser } from "../store.js";
+import { useCatalogue } from "../store.js";
 
 const STEPS = [
-  [PickABook, "Pick a track", "Choose a subject you want to know more about, from the classics to a hobby, and put its books on your bookshelf in one go."],
-  [TalkItThrough, "Ask other readers", "Stuck on a passage, or curious what comes next? Ask someone who has read the book, or the whole track."],
-  [ReadItTogether, "Reflect and share", "Write a reflection on what stayed with you, and pass your track on to a friend with a link."],
+  ["1", "Explore a track", "Pick a subject you want to know more about. A track is a short list of books, already in the order to read them."],
+  ["2", "Read them in order", "Start at the first book and follow the line. Each one prepares you for the next."],
+  ["3", "Mark your place", "On every book, choose Want to read, Reading now, or Finished. Your bookshelf keeps the three apart."],
+];
+
+const STATUSES = [
+  ["bookmark", "Want to read", "Books you mean to get to, including the next one on a track you follow.", "want"],
+  ["eyeglasses", "Reading now", "The book you have open. One status, so you always know what you're in.", "reading"],
+  ["check-circle", "Finished", "Books you've read to the end. Finishing one moves you along the track.", "finished"],
 ];
 
 // a taste of the tracks, not the whole list: three different kinds, one row of the grid, the rest a
@@ -40,9 +43,6 @@ const TagsPlaceholder = () => (
     ))}
   </span>
 );
-
-// what OpenRead has that Goodreads doesn't, in a few words each
-const DIFFERENT = ["No books to sell", "No ads", "No multinational"];
 
 // One band of the page. The open bands stay on the dark field. The others are white, so the
 // page is only dark and white and the cards still sit on a sheet of their own.
@@ -74,25 +74,14 @@ function BookRow({ slugs }) {
   );
 }
 
-// the press strip, its code loaded with the section
-const FeaturedIn = lazyPage(() => import("../components/FeaturedIn.jsx"));
-
-// A taste of the reading tracks comes first, as the heart of the site; then how it works, why
-// OpenRead rather than Goodreads, a shelf of books to start with, what readers wrote afterwards and,
-// last, the press and the call to make a track of your own.
+// Tracks first, then how to keep your place, then a shelf of single books. The page says the two
+// things to do: explore a topic through a track, and mark what you want, what you're reading and
+// what you've finished.
 export default function HomePage() {
-  usePageTitle("Read great books together");
+  usePageTitle("Explore a topic, track your reading");
   const loaded = useCatalogue() === "loaded";
-  const user = useUser();
   const books = useBooks();
-  const readers = useReaders();
-  // a first shelf: the approachable books with a cover that most readers have read
-  const startHere = books
-    .filter((b) => b.difficulty === "approachable" && b.cover)
-    .map((b) => [b.slug, readers.filter((r) => r.read.includes(b.slug)).length])
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 9)
-    .map(([slug]) => slug);
+  const startHere = books.filter((b) => b.difficulty === "approachable" && b.cover).slice(0, 9).map((b) => b.slug);
   const tracks = readingTracks();
   const featured = FEATURED_TRACKS.map(trackById).filter(Boolean);
   const highlights = [`${tracks.length} reading tracks`, `${trackTags().length} tags`];
@@ -102,8 +91,8 @@ export default function HomePage() {
     [
       "Reading tracks",
       <>
-        <SectionHeader title="Reading tracks" link={<SeeAll to="/discover">{loaded ? `All ${tracks.length} tracks` : "All tracks"}</SeeAll>}>
-          A handful of books, in order, that take you into one subject. Put a whole track on your bookshelf in one go.
+        <SectionHeader title="Reading tracks" link={<SeeAll to="/discover?view=tracks">{loaded ? `All ${tracks.length} tracks` : "All tracks"}</SeeAll>}>
+          Start here. Each track is one subject, a handful of books, in order.
         </SectionHeader>
         {/* the most used tags, each opening the tracks page with it */}
         <div className="d-flex flex-wrap justify-content-center gap-2 mb-5">
@@ -111,7 +100,7 @@ export default function HomePage() {
             trackTags()
               .slice(0, 8)
               .map(({ tag }) => (
-                <Button key={tag} as={Link} to={`/discover?tags=${encodeURIComponent(tag)}`} variant="outline-secondary" size="sm" className="rounded-pill px-3">
+                <Button key={tag} as={Link} to={`/discover?view=tracks&tags=${encodeURIComponent(tag)}`} variant="outline-dark" size="sm" className="rounded-pill px-3 bg-white">
                   {tag}
                 </Button>
               ))
@@ -137,15 +126,14 @@ export default function HomePage() {
     [
       "How it works",
       <>
-        <SectionHeader title="How it works">From picking a track to the last page, in three steps.</SectionHeader>
+        <SectionHeader title="What to do">Two jobs. Explore a topic, then keep track of the reading.</SectionHeader>
         <Row className="gy-4 gx-lg-5 text-center">
-          {STEPS.map(([Art, title, text], i) => (
+          {STEPS.map(([n, title, text]) => (
             <Col md={4} key={title}>
-              <Art className="mx-auto" style={{ maxWidth: 120 }} />
-              <h3 className="h5 mt-3">
-                <span className="text-body-secondary me-1">{i + 1}.</span>
-                {title}
-              </h3>
+              <div className="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-dark fw-bold" style={{ width: 48, height: 48 }}>
+                {n}
+              </div>
+              <h3 className="h5 mt-3">{title}</h3>
               <p className="text-body-secondary mb-0">{text}</p>
             </Col>
           ))}
@@ -153,44 +141,32 @@ export default function HomePage() {
       </>,
     ],
     [
-      "Why OpenRead",
+      "Your reading",
       <>
-        <SectionHeader title="An alternative to Goodreads">
-          We don't sell you books, we help you read the right ones.
+        <SectionHeader title="Track your reading" link={<SeeAll to="/bookshelf">Open your bookshelf</SeeAll>}>
+          Every book is one of three. The bookshelf is where you see them.
         </SectionHeader>
-        <ul className="list-unstyled d-flex flex-wrap justify-content-center column-gap-5 row-gap-2 fs-5 fw-medium mb-0">
-          {DIFFERENT.map((point) => (
-            <li key={point} className="d-flex align-items-center gap-2">
-              <Icon name="check-circle-fill" className="text-success" />
-              {point}
-            </li>
+        <Row className="gy-3 gx-lg-4">
+          {STATUSES.map(([icon, title, text, shelf]) => (
+            <Col md={4} key={shelf}>
+              <Link to={`/bookshelf?shelf=${shelf}`} className="d-block h-100 p-4 bg-dark text-white text-decoration-none rounded-3">
+                <Icon name={icon} className="fs-3" />
+                <h3 className="h5 mt-3 text-white">{title}</h3>
+                <p className="mb-0" style={{ color: "rgba(255, 255, 255, 0.75)" }}>{text}</p>
+              </Link>
+            </Col>
           ))}
-        </ul>
-        {/* for visitors without an account: not for readers who are logged in, and not before it's known
-            whether someone is */}
-        {loaded && !user && (
-          <div className="text-center mt-4">
-            <Button as={Link} to="/sign-up" size="lg" className="px-4">
-              Sign up now
-            </Button>
-          </div>
-        )}
+        </Row>
       </>,
     ],
     [
-      "Start here",
+      "A single book",
       <>
-        <SectionHeader title="Start here" link={<SeeAll to="/books?difficulty=approachable">All approachable books</SeeAll>}>
-          Short, gripping and a good first step. {DIFFICULTY.approachable.why}
+        <SectionHeader title="Or start with one book" link={<SeeAll to="/discover?view=books">All books</SeeAll>}>
+          A track is the way in. A single book still belongs on your bookshelf. {DIFFICULTY.approachable.why}
         </SectionHeader>
         {loaded ? <BookRow slugs={startHere} /> : <BookRowPlaceholder />}
       </>,
-    ],
-    [
-      "As featured in",
-      <Loader key="featured" fallback={<LoadingSpinner label="Loading the press…" minHeight="16rem" />}>
-        <FeaturedIn />
-      </Loader>,
     ],
   ];
 
@@ -203,22 +179,21 @@ export default function HomePage() {
       <section aria-label="Introduction" className="pt-5 text-center">
         <Container className="pt-lg-3">
           <h1 className="display-3 fw-bold text-body-emphasis col-lg-9 mx-auto mb-4">
-            The right books,
-            <br className="d-none d-sm-inline" /> in the right order.
+            Explore a topic.
+            <br className="d-none d-sm-inline" /> Track what you read.
           </h1>
-          <div className="col-lg-6 mx-auto">
+          <div className="col-lg-7 mx-auto">
             <p className="lead text-body-secondary mb-4">
-              Pick a subject you want to know more about and follow its reading track, a handful of books chosen to take
-              you into it. Then talk it over with readers who have read them.
+              Follow a reading track through a subject, one book after another. Mark each book Want to read, Reading now, or Finished.
             </p>
             {/* how finding a track works, played over and over: tags typed, picked and the tracks found */}
             <TagSearchDemo />
             <div className="d-grid gap-2 d-sm-flex justify-content-sm-center mb-3">
-              <Button as={Link} to="/discover" size="lg" className="px-4 me-sm-3">
-                Explore reading tracks
+              <Button as={Link} to="/discover?view=tracks" size="lg" className="px-4 me-sm-3">
+                Explore tracks
               </Button>
-              <Button as={Link} to="/tracks/new" size="lg" variant="outline-secondary" className="px-4">
-                Create a track
+              <Button as={Link} to="/bookshelf" size="lg" variant="outline-light" className="px-4">
+                Your bookshelf
               </Button>
             </div>
             <p className="small text-body-secondary mb-5 placeholder-glow">
@@ -240,18 +215,17 @@ export default function HomePage() {
       <section aria-label="Make a track" className="bg-dark text-white text-center">
         <Container className="pt-5">
           <div className="pt-lg-5 pb-4">
-            <h2 className="display-5 fw-bold text-white">Know a subject inside out?</h2>
+            <h2 className="display-5 fw-bold text-white">Know a subject well?</h2>
             <div className="col-lg-6 mx-auto">
               <p className="fs-5 mb-4 opacity-75">
-                Make a track of it: pick the books that taught you the most, put them in order and share the link.
-                It&apos;s the best way to pass on what you love, to a friend or to anyone who&apos;s curious.
+                Put the books that taught you the most in order. That track is how someone else starts the same subject.
               </p>
               <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <Button as={Link} to="/tracks/new" size="lg" variant="light" className="px-4 me-sm-3 fw-bold">
-                  Create a track
+                <Button as={Link} to="/discover?view=tracks" size="lg" variant="light" className="px-4 me-sm-3 fw-bold">
+                  Explore tracks
                 </Button>
-                <Button as={Link} to="/discover" size="lg" variant="outline-light" className="px-4">
-                  Browse the tracks
+                <Button as={Link} to="/tracks/new" size="lg" variant="outline-light" className="px-4">
+                  Create a track
                 </Button>
               </div>
             </div>

@@ -115,9 +115,10 @@ function StopBar({ stops }) {
 
 const counts = ({ finished, skipped }) => [`${finished} finished`, skipped > 0 && `${skipped} skipped`].filter(Boolean).join(", ");
 
-// The card on a track's page. Not followed: what following does and the button to start, with saving
-// it for later beside it. Followed: how far the reader is, the book up next with its own status
-// control and a way to skip it here, and pausing or leaving. Paused and completed say since when.
+// Where the reader stands on a track's page. Not followed: one line on what following does, then
+// Start and Save, the same size as the page's other actions. Followed: how far they are, the book
+// up next with its own status control and a way to skip it here, and pausing or leaving. Paused
+// and completed say since when.
 export function FollowCard({ track }) {
   const { follow, progress, change, skip, changing } = useTrackFollow(track);
   const busy = changing !== undefined;
@@ -140,20 +141,17 @@ export function FollowCard({ track }) {
 
   if (!state || state === "saved") {
     return (
-      <Card className="shadow-sm">
-        <Card.Body className="p-4">
-          <h2 className="h6">Follow this track</h2>
-          <p className="small text-body-secondary">
-            Read its books in order, one at a time: the first goes on Want to read, and each time you finish one, the next does.
-            {progress.finished > 0 && ` You've finished ${progress.finished} of its ${total} books already, and they count.`}
-          </p>
-          <BusyButton size="lg" className="w-100" disabled={busy} busy={changing === "following"} busyText="Starting…" onClick={() => change("following")}>
+      <div className="text-center">
+        <p className="small text-body-secondary mb-3">
+          Read its books in order. The first goes on Want to read, and the next one when you finish it.
+          {progress.finished > 0 && ` You've finished ${progress.finished} of its ${total} books already, and they count.`}
+        </p>
+        <div className="d-flex flex-wrap justify-content-center align-items-center gap-2">
+          <BusyButton disabled={busy} busy={changing === "following"} busyText="Starting…" onClick={() => change("following")}>
             Start this track
           </BusyButton>
           <BusyButton
             variant={state ? "outline-primary" : "outline-secondary"}
-            size="sm"
-            className="mt-3"
             aria-pressed={Boolean(state)}
             disabled={busy}
             busy={changing === (state ? null : "saved")}
@@ -163,8 +161,8 @@ export function FollowCard({ track }) {
             <Icon name={state ? "bookmark-fill" : "bookmark"} className="me-2" />
             {state ? "Saved for later" : "Save for later"}
           </BusyButton>
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
     );
   }
 
@@ -226,7 +224,7 @@ export function FollowCard({ track }) {
           ) : (
             <p className="mt-3 mb-0">
               <Icon name="flag-fill" className="text-primary me-2" />
-              You&apos;ve been through the whole track. Readers see it on your profile.
+              You&apos;ve been through the whole track.
             </p>
           ))}
 

@@ -1,6 +1,7 @@
 /* A reading track as a card: every book's cover (up to ten) fanned out on a shelf at the top, which
    lifts a little on hover and spreads the covers */
 .track-card {
+  border: 1px solid var(--bs-dark) !important;
   transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -37,6 +38,37 @@
   justify-content: center;
   padding: 1.25rem 1rem 6px;
   overflow: hidden;
+}
+
+/* on a card the shelf has room above the covers for the picture, uploaded or drawn */
+.track-card .track-card-band {
+  padding: 8.5rem 1.25rem 8px;
+  min-height: 16rem;
+}
+
+/* no picture of its own: a dark poster, with a white shelf, and the covers standing on it */
+.track-card-band-scene {
+  background: var(--bs-dark);
+}
+
+.track-card-band-scene::after {
+  background: #fff;
+}
+
+.track-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.track-scene-count {
+  fill: #fff;
+  fill-opacity: 0.28;
+  font-size: 148px;
+  font-weight: 650;
+  font-family: var(--bs-body-font-family);
 }
 
 /* the track's picture behind the covers, filling the band and anchored to the shelf, so the
@@ -80,10 +112,20 @@
 /* the same share of the card's width each, so every shelf is the same height, overlapping their
    neighbours by as much as it takes to fit them all (set by TrackShelf), and a little less on hover */
 .track-card-cover {
+  position: relative;
+  z-index: 2;
   width: var(--cover-width, 17%);
   margin: 0 calc(var(--cover-width, 17%) * var(--cover-overlap, 0.05) * -1);
   transform-origin: bottom center;
   transition: margin 0.2s ease-in-out;
+}
+
+/* the reason to start, held to a few lines so the books in order stay on the card */
+.track-card-why {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
 }
 
 .track-card:hover .track-card-cover,
@@ -97,6 +139,14 @@
   right: 0.75rem;
   bottom: 0.75rem;
   z-index: 21;
+}
+
+/* the place of a book in the track, on the card */
+.track-card-stop-num {
+  width: 1.25rem;
+  flex-shrink: 0;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
 }
 
 @media (prefers-reduced-motion: reduce) {

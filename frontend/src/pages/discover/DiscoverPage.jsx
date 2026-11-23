@@ -17,18 +17,16 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Icon from "../../components/Icon.jsx";
 import { usePageTitle } from "../../components/PageHeader.jsx";
 import { readingTracks } from "../../data/tracks.js";
-import AllView from "./AllView.jsx";
 import BookQuickLook from "./BookQuickLook.jsx";
 import BooksView from "./BooksView.jsx";
 import TracksView from "./TracksView.jsx";
-import { allTopics, categoryTopics, tagTopics } from "./discover.js";
+import { categoryTopics, tagTopics } from "./discover.js";
 import { TopicChip } from "./parts.jsx";
 import "./discover.css";
 
 const VIEWS = {
-  all: { label: "All", icon: "compass", placeholder: "Books, authors or subjects" },
-  tracks: { label: "Tracks", icon: "signpost-split", placeholder: "Tracks by subject, book or author" },
-  books: { label: "Books", icon: "bookmarks", placeholder: "Books by title or author, any language" },
+  tracks: { label: "Tracks", icon: "signpost-split", placeholder: "A subject, a book or an author", title: "Tracks", lead: "Pick a subject. Each track is a short list of books, already in the order to read them." },
+  books: { label: "Books", icon: "bookmarks", placeholder: "A title or an author", title: "Books", lead: "Find one book, then mark it Want to read, Reading now, or Finished." },
 };
 // what each view filters by besides the search: dropped when the reader moves to another view
 const FILTERS = { all: [], tracks: ["tags"], books: ["category", "era", "sort", "track", "difficulty"] };
@@ -37,10 +35,10 @@ const FILTERS = { all: [], tracks: ["tags"], books: ["category", "era", "sort", 
 // home page's books), else All
 function viewOf(params) {
   const asked = params.get("view");
-  if (VIEWS[asked]) return asked;
-  if (params.get("tags")) return "tracks";
+  if (asked === "books") return "books";
+  if (asked === "tracks") return "tracks";
   if (FILTERS.books.some((key) => params.get(key))) return "books";
-  return "all";
+  return "tracks";
 }
 
 // The big search field: its icon, a cross to empty it, and "/" anywhere on the page to get to it
@@ -89,11 +87,11 @@ function SearchBox({ value, onChange, placeholder }) {
 }
 
 export default function DiscoverPage() {
-  usePageTitle("Discover");
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
   const view = viewOf(params);
+  usePageTitle(VIEWS[view].title);
   const query = params.get("q") ?? "";
 
   // change some of the URL's values ("" takes one out); push makes it a step Back undoes
@@ -126,18 +124,15 @@ export default function DiscoverPage() {
   };
   const closeBook = () => (location.state?.quick ? navigate(-1) : set({ book: "" }));
 
-  const views = { all: AllView, tracks: TracksView, books: BooksView };
+  const views = { tracks: TracksView, books: BooksView };
   const View = views[view];
-  const popular = allTopics(tagTopics().slice(0, 9), categoryTopics().slice(0, 4));
 
   return (
     <>
       <section>
         <Container className="py-5 text-center position-relative">
-          <h1 className="display-5 fw-bold text-body-emphasis mb-2">Discover</h1>
-          <p className="lead text-body-secondary col-lg-7 mx-auto mb-4">
-            Find your next book, or a reading track that takes you into a subject one book at a time. Shelve whatever catches your eye as you go.
-          </p>
+          <h1 className="display-5 fw-bold text-body-emphasis mb-2">{VIEWS[view].title}</h1>
+          <p className="lead text-body-secondary col-lg-7 mx-auto mb-4">{VIEWS[view].lead}</p>
           <SearchBox value={query} onChange={(q) => set({ q })} placeholder={VIEWS[view].placeholder} />
 
           {/* the three views, as one segmented control */}
@@ -160,17 +155,19 @@ export default function DiscoverPage() {
             ))}
           </Nav>
 
-          {view === "all" && !query.trim() && (
+          {view === "tracks" && !query.trim() && (
             <div className="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-4 col-xl-10 mx-auto">
-              <span className="small fw-semibold text-body-secondary me-1">Popular topics</span>
-              {/* on a phone the first six, so the results aren't pushed far down */}
-              {popular.map((topic, i) => (
-                <TopicChip
-                  key={`${topic.kind}-${topic.id}`}
-                  topic={{ ...topic, count: undefined }}
-                  className={i >= 6 ? "d-none d-md-inline-block" : ""}
-                  onClick={() => onTopic(topic)}
-                />
+              <span className="small fw-semibold text-body-secondary me-1">Subjects</span>
+              {tagTopics().slice(0, 8).map((topic) => (
+                <TopicChip key={topic.id} topic={{ ...topic, count: undefined }} onClick={() => onTopic(topic)} />
+              ))}
+            </div>
+          )}
+          {view === "books" && !query.trim() && (
+            <div className="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-4 col-xl-10 mx-auto">
+              <span className="small fw-semibold text-body-secondary me-1">Shelves</span>
+              {categoryTopics().slice(0, 6).map((topic) => (
+                <TopicChip key={topic.id} topic={{ ...topic, count: undefined }} onClick={() => onTopic(topic)} />
               ))}
             </div>
           )}

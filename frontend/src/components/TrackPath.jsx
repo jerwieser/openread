@@ -107,7 +107,7 @@ function Winding({ stops, states, onSkip, width }) {
         <circle cx={left + TURN} cy={lineY} r={9} fill={LINE} />
         {/* a flag where the track ends */}
         <line x1={end} y1={last.y} x2={end} y2={last.y - 44} stroke={LINE} strokeWidth={3} strokeLinecap="round" />
-        <path d={`M${end} ${last.y - 44}l${last.row % 2 === 0 ? 24 : -24} 8l${last.row % 2 === 0 ? -24 : 24} 8Z`} fill="#e8705a" />
+        <path d={`M${end} ${last.y - 44}l${last.row % 2 === 0 ? 24 : -24} 8l${last.row % 2 === 0 ? -24 : 24} 8Z`} fill="#fff" />
       </svg>
       <ol className="list-unstyled m-0">
         {stops.map((stop, i) => {
