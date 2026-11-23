@@ -1,54 +1,57 @@
 /* The page is Bootstrap's dark (bg-dark). White is the other colour: the bar, the menu, the footer,
    a band, a card, a search field, a form. Light type on the dark; dark type on every white sheet.
-   The accent is black, not Bootstrap's blue: filled controls are black with white type on a white
-   sheet, and white with black type on the dark field. */
+   The accent is that same dark, not Bootstrap's blue: a primary control is Bootstrap's dark button
+   (white type) on a white sheet, and white with dark type on the dark field. */
 :root {
-  --bs-primary: #000;
-  --bs-primary-rgb: 0, 0, 0;
-  --bs-primary-text-emphasis: #000;
-  --bs-primary-bg-subtle: #f2f2f2;
-  --bs-primary-border-subtle: #d0d0d0;
-  --bs-link-color: #000;
-  --bs-link-hover-color: #000;
-  --bs-link-color-rgb: 0, 0, 0;
-  --bs-link-hover-color-rgb: 0, 0, 0;
-  --bs-focus-ring-color: rgba(0, 0, 0, 0.25);
-  --bs-nav-pills-link-active-bg: #000;
-  --bs-dropdown-link-active-bg: #000;
-  --bs-pagination-active-bg: #000;
-  --bs-pagination-active-border-color: #000;
-  --bs-progress-bar-bg: #000;
-  --bs-list-group-active-bg: #000;
-  --bs-list-group-active-border-color: #000;
+  --bs-primary: var(--bs-dark);
+  --bs-primary-rgb: var(--bs-dark-rgb);
+  --bs-primary-text-emphasis: var(--bs-dark-text-emphasis);
+  --bs-primary-bg-subtle: var(--bs-dark-bg-subtle);
+  --bs-primary-border-subtle: var(--bs-dark-border-subtle);
+  --bs-link-color: var(--bs-dark);
+  --bs-link-hover-color: var(--bs-dark);
+  --bs-link-color-rgb: var(--bs-dark-rgb);
+  --bs-link-hover-color-rgb: var(--bs-dark-rgb);
+  --bs-focus-ring-color: rgba(var(--bs-dark-rgb), 0.25);
+  --bs-nav-pills-link-active-bg: var(--bs-dark);
+  --bs-dropdown-link-active-bg: var(--bs-dark);
+  --bs-pagination-active-bg: var(--bs-dark);
+  --bs-pagination-active-border-color: var(--bs-dark);
+  --bs-progress-bar-bg: var(--bs-dark);
+  --bs-list-group-active-bg: var(--bs-dark);
+  --bs-list-group-active-border-color: var(--bs-dark);
 }
 
+/* Bootstrap's .btn-dark (bootstrap.css), so primary stays a dark button rather than blue. */
 .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #000;
-  --bs-btn-border-color: #000;
+  --bs-btn-bg: var(--bs-dark);
+  --bs-btn-border-color: var(--bs-dark);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #333;
-  --bs-btn-hover-border-color: #333;
-  --bs-btn-focus-shadow-rgb: 0, 0, 0;
+  --bs-btn-hover-bg: #424649;
+  --bs-btn-hover-border-color: #373b3e;
+  --bs-btn-focus-shadow-rgb: var(--bs-dark-rgb);
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #000;
-  --bs-btn-active-border-color: #000;
-  --bs-btn-disabled-bg: #000;
-  --bs-btn-disabled-border-color: #000;
+  --bs-btn-active-bg: #4d5154;
+  --bs-btn-active-border-color: #373b3e;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--bs-dark);
+  --bs-btn-disabled-border-color: var(--bs-dark);
 }
 
+/* Bootstrap's .btn-outline-dark. */
 .btn-outline-primary {
-  --bs-btn-color: #000;
-  --bs-btn-border-color: #000;
+  --bs-btn-color: var(--bs-dark);
+  --bs-btn-border-color: var(--bs-dark);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #000;
-  --bs-btn-hover-border-color: #000;
-  --bs-btn-focus-shadow-rgb: 0, 0, 0;
+  --bs-btn-hover-bg: var(--bs-dark);
+  --bs-btn-hover-border-color: var(--bs-dark);
+  --bs-btn-focus-shadow-rgb: var(--bs-dark-rgb);
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #000;
-  --bs-btn-active-border-color: #000;
-  --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-border-color: #000;
+  --bs-btn-active-bg: var(--bs-dark);
+  --bs-btn-active-border-color: var(--bs-dark);
+  --bs-btn-disabled-color: var(--bs-dark);
+  --bs-btn-disabled-border-color: var(--bs-dark);
 }
 
 .dropdown-menu,
@@ -57,34 +60,34 @@
 .progress,
 .progress-stacked,
 .list-group {
-  --bs-dropdown-link-active-bg: #000;
-  --bs-nav-pills-link-active-bg: #000;
-  --bs-pagination-active-bg: #000;
-  --bs-pagination-active-border-color: #000;
-  --bs-progress-bar-bg: #000;
-  --bs-list-group-active-bg: #000;
-  --bs-list-group-active-border-color: #000;
+  --bs-dropdown-link-active-bg: var(--bs-dark);
+  --bs-nav-pills-link-active-bg: var(--bs-dark);
+  --bs-pagination-active-bg: var(--bs-dark);
+  --bs-pagination-active-border-color: var(--bs-dark);
+  --bs-progress-bar-bg: var(--bs-dark);
+  --bs-list-group-active-bg: var(--bs-dark);
+  --bs-list-group-active-border-color: var(--bs-dark);
 }
 
 .form-control:focus,
 .form-select:focus,
 .form-check-input:focus {
-  border-color: #000;
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.15);
+  border-color: var(--bs-dark);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-dark-rgb), 0.25);
 }
 
 .form-check-input:checked {
-  background-color: #000;
-  border-color: #000;
+  background-color: var(--bs-dark);
+  border-color: var(--bs-dark);
 }
 
 .form-switch .form-check-input:focus {
-  --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23000'/%3e%3c/svg%3e");
+  --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23212529'/%3e%3c/svg%3e");
 }
 
 .form-range::-webkit-slider-thumb,
 .form-range::-moz-range-thumb {
-  background-color: #000;
+  background-color: var(--bs-dark);
 }
 
 body {
@@ -128,7 +131,7 @@ body {
   color: var(--bs-secondary-color) !important;
 }
 
-/* A link-styled button is black, which vanishes on the dark field. On a white sheet it stays black. */
+/* A link-styled button is dark, which vanishes on the dark field. On a white sheet it stays dark. */
 main.bg-dark .btn-link {
   --bs-btn-color: #fff;
   --bs-btn-hover-color: #fff;
@@ -242,15 +245,15 @@ footer.bg-body .link-body-emphasis {
 }
 
 /* A filled primary button on the field turns white (the open field's filled CTA), and goes back to
-   black once it sits on a white surface. */
+   Bootstrap's dark button once it sits on a white surface. */
 body .btn-primary {
-  --bs-btn-color: #000;
+  --bs-btn-color: var(--bs-dark);
   --bs-btn-bg: #fff;
   --bs-btn-border-color: #fff;
-  --bs-btn-hover-color: #000;
+  --bs-btn-hover-color: var(--bs-dark);
   --bs-btn-hover-bg: #f2f2f2;
   --bs-btn-hover-border-color: #f2f2f2;
-  --bs-btn-active-color: #000;
+  --bs-btn-active-color: var(--bs-dark);
   --bs-btn-active-bg: #e6e6e6;
   --bs-btn-active-border-color: #e6e6e6;
 }
@@ -264,14 +267,14 @@ body .btn-primary {
 .navbar .btn-primary,
 #site-menu .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #000;
-  --bs-btn-border-color: #000;
+  --bs-btn-bg: var(--bs-dark);
+  --bs-btn-border-color: var(--bs-dark);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #333;
-  --bs-btn-hover-border-color: #333;
+  --bs-btn-hover-bg: #424649;
+  --bs-btn-hover-border-color: #373b3e;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #000;
-  --bs-btn-active-border-color: #000;
+  --bs-btn-active-bg: #4d5154;
+  --bs-btn-active-border-color: #373b3e;
 }
 
 body .btn-outline-secondary {
@@ -532,8 +535,8 @@ body {
 /* A field holding chips and a text field (the suggest form's authors, components/Combobox.jsx): the
    focus ring of the field inside shows on the whole box, as on any other field. */
 .form-select:focus-within {
-  border-color: #000;
-  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.15);
+  border-color: var(--bs-dark);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-dark-rgb), 0.25);
   outline: 0;
 }
 .form-select.is-invalid:focus-within {

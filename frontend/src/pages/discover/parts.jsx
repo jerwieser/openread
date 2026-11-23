@@ -42,7 +42,7 @@ export function SeeAllButton({ onClick, children }) {
   );
 }
 
-// A topic as a chip: white with black type, and black with white type once it's one of the filters.
+// A topic as a chip: white with dark type, and Bootstrap's dark with white type once it's one of the filters.
 // How many tracks have it, when that's known, and a cross to take it off again when it's picked.
 export function TopicChip({ topic, picked = false, onClick, className = "" }) {
   return (
