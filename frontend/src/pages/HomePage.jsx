@@ -67,7 +67,7 @@ function BookRow({ slugs }) {
       <Row {...BOOK_GRID}>
         {slugs.map((s, i) => (
           <Col key={s} className={i >= 6 ? "d-none d-xl-block" : undefined}>
-            <BookCard book={bookBySlug(s)} showcase />
+            <BookCard book={bookBySlug(s)} />
           </Col>
         ))}
       </Row>

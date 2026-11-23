@@ -45,11 +45,6 @@ export function BookCardPlaceholder() {
       <Ratio aspectRatio={150} className="rounded bg-body-secondary">
         <div />
       </Ratio>
-      <div className="pt-3">
-        <Bar cols={10} className="d-block mb-2" />
-        <Bar cols={7} size="sm" className="d-block mb-2" />
-        <Bar cols={5} size="sm" className="d-block" />
-      </div>
     </div>
   );
 }
