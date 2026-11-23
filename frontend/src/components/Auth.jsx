@@ -14,12 +14,12 @@ export function nextPath(params, fallback = TRACKS_HOME) {
 }
 
 // The page for logging in, signing up and resetting a password, after Bootstrap's sign-in example
-// (getbootstrap.com/docs/5.3/examples/sign-in): one narrow column in the middle of a light grey
-// page, the logo and name above the title, as in the navbar. switchLink is the "New here? Sign up" line under the form.
+// (getbootstrap.com/docs/5.3/examples/sign-in): one narrow column in the middle of the page, the
+// logo and name above the title, as in the navbar. switchLink is the "New here? Sign up" line under the form.
 export function AuthPage({ title, lead, switchLink, width = 330, children }) {
   usePageTitle(title);
   return (
-    <div className="d-flex align-items-center py-4 min-vh-100">
+    <div className="auth-scene d-flex align-items-center py-4 min-vh-100">
       <main className="form-signin w-100 m-auto p-3" style={{ maxWidth: width }}>
         <Link to="/" className="d-inline-flex fs-4 fw-bold link-body-emphasis text-decoration-none mb-4">
           <Brand size={30} />

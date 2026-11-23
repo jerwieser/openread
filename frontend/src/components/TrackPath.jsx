@@ -1,5 +1,6 @@
 // A reading track's books standing on a line that winds back and forth down the page, like a
-// long shelf (after the "slinger" view of the Canon van Nederland). Three books to a row. The line
+// long shelf (after the "slinger" view of the Canon van Nederland). Three books to a row, filling
+// the width of the page. The line
 // is drawn in pixels from the measured width so its turns stay round;
 // on a narrow phone it's a straight line down the left. The page behind the track is Bootstrap's
 // dark, so the line is white.
@@ -12,12 +13,11 @@ import { STATUSES } from "./BookStatus.jsx";
 import Icon from "./Icon.jsx";
 import { SkipButton } from "./TrackFollow.jsx";
 
-const SIDE = 48; // room at either side for the turns
+const SIDE = 20; // room at either side for the turns
 const TURN = 36; // radius of the turns
 const STROKE = 6;
 const LINE = "#fff";
-// three covers across, as wide as the page allows, up to this
-const COVER_MAX = 300;
+const COVER_GAP = 36; // space between neighbouring covers
 
 function useWidth(ref) {
   const [width, setWidth] = useState(0);
@@ -70,7 +70,8 @@ function StopText({ stop, number, state, onSkip, className = "" }) {
 function Winding({ stops, states, onSkip, width }) {
   const cols = 3;
   const colWidth = (width - 2 * SIDE) / cols;
-  const cover = Math.min(COVER_MAX, Math.floor(colWidth * 0.82));
+  // the three covers fill the row, the same width as the status card above them
+  const cover = Math.floor(colWidth - COVER_GAP);
   const lineY = Math.round(cover * 1.5) + 20; // the line sits just under the covers
   // room for the note where the track has them, and for the skip link on a followed track
   const rowHeight = lineY + (stops.some((s) => s.note) ? 210 : 130) + (onSkip ? 30 : 0);
