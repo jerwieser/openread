@@ -173,6 +173,22 @@ main.bg-dark {
   color: var(--bs-secondary-color);
 }
 
+/* Help under a field is Bootstrap's grey, which disappears on the dark page. On a white sheet it
+   stays that grey. */
+body .form-text {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.form-signin .form-text,
+.card:not(.bg-transparent) .form-text,
+.modal-content .form-text,
+.bg-body .form-text,
+.bg-white .form-text,
+.bg-body-tertiary .form-text,
+.list-group-item .form-text {
+  color: var(--bs-secondary-color) !important;
+}
+
 /* A pale count chip keeps dark type. The light-on-dark rule would otherwise paint the number white. */
 .badge.bg-body-secondary,
 .bg-body-secondary.text-body-secondary {
