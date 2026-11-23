@@ -107,7 +107,7 @@ function TrackView({ track, kind, code }) {
             </p>
           )}
         </div>
-        <div className="mx-auto mt-4" style={{ maxWidth: "30rem" }}>
+        <div className="mt-5">
           {kind === "shared" ? (
             <p className="small text-body-secondary text-center">Save a copy to your tracks to follow it and keep your place.</p>
           ) : (
