@@ -13,19 +13,19 @@ export function nextPath(params, fallback = TRACKS_HOME) {
   return next && next.startsWith("/") && !next.startsWith("//") ? next : fallback;
 }
 
-// Black and white photographs of reading, one per account page, so the form sits on a picture of
-// what the app is for. public/backgrounds.
-const SCENES = [
-  ["/welcome/import", "/backgrounds/shelf.jpg"],
-  ["/welcome", "/backgrounds/track.jpg"],
-  ["/sign-up", "/backgrounds/track.jpg"],
-  ["/log-in", "/backgrounds/reading.jpg"],
-  ["/forgot-password", "/backgrounds/shelf.jpg"],
-  ["/reset-password", "/backgrounds/open-book.jpg"],
-  ["/verify-email", "/backgrounds/open-book.jpg"],
+// A repeating book motif on the dark, the same idea as the rest of the site. No fill of its own, so
+// the page colour stays the ground. public/patterns.
+const PATTERNS = [
+  ["/welcome/import", "/patterns/stack.svg"],
+  ["/welcome", "/patterns/spines.svg"],
+  ["/sign-up", "/patterns/spines.svg"],
+  ["/log-in", "/patterns/open-book.svg"],
+  ["/forgot-password", "/patterns/stack.svg"],
+  ["/reset-password", "/patterns/open-book.svg"],
+  ["/verify-email", "/patterns/spines.svg"],
 ];
 
-const sceneFor = (pathname) => SCENES.find(([path]) => pathname.startsWith(path))?.[1] ?? "/backgrounds/open-book.jpg";
+const patternFor = (pathname) => PATTERNS.find(([path]) => pathname.startsWith(path))?.[1] ?? "/patterns/open-book.svg";
 
 // The page for logging in, signing up and resetting a password, after Bootstrap's sign-in example
 // (getbootstrap.com/docs/5.3/examples/sign-in): one narrow column in the middle of the page, the
@@ -34,8 +34,10 @@ export function AuthPage({ title, lead, switchLink, width = 330, children }) {
   usePageTitle(title);
   const { pathname } = useLocation();
   return (
-    <div className="auth-scene d-flex align-items-center py-4 min-vh-100">
-      <div className="auth-scene-photo" style={{ backgroundImage: `url(${sceneFor(pathname)})` }} aria-hidden="true" />
+    <div
+      className="auth-scene d-flex align-items-center py-4 min-vh-100"
+      style={{ "--auth-pattern": `url(${patternFor(pathname)})` }}
+    >
       <main className="form-signin w-100 m-auto p-3" style={{ maxWidth: width }}>
         <Link to="/" className="d-inline-flex fs-4 fw-bold link-body-emphasis text-decoration-none mb-4">
           <Brand size={30} />

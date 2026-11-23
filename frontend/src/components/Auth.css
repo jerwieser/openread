@@ -1,24 +1,8 @@
-/* The photograph fills the page. A dark wash keeps the white form readable on any of the pictures. */
+/* The dark of the rest of the site, with one of the repeating book motifs over it. */
 .auth-scene {
-  position: relative;
   background-color: #212529;
-  isolation: isolate;
-}
-
-.auth-scene-photo {
-  position: absolute;
-  inset: 0;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.auth-scene-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(33, 37, 41, 0.46);
+  background-image: var(--auth-pattern);
+  background-repeat: repeat;
 }
 
 /* From Bootstrap's sign-in example (getbootstrap.com/docs/5.3/examples/sign-in): floating-label
