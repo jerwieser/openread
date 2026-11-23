@@ -322,6 +322,10 @@ body .link-danger:focus {
 .discover-search .link-secondary,
 .list-group-item .text-body-secondary,
 .list-group-item .link-secondary,
+body .track-picture-preview,
+body .bg-body-tertiary .text-body-secondary,
+body .bg-white .text-body-secondary,
+body .bg-light .text-body-secondary,
 .navbar .text-body-secondary,
 .navbar .link-secondary,
 #site-menu .text-body-secondary,
@@ -330,6 +334,16 @@ footer.bg-body,
 footer.bg-body .text-body-secondary,
 footer.bg-body .link-secondary {
   color: var(--bs-secondary-color) !important;
+}
+
+/* A pale box on the dark page (a received message, a conversation, an empty picture) would
+   otherwise inherit the page's white type. */
+.bg-body-tertiary,
+.bg-white,
+.bg-light,
+.list-group-item,
+.track-picture-preview {
+  color: var(--bs-body-color);
 }
 
 .bg-body .text-body-emphasis,
@@ -587,7 +601,13 @@ footer.bg-body a:not(.btn):not(.nav-link):not(.dropdown-item),
 .dropdown-menu a:not(.btn):not(.nav-link):not(.dropdown-item),
 .accordion a:not(.btn):not(.nav-link):not(.dropdown-item),
 .form-control a:not(.btn):not(.nav-link):not(.dropdown-item),
-main.form-signin a:not(.btn):not(.nav-link):not(.dropdown-item) {
+main.form-signin a:not(.btn):not(.nav-link):not(.dropdown-item),
+a.list-group-item:not(.btn):not(.nav-link):not(.dropdown-item),
+.list-group-item a:not(.btn):not(.nav-link):not(.dropdown-item),
+.bg-white a:not(.btn):not(.nav-link):not(.dropdown-item),
+.bg-light a:not(.btn):not(.nav-link):not(.dropdown-item),
+.bg-body-tertiary a:not(.btn):not(.nav-link):not(.dropdown-item),
+.bg-body-secondary a:not(.btn):not(.nav-link):not(.dropdown-item) {
   color: var(--bs-link-color);
 }
 
