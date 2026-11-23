@@ -1,6 +1,6 @@
 // A reading track's books standing on a line that winds back and forth down the page, like a
-// long shelf (after the "slinger" view of the Canon van Nederland). Two books to a row, so each
-// cover can be large. The line is drawn in pixels from the measured width so its turns stay round;
+// long shelf (after the "slinger" view of the Canon van Nederland). Three books to a row. The line
+// is drawn in pixels from the measured width so its turns stay round;
 // on a narrow phone it's a straight line down the left. The page behind the track is Bootstrap's
 // dark, so the line is white.
 import { useLayoutEffect, useRef, useState } from "react";
@@ -16,7 +16,7 @@ const SIDE = 48; // room at either side for the turns
 const TURN = 36; // radius of the turns
 const STROKE = 6;
 const LINE = "#fff";
-// two covers across, as wide as the page allows, up to this
+// three covers across, as wide as the page allows, up to this
 const COVER_MAX = 300;
 
 function useWidth(ref) {
@@ -68,7 +68,7 @@ function StopText({ stop, number, state, onSkip, className = "" }) {
 }
 
 function Winding({ stops, states, onSkip, width }) {
-  const cols = 2;
+  const cols = 3;
   const colWidth = (width - 2 * SIDE) / cols;
   const cover = Math.min(COVER_MAX, Math.floor(colWidth * 0.82));
   const lineY = Math.round(cover * 1.5) + 20; // the line sits just under the covers
@@ -156,7 +156,7 @@ export default function TrackPath({ stops, states, onSkip }) {
   if (!stops.length) return null;
   return (
     <div ref={ref}>
-      {width >= 560 ? <Winding stops={stops} states={states} onSkip={onSkip} width={width} /> : width > 0 && <Straight stops={stops} states={states} onSkip={onSkip} />}
+      {width >= 720 ? <Winding stops={stops} states={states} onSkip={onSkip} width={width} /> : width > 0 && <Straight stops={stops} states={states} onSkip={onSkip} />}
     </div>
   );
 }
