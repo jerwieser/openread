@@ -98,12 +98,12 @@ body {
   color: #fff;
 }
 
-/* The page's dark field. Grayscale covers, each a different size and place, faint enough that
-   the dark stays the ground. public/patterns/covers.png */
+/* The page's dark field. Real covers of famous books, in grey, each a different size and
+   place. Public domain, from Wikimedia Commons. */
 main.bg-dark {
-  background-image: url("/patterns/covers.png");
+  background-image: url("/patterns/covers.webp");
   background-repeat: repeat;
-  background-size: 900px 700px;
+  background-size: 1280px 960px;
 }
 
 .bg-body,
