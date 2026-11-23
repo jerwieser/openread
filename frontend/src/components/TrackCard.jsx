@@ -33,7 +33,80 @@ function excerpt(text = "", length = 110) {
 // withImage={false}.
 const MAX_COVERS = 10;
 
-export function TrackShelf({ track, large = false, cover, withImage = true, className = "" }) {
+// a different print for every track, from its id, so two cards side by side don't share a picture
+function sceneIndex(id = "") {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 33 + id.charCodeAt(i)) >>> 0;
+  return hash % 6;
+}
+
+// Drawn in white on the card's dark shelf, above the covers: a small scene and the number of books,
+// like a poster for the track. The lower half stays quiet, because the covers stand there.
+function TrackScene({ track }) {
+  const count = String(Math.min(track.books.length, 99)).padStart(2, "0");
+  const sceneId = `track-scene-${String(track.id).replace(/[^A-Za-z0-9_-]/g, "") || "x"}`;
+  return (
+    <svg className="track-scene" viewBox="0 0 800 480" preserveAspectRatio="xMidYMin slice">
+      <defs>
+        <linearGradient id={sceneId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0.45" stopColor="#fff" stopOpacity="0" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0.12" />
+        </linearGradient>
+      </defs>
+      <rect width="800" height="480" fill={`url(#${sceneId})`} />
+      <text x="760" y="150" textAnchor="end" className="track-scene-count">
+        {count}
+      </text>
+      {SCENES[sceneIndex(track.id)]}
+    </svg>
+  );
+}
+
+const ink = { fill: "none", stroke: "#fff", strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round" };
+
+// every motif sits in the top of the picture, the part that stays above the covers, and stops
+// short of the book count on the right
+const SCENES = [
+  // a window, with the moon in the right pane
+  <>
+    <path d="M36 16 h300 v152 h-300 z M186 16 v152 M36 92 h300" {...ink} strokeWidth="6" />
+    <circle cx="250" cy="54" r="20" fill="#fff" />
+  </>,
+  // a road running to a low sun
+  <>
+    <circle cx="250" cy="58" r="32" fill="#fff" />
+    <path d="M36 112 H500 M250 112 L130 172 M250 112 L370 172" {...ink} />
+  </>,
+  // a colonnade
+  <>
+    <rect x="36" y="24" width="18" height="144" fill="#fff" />
+    <rect x="118" y="68" width="18" height="100" fill="#fff" />
+    <rect x="200" y="12" width="18" height="156" fill="#fff" />
+    <rect x="282" y="56" width="18" height="112" fill="#fff" />
+    <rect x="364" y="88" width="18" height="80" fill="#fff" />
+    <rect x="446" y="40" width="18" height="128" fill="#fff" />
+    <path d="M24 168 H490" {...ink} />
+  </>,
+  // a sail on three lines of water
+  <>
+    <path d="M70 168 L190 20 L190 168 Z" fill="#fff" />
+    <path d="M36 108 H500 M36 138 H500 M36 168 H500" {...ink} />
+  </>,
+  // two pictures hung on a wall
+  <>
+    <path d="M36 16 h210 v112 h-210 z M54 34 h174 v76 h-174 z" {...ink} strokeWidth="5" />
+    <path d="M280 40 h190 v96 h-190 z M298 58 h154 v60 h-154 z" {...ink} strokeWidth="5" />
+    <path d="M36 156 H500" {...ink} />
+  </>,
+  // a lamp over an open book
+  <>
+    <path d="M48 168 V40 H200" {...ink} />
+    <path d="M140 40 h130 l20 40 h-170 z" fill="#fff" />
+    <path d="M300 168 L390 112 L480 168" {...ink} strokeWidth="4" />
+  </>,
+];
+
+export function TrackShelf({ track, large = false, cover, withImage = true, scene = false, className = "" }) {
   const covers = track.books.slice(0, MAX_COVERS);
   const more = track.books.length - covers.length;
   const n = covers.length;
@@ -47,7 +120,7 @@ export function TrackShelf({ track, large = false, cover, withImage = true, clas
   const tilt = Math.min(5, 24 / n);
   return (
     <div
-      className={`track-card-band ${track.image ? "track-card-band-image" : ""} ${large ? "track-card-band-lg" : ""} ${className}`}
+      className={`track-card-band ${track.image ? "track-card-band-image" : ""} ${scene ? "track-card-band-scene" : ""} ${large ? "track-card-band-lg" : ""} ${className}`}
       style={{
         ...(track.image && withImage ? { backgroundImage: `url("${track.image}")` } : {}),
         "--cover-width": `${width}%`,
@@ -56,6 +129,7 @@ export function TrackShelf({ track, large = false, cover, withImage = true, clas
       }}
       aria-hidden="true"
     >
+      {scene && <TrackScene track={track} />}
       {covers.map((s, i) => {
         const offset = i - middle; // the middle covers stand straightest and in front, the others lean out
         return (
@@ -101,7 +175,7 @@ export default function TrackCard({ track, showcase = false }) {
       className={`track-card h-100 rounded-4 overflow-hidden ${track.image ? "track-card-image" : ""}`}
       style={track.image ? { backgroundImage: `url("${track.image}")` } : undefined}
     >
-      <TrackShelf track={track} withImage={false} cover={26} />
+      <TrackShelf track={track} withImage={false} cover={26} scene={!track.image} />
       <Card.Body className="track-card-body d-flex flex-column p-4">
         <div className="text-uppercase fw-semibold text-body-secondary mb-2" style={{ ...TEXT, letterSpacing: "0.08em", fontSize: "0.75rem" }}>
           {track.own ? "Your reading track" : "Reading track"}
@@ -121,7 +195,17 @@ export default function TrackCard({ track, showcase = false }) {
             ))}
           </div>
         )}
-        <Card.Text className="mb-3 lh-sm" style={TEXT}>{track.tagline ?? excerpt(track.description)}</Card.Text>
+        {(track.tagline || track.description) && (
+          <div className="mb-3">
+            <div className="text-uppercase fw-semibold text-body-secondary mb-1" style={{ letterSpacing: "0.08em", fontSize: "0.75rem" }}>
+              Why this track
+            </div>
+            {track.tagline && <p className="fw-medium lh-sm mb-1" style={TEXT}>{track.tagline}</p>}
+            {track.description && track.description !== track.tagline && (
+              <p className="track-card-why text-body-secondary lh-sm mb-0" style={TEXT}>{excerpt(track.description, 280)}</p>
+            )}
+          </div>
+        )}
         <ol className="list-unstyled mb-3">
           {track.books.slice(0, SHOWN).map((stop, i) => (
             <li key={stop.book.slug} className="d-flex gap-2 align-items-baseline py-1 border-top">

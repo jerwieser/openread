@@ -40,13 +40,35 @@
   overflow: hidden;
 }
 
-/* on a card the shelf has room for the larger covers; without a picture it is a white sheet */
+/* on a card the shelf has room above the covers for the picture, uploaded or drawn */
 .track-card .track-card-band {
-  padding: 1.75rem 1.25rem 8px;
+  padding: 8.5rem 1.25rem 8px;
+  min-height: 16rem;
 }
 
-.track-card:not(.track-card-image) .track-card-band {
+/* no picture of its own: a dark poster, with a white shelf, and the covers standing on it */
+.track-card-band-scene {
+  background: var(--bs-dark);
+}
+
+.track-card-band-scene::after {
   background: #fff;
+}
+
+.track-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.track-scene-count {
+  fill: #fff;
+  fill-opacity: 0.28;
+  font-size: 148px;
+  font-weight: 650;
+  font-family: var(--bs-body-font-family);
 }
 
 /* the track's picture behind the covers, filling the band and anchored to the shelf, so the
@@ -90,10 +112,20 @@
 /* the same share of the card's width each, so every shelf is the same height, overlapping their
    neighbours by as much as it takes to fit them all (set by TrackShelf), and a little less on hover */
 .track-card-cover {
+  position: relative;
+  z-index: 2;
   width: var(--cover-width, 17%);
   margin: 0 calc(var(--cover-width, 17%) * var(--cover-overlap, 0.05) * -1);
   transform-origin: bottom center;
   transition: margin 0.2s ease-in-out;
+}
+
+/* the reason to start, held to a few lines so the books in order stay on the card */
+.track-card-why {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
 }
 
 .track-card:hover .track-card-cover,
