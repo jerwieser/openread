@@ -22,3 +22,90 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+/* Signup sits on the dark field, with no white sheet of its own. The fields are the page's dark,
+   drawn with a light stroke so they stay easy to find. */
+.form-signin.auth-open {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  color: #fff;
+}
+
+.form-signin.auth-open .text-dark,
+.form-signin.auth-open .text-body-secondary,
+.form-signin.auth-open .link-body-emphasis,
+.form-signin.auth-open .link-body-emphasis:hover,
+.form-signin.auth-open .link-body-emphasis:focus,
+.form-signin.auth-open .form-text,
+.form-signin.auth-open a:not(.btn) {
+  color: #fff !important;
+}
+
+.form-signin.auth-open a:not(.btn):hover,
+.form-signin.auth-open a:not(.btn):focus {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.form-signin.auth-open .form-control {
+  color: #fff;
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.form-signin.auth-open .form-control:focus {
+  color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.16);
+}
+
+.form-signin.auth-open .form-floating > label {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.form-signin.auth-open .form-floating > .form-control:focus ~ label,
+.form-signin.auth-open .form-floating > .form-control:not(:placeholder-shown) ~ label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* The floated label's notch is the page colour, so the stroke breaks without a white chip. */
+.form-signin.auth-open .form-floating > .form-control:focus ~ label::after,
+.form-signin.auth-open .form-floating > .form-control:not(:placeholder-shown) ~ label::after {
+  background-color: #212529;
+}
+
+.form-signin.auth-open .form-control:-webkit-autofill {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  box-shadow: 0 0 0 1000px #212529 inset;
+}
+
+.form-signin.auth-open .was-validated .form-control:valid,
+.form-signin.auth-open .form-control.is-valid,
+.form-signin.auth-open .was-validated .form-control:invalid,
+.form-signin.auth-open .form-control.is-invalid {
+  border-color: rgba(255, 255, 255, 0.7);
+  background-image: none;
+}
+
+.form-signin.auth-open .was-validated .form-control:valid:focus,
+.form-signin.auth-open .was-validated .form-control:invalid:focus {
+  border-color: #fff;
+}
+
+.form-signin.auth-open .invalid-feedback {
+  color: #fff;
+}
+
+.form-signin.auth-open .btn-primary {
+  --bs-btn-color: var(--bs-dark);
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #fff;
+  --bs-btn-hover-color: var(--bs-dark);
+  --bs-btn-hover-bg: #f2f2f2;
+  --bs-btn-hover-border-color: #f2f2f2;
+  --bs-btn-active-color: var(--bs-dark);
+  --bs-btn-active-bg: #e6e6e6;
+  --bs-btn-active-border-color: #e6e6e6;
+}

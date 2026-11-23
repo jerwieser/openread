@@ -40,6 +40,7 @@ export default function SignUpPage() {
 
   return (
     <AuthPage
+      open
       title="Create your account"
       switchLink={
         <>
