@@ -98,6 +98,13 @@ body {
   color: #fff;
 }
 
+/* The page's dark field. The motif is white with no fill of its own, so the dark stays the ground
+   and only the drawing repeats. public/patterns also has spines.svg and stack.svg, the same idea. */
+main.bg-dark {
+  background-image: url("/patterns/open-book.svg");
+  background-repeat: repeat;
+}
+
 .bg-body,
 .card:not(.bg-transparent),
 .modal-content,
