@@ -10,8 +10,8 @@
   box-shadow: var(--bs-box-shadow) !important;
 }
 
-/* the cover, blurred and enlarged so its edges don't show, in grey until the card is hovered,
-   under a dark wash that keeps the white title readable */
+/* the cover, blurred and enlarged so its edges don't show, under a dark wash that keeps the
+   white title readable */
 .reflection-card-band {
   position: relative;
   display: flex;
@@ -34,15 +34,8 @@
 
 .reflection-card-band::before {
   background: var(--cover) center / cover no-repeat;
-  filter: blur(18px) grayscale(1);
-  transform: scale(1.4);
-  mix-blend-mode: multiply;
-  transition: filter 0.35s ease;
-}
-
-.reflection-card:hover .reflection-card-band::before,
-.reflection-card:focus-within .reflection-card-band::before {
   filter: blur(18px);
+  transform: scale(1.4);
 }
 
 .reflection-card-band::after {

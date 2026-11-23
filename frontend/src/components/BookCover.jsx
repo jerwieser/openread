@@ -4,8 +4,7 @@ import { Ratio, Spinner } from "react-bootstrap";
 // The book's real cover when Wikipedia has one and it loads; otherwise (no cover, or one that doesn't
 // load) a black cover with the title in white, so it still looks like a book and stays with the
 // rest of the site. Not the page's own dark: a cover in that colour disappears into the field.
-// The picture itself rests in grey and returns to colour when the reader is on it (layout.css).
-const WIDTHS = { sm: 72, lg: 170, xl: 260, hero: 280 };
+const WIDTHS = { sm: 72, lg: 170, xl: 260, hero: 340 };
 
 // While a cover loads: a small spinner on the cover's grey, where the cover will be, which fades in
 // over it once it's there. Only when the page reaches it (loading="lazy"), and not for one the browser
