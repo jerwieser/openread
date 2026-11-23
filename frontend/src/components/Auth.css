@@ -23,8 +23,8 @@
   border-top-right-radius: 0;
 }
 
-/* Signup sits on the dark field, with no white sheet of its own. The fields are the page's dark,
-   drawn with a light stroke so they stay easy to find. */
+/* Every account page sits on the dark field, with no white sheet of its own. The fields are the
+   page's dark, drawn with a light stroke so they stay easy to find. */
 .form-signin.auth-open {
   background: transparent;
   box-shadow: none;
@@ -98,6 +98,43 @@
   color: #fff;
 }
 
+.form-signin.auth-open .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* A floating label uses the placeholder only as a hook. It stays invisible until the field is focused. */
+.form-signin.auth-open .form-floating > .form-control::placeholder {
+  color: transparent;
+}
+
+.form-signin.auth-open .form-floating > .form-control:focus::placeholder,
+.form-signin.auth-open .form-floating > .form-control:not(:placeholder-shown)::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* An initials badge is white on the page's own dark, so on these pages it reads as a white disc. */
+.form-signin.auth-open .rounded-circle.bg-dark {
+  background-color: #fff !important;
+  color: var(--bs-dark) !important;
+}
+
+.form-signin.auth-open .form-control::file-selector-button {
+  color: var(--bs-dark);
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.form-signin.auth-open .form-check-input {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.form-signin.auth-open .form-check-input:checked {
+  background-color: #fff;
+  border-color: #fff;
+  --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23212529' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+
 .form-signin.auth-open .btn-primary {
   --bs-btn-color: var(--bs-dark);
   --bs-btn-bg: #fff;
@@ -108,4 +145,27 @@
   --bs-btn-active-color: var(--bs-dark);
   --bs-btn-active-bg: #e6e6e6;
   --bs-btn-active-border-color: #e6e6e6;
+}
+
+.form-signin.auth-open .btn-outline-primary,
+.form-signin.auth-open .btn-outline-secondary {
+  --bs-btn-color: #fff;
+  --bs-btn-border-color: rgba(255, 255, 255, 0.85);
+  --bs-btn-hover-color: var(--bs-dark);
+  --bs-btn-hover-bg: #fff;
+  --bs-btn-hover-border-color: #fff;
+  --bs-btn-active-color: var(--bs-dark);
+  --bs-btn-active-bg: #fff;
+  --bs-btn-active-border-color: #fff;
+  --bs-btn-disabled-color: rgba(255, 255, 255, 0.55);
+  --bs-btn-disabled-border-color: rgba(255, 255, 255, 0.35);
+}
+
+.form-signin.auth-open .btn-link {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: rgba(255, 255, 255, 0.75);
+}
+
+.form-signin.auth-open .spinner-border {
+  color: #fff;
 }
