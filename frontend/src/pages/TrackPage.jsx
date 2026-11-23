@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button, Card, Container, Form, InputGroup } from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
+import { Button, Container, Form, InputGroup } from "react-bootstrap";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import BusyButton from "../components/BusyButton.jsx";
@@ -18,44 +18,42 @@ const TrackPath = lazyPage(() => import("../components/TrackPath.jsx"));
 
 const LABEL = { ours: "Reading track", own: "Your reading track", shared: "Shared reading track" };
 
-// the link that carries the track, to copy or hand to the phone's share sheet
-function ShareCard({ track }) {
+// the link that carries the track, as a small action beside Edit: copy it, or hand it to the phone's
+// share sheet. The address itself only appears when the browser won't copy it.
+function ShareActions({ track }) {
   const link = `${window.location.origin}/tracks/shared?t=${encodeTrack(track)}`;
+  const field = useRef(null);
+  const [showLink, setShowLink] = useState(false);
   const message = useMessage();
-  async function copy(e) {
-    const field = e.currentTarget.previousElementSibling;
+  // no clipboard access: the address is shown and selected, so it can be copied with the keyboard
+  useEffect(() => {
+    if (showLink) field.current?.select();
+  }, [showLink]);
+  async function copy() {
     try {
       await navigator.clipboard.writeText(link);
       message("The link is copied. Paste it anywhere to share the track.");
     } catch {
-      field.select(); // no clipboard access: select the link so it can be copied with the keyboard
+      setShowLink(true);
       message("Your browser wouldn't let us copy it, so the link is selected: press Ctrl+C (⌘C on a Mac) to copy it.", "warning");
     }
   }
   return (
-    <Card className="shadow-sm mt-3">
-      <Card.Body className="p-4">
-        <h2 className="h6">Share this track</h2>
-        <p className="small text-body-secondary">
-          Anyone with the link can see the track and add its books to their own list, no account needed. The link
-          holds the track as it is now, so share a new one after you edit it.
-        </p>
-        <InputGroup>
-          <Form.Control readOnly value={link} onFocus={(e) => e.target.select()} aria-label="Link to this track" />
-          <Button onClick={copy}>Copy link</Button>
+    <>
+      {showLink && (
+        <InputGroup size="sm" className="flex-grow-1" style={{ minWidth: "16rem", maxWidth: "28rem" }}>
+          <Form.Control ref={field} readOnly value={link} onFocus={(e) => e.target.select()} aria-label="Link to this track" />
         </InputGroup>
-        {navigator.share && (
-          <Button
-            variant="link"
-            size="sm"
-            className="p-0 mt-2"
-            onClick={() => navigator.share({ title: track.title, url: link }).catch(() => {})}
-          >
-            Share with an app…
-          </Button>
-        )}
-      </Card.Body>
-    </Card>
+      )}
+      <Button variant="link" size="sm" className="link-secondary" onClick={copy}>
+        Copy link
+      </Button>
+      {navigator.share && (
+        <Button variant="link" size="sm" className="link-secondary" onClick={() => navigator.share({ title: track.title, url: link }).catch(() => {})}>
+          Share…
+        </Button>
+      )}
+    </>
   );
 }
 
@@ -79,7 +77,7 @@ function TrackView({ track, kind, code }) {
       <TrackShelf track={track} large className="rounded-4 border track-shelf-on-field" />
 
       {/* the track in one centred column under its shelf, like the book page: the title and what it is,
-          then the follow card, the books in order and the rest one under the other */}
+          then starting or where the reader is, then the books in order */}
       <header className="text-center mt-5">
         <p className="small text-body-secondary mb-2">
           {LABEL[kind]} · {trackSpan(track)}
@@ -109,16 +107,16 @@ function TrackView({ track, kind, code }) {
             </p>
           )}
         </div>
-        <div className="text-start mx-auto mt-4" style={{ maxWidth: "30rem" }}>
+        <div className="mx-auto mt-4" style={{ maxWidth: "30rem" }}>
           {kind === "shared" ? (
             <p className="small text-body-secondary text-center">Save a copy to your tracks to follow it and keep your place.</p>
           ) : (
             <FollowCard track={track} />
           )}
-          {kind === "own" && <ShareCard track={track} />}
         </div>
 
         <div className="d-flex flex-wrap justify-content-center align-items-center gap-3 mt-3">
+          {kind === "own" && <ShareActions track={track} />}
           {kind === "own" && (
             <>
               <Button as={Link} to={`/tracks/${track.id}/edit`} variant="outline-primary" size="sm">
