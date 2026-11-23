@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { DifficultyBadge, EraBadge, SubtleBadge } from "../components/Badges.jsx";
 import BookCard from "../components/BookCard.jsx";
 import BookCover from "../components/BookCover.jsx";
-import BookStatusButton from "../components/BookStatus.jsx";
+import BookStatusButton, { OwnBookButton } from "../components/BookStatus.jsx";
 import Editions, { useExpressions } from "../components/Editions.jsx";
 import { BookCardPlaceholder, ItemCardPlaceholder, GridPlaceholder, Loader, LoadingSpinner } from "../components/Loading.jsx";
 import { Note, SectionHeader, usePageTitle } from "../components/PageHeader.jsx";
@@ -151,6 +151,7 @@ export default function BookPage() {
 
         <div className="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-4">
           <BookStatusButton book={book} />
+          <OwnBookButton book={book} />
         </div>
         <OnYourTracks book={book} />
         {book.difficulty && (

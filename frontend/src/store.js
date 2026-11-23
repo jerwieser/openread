@@ -17,7 +17,7 @@ export const TRACKS_HOME = "/discover?view=tracks";
 const languages = () => `languages=${encodeURIComponent(READER_LANGUAGES.join(","))}`;
 
 // the reader's own things while nobody is logged in
-const NONE = { user: null, statuses: {}, follows: {}, ownTracks: [], ownReflections: [], suggestions: [], inbox: [] };
+const NONE = { user: null, statuses: {}, owned: [], follows: {}, ownTracks: [], ownReflections: [], suggestions: [], inbox: [] };
 
 // catalogue: "loading" while the site opens (load), then "loaded", or "unreachable" when the API
 // didn't answer
@@ -140,6 +140,7 @@ const referred = () => [
   ...state.readers.flatMap((r) => [...r.read, ...r.reading]),
   ...state.reflections.map((r) => r.bookSlug),
   ...Object.keys(state.statuses),
+  ...state.owned,
   ...state.ownTracks.flatMap((t) => t.slugs),
   ...state.ownReflections.map((r) => r.bookSlug),
   ...state.suggestions.map((s) => s.book),
@@ -226,15 +227,16 @@ async function signIn(me) {
   await applyReadingLanguages();
   // the rest waits until they've confirmed their email address
   if (!user.verified) return state.user;
-  const [statuses, follows, ownTracks, ownReflections, suggestions, inbox] = await Promise.all([
+  const [statuses, owned, follows, ownTracks, ownReflections, suggestions, inbox] = await Promise.all([
     api.get("/me/statuses"),
+    api.get("/me/owned"),
     api.get("/me/follows"),
     api.get("/me/tracks"),
     api.get("/me/reflections").then(each(fromApi.reflection)),
     api.get(isAdmin(user) ? "/suggestions" : "/me/suggestions").then(each(fromApi.suggestion)),
     api.get("/me/messages"),
   ]);
-  set({ statuses, follows: byTrack(follows), ownTracks, ownReflections, suggestions, inbox });
+  set({ statuses, owned, follows: byTrack(follows), ownTracks, ownReflections, suggestions, inbox });
   // the books on their bookshelf and tracks that the site doesn't hold yet
   await holdBooks(referred());
   // new messages from other readers come in while the site is open
@@ -321,6 +323,19 @@ export function useStatuses() {
     if (PUBLIC.includes(before) || PUBLIC.includes(status)) await reload("readers");
   }, []);
   return [statuses, setStatus];
+}
+
+// The books the reader owns a copy of, by slug, most recently marked first. Owning one leaves its
+// reading status alone, and a book can be owned without being on a shelf.
+export function useOwned() {
+  const owned = useStore(() => state.owned);
+  const setOwned = useCallback(async (slug, ownedNow) => {
+    const rest = state.owned.filter((s) => s !== slug);
+    await optimistic("owned", ownedNow ? [slug, ...rest] : rest, async () =>
+      set({ owned: await api.put(`/me/owned/${slug}`, { owned: ownedNow }) }),
+    );
+  }, []);
+  return [owned, setOwned];
 }
 
 // Many statuses at once, from an import (see data/imports.js): [{ slug, status }]. Books the reader

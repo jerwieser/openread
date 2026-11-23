@@ -49,6 +49,17 @@ def test_deleting_an_account_removes_everything_of_theirs(session, reader, api, 
     assert api.get("/auth/me").status_code == 401
 
 
+def test_owning_a_book_leaves_its_status_alone(api, make_work):
+    work = make_work()
+    other = make_work("Another")
+    api.put(f"/me/statuses/{work.slug}", json={"status": "reading"})
+    assert api.put(f"/me/owned/{work.slug}", json={"owned": True}).json() == [work.slug]
+    assert api.put(f"/me/owned/{other.slug}", json={"owned": True}).json() == [other.slug, work.slug]
+    assert statuses(api) == {work.slug: "reading"}
+    assert api.put(f"/me/owned/{work.slug}", json={"owned": False}).json() == [other.slug]
+    assert api.put(f"/me/owned/no-such-book", json={"owned": True}).status_code == 404
+
+
 def test_setting_and_changing_a_status(api, make_work):
     work = make_work()
     assert api.put(f"/me/statuses/{work.slug}", json={"status": "want"}).json() == {work.slug: "want"}

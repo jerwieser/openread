@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 import { DifficultyBadge } from "../../components/Badges.jsx";
 import BookCover from "../../components/BookCover.jsx";
-import BookStatusButton from "../../components/BookStatus.jsx";
+import BookStatusButton, { OwnBookButton } from "../../components/BookStatus.jsx";
 import Icon from "../../components/Icon.jsx";
 import { modalManager } from "../../components/modalManager.js";
 import { OnYourTracks, SaveTrackButton } from "../../components/TrackFollow.jsx";
@@ -73,6 +73,7 @@ function Body({ book, onOpen }) {
           {/* the one main action: every shelf, as on the book's page */}
           <div className="d-flex flex-wrap align-items-center gap-2">
             <BookStatusButton book={book} />
+            <OwnBookButton book={book} />
             <Button as={Link} to={`/books/${book.slug}`} variant="link" className="icon-link icon-link-hover text-decoration-none">
               Open its page
               <Icon name="arrow-right" />

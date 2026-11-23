@@ -36,8 +36,24 @@ class Reading(SQLModel, table=True):
     updated_at: datetime | None = updated_at_field()
 
 
+class OwnedWork(SQLModel, table=True):
+    """A work the reader owns a copy of, apart from where they are with reading it. No row means they
+    haven't marked it as theirs.
+    """
+
+    __tablename__ = "owned_works"
+
+    user_id: int = Field(foreign_key="users.id", ondelete="CASCADE", primary_key=True)
+    work_id: int = Field(foreign_key="works.id", ondelete="CASCADE", primary_key=True, index=True)
+    created_at: datetime | None = created_at_field()
+
+
 class ReadingWrite(ApiModel):
     status: ReadingStatus | None
+
+
+class OwnedWrite(ApiModel):
+    owned: bool
 
 
 class ImportedStatus(ApiModel):

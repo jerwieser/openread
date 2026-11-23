@@ -21,6 +21,8 @@ from backend.models import (
     MessageRead,
     MeUpdate,
     OwnTrackRead,
+    OwnedWork,
+    OwnedWrite,
     Reading,
     ReadingStatus,
     ReadingWrite,
@@ -102,6 +104,37 @@ def _statuses(user: User, session: SessionDep) -> dict[str, str]:
         .order_by(col(Reading.updated_at).desc())
     )
     return dict(rows.all())
+
+
+def _owned(user: User, session: SessionDep) -> list[str]:
+    rows = session.exec(
+        select(Work.slug)
+        .join(OwnedWork, OwnedWork.work_id == Work.id)
+        .where(OwnedWork.user_id == user.id)
+        .order_by(col(OwnedWork.created_at).desc())
+    )
+    return list(rows.all())
+
+
+@router.get("/owned", response_model=list[str])
+def get_owned(user: CurrentUser, session: SessionDep) -> list[str]:
+    """Return the slugs of the works the reader owns, most recently marked first."""
+    return _owned(user, session)
+
+
+@router.put("/owned/{slug}", response_model=list[str])
+def put_owned(slug: str, payload: OwnedWrite, user: CurrentUser, session: SessionDep) -> list[str]:
+    """Mark a work as one the reader owns, or clear that mark. Owning it leaves its reading status
+    alone.
+    """
+    work = work_by_slug(session, slug)
+    current = session.get(OwnedWork, (user.id, work.id))
+    if payload.owned and current is None:
+        session.add(OwnedWork(user_id=user.id, work_id=work.id))
+    elif not payload.owned and current is not None:
+        session.delete(current)
+    session.commit()
+    return _owned(user, session)
 
 
 @router.get("/statuses", response_model=dict[str, ReadingStatus])
