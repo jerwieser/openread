@@ -15,7 +15,7 @@ import { decodeTrack, encodeTrack, sharedSlugs, toTrack, trackById } from "../da
 import { useTracks } from "../store.js";
 import NotFoundPage from "./NotFoundPage.jsx";
 
-// the books down the line, the biggest part of the page, loaded on its own
+// the books on the winding line, the biggest part of the page, loaded on its own
 const TrackPath = lazyPage(() => import("../components/TrackPath.jsx"));
 
 const LABEL = { ours: "Reading track", own: "Your reading track", shared: "Shared reading track" };
@@ -62,7 +62,7 @@ function ShareCard({ track }) {
 }
 
 // One track's page, for ours, the reader's own and shared ones: what it is, the card to follow it
-// and see how far they are, its books down a line and the readers who know them, to ask
+// and see how far they are, its books along the winding line and the readers who know them, to ask
 // about any of it. A shared track isn't stored anywhere, so it's followed by saving a copy first.
 function TrackView({ track, kind, code }) {
   usePageTitle(track.title);

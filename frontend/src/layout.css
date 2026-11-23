@@ -191,51 +191,6 @@ img.book-cover {
   }
 }
 
-/* A track's books (TrackPath.jsx): centred, joined by one white line through the middle of each
-   cover. Each stop draws the line from the top of its cover through the next cover, so it runs
-   down the middle of every book and on to the one below. The words sit on the page colour, so
-   the line doesn't cut through them. */
-.track-line {
-  --cover-w: clamp(12rem, 44vw, 16.5rem);
-  max-width: 40rem;
-}
-
-.track-stop {
-  position: relative;
-  padding-bottom: 3.5rem;
-}
-
-.track-stop:last-child {
-  padding-bottom: 0;
-}
-
-.track-stop:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  width: 6px;
-  transform: translateX(-50%);
-  background: #fff;
-  top: 0;
-  bottom: calc(var(--cover-w) * -1.5);
-}
-
-.track-stop-cover {
-  position: relative;
-  z-index: 1;
-  width: var(--cover-w);
-}
-
-.track-stop-text {
-  position: relative;
-  z-index: 3;
-  display: table;
-  max-width: 32rem;
-  padding-inline: 0.75rem;
-  background-color: var(--bs-dark);
-}
-
 /* On the book's own page the cover is already what you came to see, so it stays in colour. */
 .book-cover.book-cover-color img,
 .book-cover.book-cover-color:hover img,
