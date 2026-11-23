@@ -1,6 +1,6 @@
-// A reading track's books down a straight line, one under the next. The line used to wind back and
-// forth across the page; it now only goes down, so the order is the thing you see. The page behind
-// it is Bootstrap's dark, so the line is white. The covers are large: this is the track.
+// A reading track's books down one straight line, each cover and its words centred on the page.
+// The line runs through the middle of every cover and on to the next, so the books are joined.
+// The page behind it is Bootstrap's dark, so the line is white. The covers are large: this is the track.
 import { Link } from "react-router-dom";
 
 import { formatYear } from "../data/books.js";
@@ -8,9 +8,6 @@ import BookCover from "./BookCover.jsx";
 import { STATUSES } from "./BookStatus.jsx";
 import Icon from "./Icon.jsx";
 import { SkipButton } from "./TrackFollow.jsx";
-
-const STROKE = 6;
-const LINE = "#fff";
 
 // "1 · Erasmus", the book's title (after the icon of where the reader is with it), its author and
 // year, and the note when the track has one. On a track the reader follows (state, from
@@ -54,23 +51,17 @@ function StopText({ stop, number, state, onSkip, className = "" }) {
 export default function TrackPath({ stops, states, onSkip }) {
   if (!stops.length) return null;
   return (
-    <ol className="list-unstyled mx-auto" style={{ maxWidth: "40rem", borderLeft: `${STROKE}px solid ${LINE}` }}>
+    <ol className="track-line list-unstyled mx-auto">
       {stops.map((stop, i) => (
-        <li key={stop.book.slug} className="d-flex align-items-start gap-3 gap-md-4 ps-3 ps-md-4 pb-5 position-relative">
-          <span
-            className="position-absolute rounded-circle bg-white"
-            style={{ width: 14, height: 14, left: -(STROKE / 2) - 7, top: 18 }}
-            aria-hidden="true"
-          />
+        <li key={stop.book.slug} className="track-stop text-center">
           <Link
             to={`/books/${stop.book.slug}`}
             tabIndex={-1}
-            className={`flex-shrink-0 ${states?.[i]?.skipped ? "opacity-50" : ""}`}
-            style={{ width: "clamp(8.5rem, 32vw, 12rem)" }}
+            className={`track-stop-cover d-inline-block ${states?.[i]?.skipped ? "opacity-50" : ""}`}
           >
             <BookCover book={stop.book} className="w-100" />
           </Link>
-          <StopText stop={stop} number={i + 1} state={states?.[i]} onSkip={onSkip} className="pt-1 text-start" />
+          <StopText stop={stop} number={i + 1} state={states?.[i]} onSkip={onSkip} className="track-stop-text mx-auto mt-3" />
         </li>
       ))}
     </ol>
