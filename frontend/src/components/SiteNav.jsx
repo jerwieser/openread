@@ -8,14 +8,20 @@ import Initials from "./Initials.jsx";
 import { useMessage } from "./Messages.jsx";
 import { Brand } from "./Logo.jsx";
 
-// each page in the menu, with the paths that count as being on it: Discover, which covers the tracks
-// and the books it leads to, then the reader's own Bookshelf, last so it sits next to their avatar
+// Tracks first, then books, then the bookshelf where a reader marks want / reading / finished.
+// A track's own page counts as Tracks; a book's own page counts as Books.
 const PAGES = [
-  ["/discover", "Discover", ["/tracks", "/books"]],
-  ["/bookshelf", "Bookshelf", []],
+  ["tracks", "Tracks", "/discover?view=tracks"],
+  ["books", "Books", "/discover?view=books"],
+  ["bookshelf", "Bookshelf", "/bookshelf"],
 ];
 
-const isPage = (pathname, to, also) => [to, ...also].some((p) => pathname === p || pathname.startsWith(`${p}/`));
+function pageOn(id, pathname, search) {
+  const view = new URLSearchParams(search).get("view");
+  if (id === "tracks") return pathname.startsWith("/tracks") || (pathname === "/discover" && view !== "books");
+  if (id === "books") return pathname.startsWith("/books") || (pathname === "/discover" && view === "books");
+  return pathname === "/bookshelf" || pathname.startsWith("/bookshelf/");
+}
 
 // Bootstrap's notification dot on the corner of the avatar or the burger button: there are new
 // messages (getbootstrap.com/docs/5.3/components/badge/#positioned). Ringed in the bar's black.
@@ -172,7 +178,7 @@ function useNewMessageAlert() {
 const BAR = { zIndex: 1030 };
 
 export default function SiteNav() {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const unread = useNewMessageAlert();
 
   return (
@@ -192,8 +198,8 @@ export default function SiteNav() {
           </Offcanvas.Header>
           <Offcanvas.Body className="align-items-md-center">
             <Nav className="ms-md-auto">
-              {PAGES.map(([to, label, also]) => (
-                <Nav.Link key={to} as={Link} to={to} eventKey={to} active={isPage(pathname, to, also)}>
+              {PAGES.map(([id, label, to]) => (
+                <Nav.Link key={id} as={Link} to={to} eventKey={id} active={pageOn(id, pathname, search)}>
                   {label}
                 </Nav.Link>
               ))}

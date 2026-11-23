@@ -18,11 +18,11 @@ import { useFollows, useStatuses, useTracks } from "../store.js";
 // under Reading now: [key in ?shelf=, label, line above the books, what to say and offer while it's
 // empty]
 const SHELVES = [
-  ["reading", STATUSES.reading.label, "Other readers see you on these books' pages and can compare notes with you.", "Mark a book as “Reading now” on its page and it shows here."],
-  ["want", STATUSES.want.label, "Books you mean to read: the next one on each track you follow, then your own picks. The bookmark takes one off again.", "Put books on Want to read with their bookmark, or start a reading track."],
-  ["finished", STATUSES.finished.label, "Other readers can ask you about these.", "Books you mark as “Finished” show here, so other readers can ask you about them."],
+  ["reading", STATUSES.reading.label, "The books you have open.", "Mark a book as Reading now on its page and it shows here."],
+  ["want", STATUSES.want.label, "Books you mean to read: the next one on each track you follow, then your own picks.", "Put a book on Want to read, or start a track."],
+  ["finished", STATUSES.finished.label, "Books you've read to the end.", "Books you mark as Finished show here."],
   ["stopped", STATUSES.stopped.label, "Books you put down for good. Only you see these.", "Books you start and decide not to finish show here. Only you see them."],
-  ["tracks", "Tracks", "The tracks you follow, saved, completed and made, with how far you are on each.", "Start a reading track to follow it here, or put books in an order of your own."],
+  ["tracks", "Tracks", "The tracks you follow, saved, completed and made, and how far you are on each.", "Start a track and it shows here, with the books in order."],
 ];
 
 // the shelves' old names, from links made before every book had one status
@@ -181,7 +181,7 @@ function Bookshelf() {
 
   return (
     <Container className="py-5">
-      <PageHeader title="Bookshelf">What you&apos;re reading, what&apos;s next and what you&apos;ve finished.</PageHeader>
+      <PageHeader title="Bookshelf">Want to read, reading now, and finished. Tracks you follow sit here too.</PageHeader>
       <Nav
         variant="pills"
         activeKey={shelf}
@@ -218,8 +218,8 @@ function Bookshelf() {
           <p className="lead text-body-secondary col-lg-6 mx-auto mb-4">{empty}</p>
           {shelf === "tracks" ? (
             <div className="d-flex flex-wrap justify-content-center gap-2">
-              <Button as={Link} to="/discover" variant="outline-primary">
-                Discover tracks
+              <Button as={Link} to="/discover?view=tracks" variant="outline-primary">
+                Explore tracks
               </Button>
               <Button as={Link} to="/tracks/new" variant="outline-secondary">
                 Create a track
@@ -227,8 +227,11 @@ function Bookshelf() {
             </div>
           ) : (
             <div className="d-flex flex-wrap justify-content-center gap-2">
-              <Button as={Link} to="/discover" variant="outline-primary">
-                Discover something to read
+              <Button as={Link} to="/discover?view=tracks">
+                Explore tracks
+              </Button>
+              <Button as={Link} to="/discover?view=books" variant="outline-primary">
+                Browse books
               </Button>
               {/* coming from Goodreads or The StoryGraph, the empty shelf can fill in one go */}
               <Button as={Link} to="/import" variant="outline-secondary">

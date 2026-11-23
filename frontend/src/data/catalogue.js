@@ -5,17 +5,17 @@ export const DIFFICULTY = {
   approachable: {
     label: "Approachable",
     tone: "success",
-    why: "It reads quickly and the story pulls you along. Talking it over with others shows you what is going on beneath it, and why readers still argue about it.",
+    why: "It reads quickly and the story pulls you along. A good first book on a track.",
   },
   challenging: {
     label: "Challenging",
     tone: "warning",
-    why: "Long, old-fashioned or slow in places. Readers who know it fill in the context you are missing, and can tell you which stretches are worth pushing through.",
+    why: "Long, old-fashioned or slow in places. Stay with the stretches that carry the book.",
   },
   demanding: {
     label: "Demanding",
     tone: "danger",
-    why: "Dense, experimental or far removed from today. This is where reading with others makes the difference between giving up at chapter three and finishing it glad you did.",
+    why: "Dense, experimental or far from today. Give it a quiet stretch of time.",
   },
 };
 

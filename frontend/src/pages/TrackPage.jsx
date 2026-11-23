@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { Button, Card, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Card, Container, Form, InputGroup } from "react-bootstrap";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import BusyButton from "../components/BusyButton.jsx";
-import { GridPlaceholder, Loader, LoadingSpinner, ReaderCardPlaceholder, lazyPage } from "../components/Loading.jsx";
+import { Loader, LoadingSpinner, lazyPage } from "../components/Loading.jsx";
 import { useMessage } from "../components/Messages.jsx";
-import { SectionHeader, usePageTitle } from "../components/PageHeader.jsx";
+import { usePageTitle } from "../components/PageHeader.jsx";
 import { TrackShelf, trackSpan } from "../components/TrackCard.jsx";
 import { FollowCard, useTrackFollow } from "../components/TrackFollow.jsx";
-import ReaderCard from "../components/ReaderCard.jsx";
-import { readersWhoKnow } from "../data/readers.js";
 import { useHeld } from "../data/books.js";
 import { decodeTrack, encodeTrack, sharedSlugs, toTrack, trackById } from "../data/tracks.js";
 import { useTracks } from "../store.js";
@@ -62,7 +60,7 @@ function ShareCard({ track }) {
 }
 
 // One track's page, for ours, the reader's own and shared ones: what it is, the card to follow it
-// and see how far they are, its books along the winding line and the readers who know them, to ask
+// and see how far they are, and its books along the winding line, in order.
 // about any of it. A shared track isn't stored anywhere, so it's followed by saving a copy first.
 function TrackView({ track, kind, code }) {
   usePageTitle(track.title);
@@ -74,10 +72,6 @@ function TrackView({ track, kind, code }) {
   const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
   const message = useMessage();
-  const books = track.books.map((s) => s.book);
-  // readers who have read at least two of the track's books, most first
-  const readers = readersWhoKnow(books.map((b) => b.slug));
-  const finished = readers.filter((r) => books.every((b) => r.read.includes(b.slug))).length;
   const copyFrom = kind === "ours" ? `from=${track.id}` : kind === "shared" ? `shared=${code}` : null;
 
   return (
@@ -168,24 +162,6 @@ function TrackView({ track, kind, code }) {
         </Loader>
       </section>
 
-      {readers.length > 0 && (
-        <section className="mt-5">
-          <SectionHeader title="Readers who know this track">
-            {finished > 0
-              ? `${finished === 1 ? "One reader has" : `${finished} readers have`} read every book on it, and the others several. Ask them anything.`
-              : "Each has read several of these books. Ask them anything."}
-          </SectionHeader>
-          <Loader key={track.id} fallback={<GridPlaceholder Item={ReaderCardPlaceholder} count={Math.min(readers.length, 6)} xs={1} md={2} lg={3} className="g-4 justify-content-center" />}>
-            <Row xs={1} md={2} lg={3} className="g-4 justify-content-center">
-              {readers.slice(0, 6).map((r) => (
-                <Col key={r.id}>
-                  <ReaderCard reader={r} compact />
-                </Col>
-              ))}
-            </Row>
-          </Loader>
-        </section>
-      )}
     </Container>
   );
 }

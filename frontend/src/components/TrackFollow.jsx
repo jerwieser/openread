@@ -226,7 +226,7 @@ export function FollowCard({ track }) {
           ) : (
             <p className="mt-3 mb-0">
               <Icon name="flag-fill" className="text-primary me-2" />
-              You&apos;ve been through the whole track. Readers see it on your profile.
+              You&apos;ve been through the whole track.
             </p>
           ))}
 

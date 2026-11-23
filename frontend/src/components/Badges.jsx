@@ -23,9 +23,9 @@ export function SubtleBadge({ tone = "secondary", icon, className = "", children
 export function DifficultyBadge({ level, labelled = false }) {
   const d = DIFFICULTY[level];
   if (!d) return null;
-  if (labelled) return <SubtleBadge tone={d.tone} icon={DIFFICULTY_ICON[level]}>{d.label}</SubtleBadge>;
+  if (labelled) return <SubtleBadge icon={DIFFICULTY_ICON[level]}>{d.label}</SubtleBadge>;
   return (
-    <SubtleBadge tone={d.tone} title={d.label}>
+    <SubtleBadge title={d.label}>
       <Icon name={DIFFICULTY_ICON[level]} label={d.label} />
     </SubtleBadge>
   );

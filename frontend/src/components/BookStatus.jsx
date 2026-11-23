@@ -79,17 +79,9 @@ function useBookStatus(book) {
     await setStatus(book.slug, next);
     if (!next) message(<>{title} is off your bookshelf.</>, "info");
     else if (next === "want") message(<>{title} is on your {shelfLink("want", "Want to read")} shelf.</>);
-    else if (next === "reading") message(<>You&apos;re reading {title}. Other readers see you on its page, so you can compare notes.</>);
+    else if (next === "reading") message(<>You&apos;re reading {title}. It&apos;s on your {shelfLink("reading", "Reading now")} shelf.</>);
     else if (next === "paused") message(<>{title} is paused. It waits under {shelfLink("reading", "Reading now")} until you pick it up again.</>);
-    else if (next === "finished")
-      message(
-        <>
-          You&apos;ve finished {title}. Readers can now ask you about it.{trackNews(onTracks)}{" "}
-          <Link to={`/reflections/new?book=${book.slug}`} className="alert-link">
-            Write a reflection
-          </Link>
-        </>,
-      );
+    else if (next === "finished") message(<>You&apos;ve finished {title}.{trackNews(onTracks)}</>);
     else message(<>{title} is on your {shelfLink("stopped", "Didn't finish")} shelf. Not every book is for now.</>, "info");
   }
   return [status, choose];
@@ -103,12 +95,12 @@ export default function BookStatusButton({ book, size }) {
   return (
     <Dropdown as={ButtonGroup} size={size}>
       {!status && (
-        <Button variant="outline-secondary" onClick={() => choose("want")}>
+        <Button onClick={() => choose("want")}>
           <Icon name="bookmark" className="me-2" />
           Want to read
         </Button>
       )}
-      <Dropdown.Toggle split={!status} variant={status ? "outline-primary" : "outline-secondary"} id={`status-${book.slug}`}>
+      <Dropdown.Toggle split={!status} variant={status ? "primary" : "primary"} id={`status-${book.slug}`}>
         {current ? (
           <>
             <Icon name={current.solid} className="me-2" />
