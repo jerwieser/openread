@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef } from "react";
-import { Badge, Button, Container, Dropdown, Nav, Navbar, Offcanvas, Spinner } from "react-bootstrap";
+import { Badge, Button, Container, Dropdown, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useConversations } from "../data/inbox.js";
@@ -30,8 +30,8 @@ const Unread = ({ count }) =>
   );
 
 // The account links in the avatar's dropdown, in groups: the reader's own pages, what they can start
-// and logging out. None while the site opens: who's logged in isn't known yet, and a spinner stands
-// in for the avatar.
+// and logging out. None while the site opens: who's logged in isn't known yet, and a placeholder
+// stands in for the avatar.
 function useAccountLinks() {
   const user = useUser();
   const opening = useCatalogue() === "loading";
@@ -72,17 +72,18 @@ function useAccountLinks() {
 const isOn = (pathname, to) => pathname === to || (to === "/messages" && pathname.startsWith("/messages/"));
 
 // The avatar's dropdown, as on daygame.pro: the reader's initials (or photo) in a circle as tall as
-// the logo, opening their links, the dot on it when there are new messages; no caret (layout.css). A
-// spinner in its place while the site opens, and for a logged-out visitor the buttons to log in or
-// sign up instead.
+// the logo, opening their links, the dot on it when there are new messages; no caret (layout.css).
+// While the site opens, a placeholder the size of that circle, since it isn't known yet whether
+// anyone is logged in. For a logged-out visitor, the buttons to log in or sign up instead.
 function Account() {
   const { pathname } = useLocation();
   const { opening, user, unread, groups } = useAccountLinks();
   if (opening) {
     return (
-      <Spinner animation="border" variant="primary" role="status" className="ms-md-2" style={{ width: 30, height: 30 }}>
+      <span className="placeholder-glow ms-md-2 d-inline-flex" role="status">
+        <span className="placeholder rounded-circle" style={{ width: 30, height: 30 }} />
         <span className="visually-hidden">Loading your account…</span>
-      </Spinner>
+      </span>
     );
   }
   if (!user) {
