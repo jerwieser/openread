@@ -2,6 +2,7 @@ import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import Icon from "./Icon.jsx";
+import { TRACKS_HOME, useUser } from "../store.js";
 import { Brand } from "./Logo.jsx";
 
 const LINK = "link-secondary link-underline-opacity-0 link-underline-opacity-100-hover";
@@ -21,10 +22,11 @@ const SOCIAL = [
 // the legal pages and the source code, its social pages as icons, then the copyright, the licences
 // and where the covers come from. Links to other sites open in a new tab.
 export default function SiteFooter() {
+  const home = useUser() ? TRACKS_HOME : "/";
   return (
     <footer className="bg-body border-top small text-body-secondary text-center">
       <Container className="d-flex flex-column align-items-center gap-3 py-5">
-        <Link to="/" className="d-inline-flex fw-bold link-body-emphasis text-decoration-none">
+        <Link to={home} className="d-inline-flex fw-bold link-body-emphasis text-decoration-none">
           <Brand size={24} />
         </Link>
         <p className="mb-0" style={{ maxWidth: "24rem" }}>

@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 
 import { IconCircle } from "../components/Icon.jsx";
 import { usePageTitle } from "../components/PageHeader.jsx";
+import { TRACKS_HOME, useUser } from "../store.js";
 
 export default function NotFoundPage() {
   usePageTitle("Page not found");
+  const home = useUser() ? TRACKS_HOME : "/";
   return (
     <Container className="py-5">
       <Row className="justify-content-center text-center">
@@ -17,7 +19,7 @@ export default function NotFoundPage() {
             <Button as={Link} to="/discover" variant="outline-primary">
               Discover reading tracks
             </Button>
-            <Button as={Link} to="/">
+            <Button as={Link} to={home}>
               Go to the home page
             </Button>
           </div>

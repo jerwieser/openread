@@ -5,7 +5,7 @@ import { Link, Navigate, useLocation, useNavigate, useSearchParams } from "react
 import { AuthPage, nextPath } from "../components/Auth.jsx";
 import BusyButton from "../components/BusyButton.jsx";
 import { useMessage } from "../components/Messages.jsx";
-import { changeEmail, logOut, resendVerification, useUser, verifyEmail } from "../store.js";
+import { changeEmail, logOut, resendVerification, TRACKS_HOME, useUser, verifyEmail } from "../store.js";
 
 // The link in the confirmation email (/verify-email?token=…): confirms the address and logs the
 // reader in, then takes them on: a new reader to the first steps, one changing their address back
@@ -98,7 +98,7 @@ export default function VerifyEmailPage() {
   const token = params.get("token");
   if (token) return <Confirming token={token} next={nextPath(params, "/welcome")} />;
   if (!user) return <Navigate to="/log-in" replace />;
-  if (user.verified) return <Navigate to={state?.next ?? "/bookshelf"} replace />;
+  if (user.verified) return <Navigate to={state?.next ?? TRACKS_HOME} replace />;
 
   async function resend() {
     setSending(true);

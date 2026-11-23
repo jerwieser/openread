@@ -7,7 +7,7 @@ import { LoadingSpinner, lazyPage } from "./components/Loading.jsx";
 import { MessageArea, MessagesProvider } from "./components/Messages.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
 import SiteNav from "./components/SiteNav.jsx";
-import { useCatalogue, useUser } from "./store.js";
+import { TRACKS_HOME, useCatalogue, useUser } from "./store.js";
 
 // Every page is its own chunk of code, fetched the first time it's opened (see Loading.jsx)
 const AccountPage = lazyPage(() => import("./pages/AccountPage.jsx"));
@@ -66,8 +66,18 @@ function ToDiscover({ view }) {
 }
 
 // The pages that show while the catalogue is still coming: their words and pictures are their own,
-// and the home page shows placeholders for what comes from the API (HomePage.jsx).
+// and the home page shows placeholders for what comes from the API (HomePage.jsx). / waits until
+// it's known whether anyone is logged in (HomeGate), so a reader isn't shown the landing page.
 const OPENS_EARLY = new Set(["/", "/terms", "/privacy"]);
+
+// / is the landing page for a visitor. A signed-in reader belongs on the tracks.
+function HomeGate() {
+  const user = useUser();
+  const catalogue = useCatalogue();
+  if (user) return <Navigate to={TRACKS_HOME} replace />;
+  if (catalogue === "loading") return <LoadingSpinner label="Loading the page…" />;
+  return <HomePage />;
+}
 
 // What a reader who hasn't confirmed their email address yet can open. Anything else leads to
 // /verify-email, which says what to do.
@@ -144,7 +154,7 @@ export default function App() {
         <MessageArea />
         <Routes>
           <Route element={<SiteLayout />}>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomeGate />} />
             {/* the books list is Discover's Books view now; old links, filters included, land there */}
             <Route path="/books" element={<ToDiscover view="books" />} />
             <Route path="/books/suggest" element={<SuggestBookPage />} />

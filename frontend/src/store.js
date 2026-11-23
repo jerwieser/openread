@@ -10,6 +10,9 @@ import { useCallback, useSyncExternalStore } from "react";
 import { api, setUnauthorizedHandler } from "./api.js";
 import { READER_LANGUAGES, setReadingLanguages } from "./data/languages.js";
 
+// Where a signed-in reader starts. Visitors get the landing page at /.
+export const TRACKS_HOME = "/discover?view=tracks";
+
 // the books' titles in the reader's languages come with them (theirs once they're logged in)
 const languages = () => `languages=${encodeURIComponent(READER_LANGUAGES.join(","))}`;
 
