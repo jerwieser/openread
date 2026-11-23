@@ -62,8 +62,6 @@ export function TrackCardPlaceholder() {
         <Bar cols={4} size="sm" className="d-block mb-2" />
         <Bar cols={8} className="d-block mb-2" />
         <Bar cols={11} size="sm" className="d-block mb-3" />
-        <Bar cols={9} size="sm" className="d-block mb-1" />
-        <Bar cols={7} size="sm" className="d-block mb-3" />
         <Bar cols={5} size="sm" className="d-block" />
       </Card.Body>
     </Card>
