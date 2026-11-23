@@ -1,7 +1,7 @@
-/* The dark of the rest of the site, with one of the repeating book motifs over it. */
+/* The same dark and the same row of spines as the rest of the site. */
 .auth-scene {
   background-color: #212529;
-  background-image: var(--auth-pattern);
+  background-image: url("/patterns/spines.svg");
   background-repeat: repeat;
 }
 
