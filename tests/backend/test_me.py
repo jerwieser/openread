@@ -57,7 +57,7 @@ def test_owning_a_book_leaves_its_status_alone(api, make_work):
     assert api.put(f"/me/owned/{other.slug}", json={"owned": True}).json() == [other.slug, work.slug]
     assert statuses(api) == {work.slug: "reading"}
     assert api.put(f"/me/owned/{work.slug}", json={"owned": False}).json() == [other.slug]
-    assert api.put(f"/me/owned/no-such-book", json={"owned": True}).status_code == 404
+    assert api.put("/me/owned/no-such-book", json={"owned": True}).status_code == 404
 
 
 def test_setting_and_changing_a_status(api, make_work):
