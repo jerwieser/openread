@@ -103,6 +103,7 @@ body {
 main.bg-dark {
   background-image: url("/patterns/spines.svg");
   background-repeat: repeat;
+  background-size: 100px 100px;
 }
 
 .bg-body,

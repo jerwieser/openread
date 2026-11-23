@@ -3,6 +3,7 @@
   background-color: #212529;
   background-image: url("/patterns/spines.svg");
   background-repeat: repeat;
+  background-size: 100px 100px;
 }
 
 /* From Bootstrap's sign-in example (getbootstrap.com/docs/5.3/examples/sign-in): floating-label
