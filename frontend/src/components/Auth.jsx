@@ -20,7 +20,7 @@ export function AuthPage({ title, lead, switchLink, width = 330, children }) {
   usePageTitle(title);
   return (
     <div className="auth-scene d-flex align-items-center py-4 min-vh-100">
-      <main className="form-signin w-100 m-auto p-3" style={{ maxWidth: width }}>
+      <main className="form-signin auth-open w-100 m-auto p-3" style={{ maxWidth: width }}>
         <Link to="/" className="d-inline-flex fs-4 fw-bold link-body-emphasis text-decoration-none mb-4">
           <Brand size={30} />
         </Link>

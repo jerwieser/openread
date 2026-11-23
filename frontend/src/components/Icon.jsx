@@ -1,6 +1,6 @@
 import {
   ArrowDown, ArrowLeft, ArrowRepeat, ArrowRight, ArrowUp, Bookmark, BookmarkFill, Bookmarks, BookmarksFill, CheckCircle,
-  BookmarkHeart, BookmarkHeartFill, BoxArrowInDown, BoxArrowRight, CameraVideo, ChatQuote, ChevronContract, ChevronDown, ChevronExpand, ChevronUp, Compass, CompassFill, CheckCircleFill, Clock,
+  BookmarkHeart, BookmarkHeartFill, Book, BookFill, BoxArrowInDown, BoxArrowRight, CameraVideo, ChatQuote, ChevronContract, ChevronDown, ChevronExpand, ChevronUp, Compass, CompassFill, CheckCircleFill, Clock,
   Envelope, ExclamationTriangleFill, Eyeglasses, Flag, FlagFill, GeoAlt, HourglassSplit, InfoCircle, InfoCircleFill, Instagram, Key, PauseCircle, PauseCircleFill, StopCircle, StopCircleFill, JournalX, Linkedin, People, PeopleFill, PersonCheck, PersonCircle,
   Reception1, Reception3, Reception4, Search, SignpostSplit, SkipForwardCircle, SkipForwardCircleFill, SignpostSplitFill, Sliders, Star, StarFill, StarHalf,
   Translate, TwitterX, XCircle, XCircleFill, XLg,
@@ -11,7 +11,7 @@ import {
 const ICONS = {
   "arrow-down": ArrowDown, "arrow-left": ArrowLeft, "arrow-repeat": ArrowRepeat, "arrow-right": ArrowRight,
   "arrow-up": ArrowUp, bookmark: Bookmark,
-  "bookmark-fill": BookmarkFill, bookmarks: Bookmarks, "bookmarks-fill": BookmarksFill, "bookmark-heart": BookmarkHeart, "bookmark-heart-fill": BookmarkHeartFill, "box-arrow-in-down": BoxArrowInDown, "box-arrow-right": BoxArrowRight,
+  "bookmark-fill": BookmarkFill, bookmarks: Bookmarks, "bookmarks-fill": BookmarksFill, "bookmark-heart": BookmarkHeart, "bookmark-heart-fill": BookmarkHeartFill, book: Book, "book-fill": BookFill, "box-arrow-in-down": BoxArrowInDown, "box-arrow-right": BoxArrowRight,
   "camera-video": CameraVideo, "chevron-contract": ChevronContract, "chevron-down": ChevronDown, "chevron-expand": ChevronExpand, "chevron-up": ChevronUp, compass: Compass, "compass-fill": CompassFill, "geo-alt": GeoAlt,
   "chat-quote": ChatQuote, "check-circle": CheckCircle, "check-circle-fill": CheckCircleFill, clock: Clock,
   envelope: Envelope, "exclamation-triangle-fill": ExclamationTriangleFill, eyeglasses: Eyeglasses, "eyeglasses-fill": EyeglassesFill, flag: Flag, "flag-fill": FlagFill, "hourglass-split": HourglassSplit, "info-circle": InfoCircle,

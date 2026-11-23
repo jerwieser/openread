@@ -2,7 +2,7 @@ import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { keptTracks, trackProgress } from "../data/tracks.js";
-import { read, useStatuses, useUser } from "../store.js";
+import { read, useOwned, useStatuses, useUser } from "../store.js";
 import Icon from "./Icon.jsx";
 import { useMessage } from "./Messages.jsx";
 
@@ -129,6 +129,30 @@ export default function BookStatusButton({ book, size }) {
         )}
       </Dropdown.Menu>
     </Dropdown>
+  );
+}
+
+// Whether the reader owns a copy, apart from the shelf it's on. Logged-out readers log in first.
+export function OwnBookButton({ book, size }) {
+  const user = useUser();
+  const [owned, setOwned] = useOwned();
+  const navigate = useNavigate();
+  const { pathname, search } = useLocation();
+  const message = useMessage();
+  const on = Boolean(user && owned.includes(book.slug));
+
+  async function toggle() {
+    if (!user) return navigate(`/log-in?next=${encodeURIComponent(pathname + search)}`);
+    await setOwned(book.slug, !on);
+    const title = <i>{book.title}</i>;
+    message(on ? <>{title} is no longer marked as one you own.</> : <>{title} is one you own.</>, "info");
+  }
+
+  return (
+    <Button size={size} variant={on ? "primary" : "outline-primary"} aria-pressed={on} onClick={toggle}>
+      <Icon name={on ? "book-fill" : "book"} className="me-2" />
+      {on ? "You own this" : "I own this"}
+    </Button>
   );
 }
 

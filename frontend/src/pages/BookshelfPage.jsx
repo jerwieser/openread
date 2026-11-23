@@ -12,7 +12,7 @@ import PageHeader from "../components/PageHeader.jsx";
 import TrackCard from "../components/TrackCard.jsx";
 import { bookBySlug } from "../data/books.js";
 import { keptTracks, toTrack, trackProgress } from "../data/tracks.js";
-import { useFollows, useStatuses, useTracks } from "../store.js";
+import { useFollows, useOwned, useStatuses, useTracks } from "../store.js";
 
 // The shelves, as pills like the admin page's, one for each status but paused, which folds away
 // under Reading now: [key in ?shelf=, label, line above the books, what to say and offer while it's
@@ -22,6 +22,7 @@ const SHELVES = [
   ["want", STATUSES.want.label, "Books you mean to read: the next one on each track you follow, then your own picks.", "Put a book on Want to read, or start a track."],
   ["finished", STATUSES.finished.label, "Books you've read to the end.", "Books you mark as Finished show here."],
   ["stopped", STATUSES.stopped.label, "Books you put down for good. Only you see these.", "Books you start and decide not to finish show here. Only you see them."],
+  ["owned", "Owned", "Books you have a copy of, whatever shelf they're on.", "Mark a book as one you own on its page and it shows here."],
   ["tracks", "Tracks", "The tracks you follow, saved, completed and made, and how far you are on each.", "Start a track and it shows here, with the books in order."],
 ];
 
@@ -126,6 +127,7 @@ function upNext(kept, statuses) {
 function Bookshelf() {
   const [params, setParams] = useSearchParams();
   const [statuses] = useStatuses();
+  const [owned] = useOwned();
   const [follows] = useFollows();
   const [own] = useTracks();
   const kept = keptTracks(follows, own);
@@ -139,6 +141,7 @@ function Bookshelf() {
     want: marked("want"),
     finished: marked("finished"),
     stopped: marked("stopped"),
+    owned: owned.map(bookBySlug).filter(Boolean),
     tracks: [...kept.map(({ track }) => track), ...own.filter((t) => !follows[t.id]).map(toTrack)],
   };
   // each shelf's books or tracks in parts: Want to read, the ones up next on the reader's tracks
@@ -181,7 +184,7 @@ function Bookshelf() {
 
   return (
     <Container className="py-5">
-      <PageHeader title="Bookshelf">Want to read, reading now, and finished. Tracks you follow sit here too.</PageHeader>
+      <PageHeader title="Bookshelf">Want to read, reading now, finished, and the books you own. Tracks you follow sit here too.</PageHeader>
       <Nav
         variant="pills"
         activeKey={shelf}
