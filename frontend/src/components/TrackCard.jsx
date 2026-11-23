@@ -33,14 +33,15 @@ function excerpt(text = "", length = 110) {
 // withImage={false}.
 const MAX_COVERS = 10;
 
-export function TrackShelf({ track, large = false, withImage = true, className = "" }) {
+export function TrackShelf({ track, large = false, cover, withImage = true, className = "" }) {
   const covers = track.books.slice(0, MAX_COVERS);
   const more = track.books.length - covers.length;
   const n = covers.length;
   const middle = (n - 1) / 2;
   // each cover's share of the shelf's width, in %, the same for every track; and how much of a cover
-  // each side tucks under its neighbours, so all of them fit in the shelf, a little less on hover
-  const width = large ? 12 : 17;
+  // each side tucks under its neighbours, so all of them fit in the shelf, a little less on hover.
+  // cover: a card asks for larger books than the small shelf in a quick look
+  const width = cover ?? (large ? 12 : 17);
   const overlap = Math.max(0.05, (1 - 88 / (n * width)) / 2);
   const spread = Math.max(0.02, Math.min(overlap - 0.04, (1 - 94 / (n * width)) / 2));
   const tilt = Math.min(5, 24 / n);
@@ -74,9 +75,11 @@ export function TrackShelf({ track, large = false, withImage = true, className =
 // fills the whole card, and the text sits on a frosted panel that fades in below the shelf, so it
 // stays easy to read on any picture. showcase: on the home page, which shows OpenRead to newcomers, a
 // "Details →" link instead of the bookmark and the reader's own progress.
-// a step up from the book cards' type (BookCard.jsx: 13px and 12px), as the card is twice as wide
-const TITLE = { fontSize: "0.9375rem" };
-const TEXT = { fontSize: "0.8125rem" };
+// the track is the thing the site is for, so its card is the large type: the title at a heading size,
+// the rest a step under it
+const TITLE = { fontSize: "1.35rem" };
+const TEXT = { fontSize: "0.9375rem" };
+const SHOWN = 4; // titles of the books in order, the rest counted
 
 export default function TrackCard({ track, showcase = false }) {
   const { follow, progress } = useTrackFollow(track);
@@ -98,20 +101,43 @@ export default function TrackCard({ track, showcase = false }) {
       className={`track-card h-100 rounded-4 overflow-hidden ${track.image ? "track-card-image" : ""}`}
       style={track.image ? { backgroundImage: `url("${track.image}")` } : undefined}
     >
-      <TrackShelf track={track} withImage={false} />
-      <Card.Body className="track-card-body d-flex flex-column p-3">
-        <div className="text-body-secondary mb-1" style={TEXT}>
-          {track.own ? "Your reading track" : "Reading track"} · {total} books{track.retired && " · retired"}
+      <TrackShelf track={track} withImage={false} cover={26} />
+      <Card.Body className="track-card-body d-flex flex-column p-4">
+        <div className="text-uppercase fw-semibold text-body-secondary mb-2" style={{ ...TEXT, letterSpacing: "0.08em", fontSize: "0.75rem" }}>
+          {track.own ? "Your reading track" : "Reading track"}
+          {track.retired && " · retired"}
         </div>
-        <Card.Title as="h3" className="fw-semibold lh-sm mb-1" style={TITLE}>
+        <Card.Title as="h3" className="fw-bold lh-sm mb-2" style={TITLE}>
           <Link to={`/tracks/${track.id}`} className="stretched-link link-body-emphasis text-decoration-none">
             {track.title}
           </Link>
         </Card.Title>
-        <Card.Text className="text-body-secondary lh-sm" style={TEXT}>{track.tagline ?? excerpt(track.description)}</Card.Text>
+        {track.tags?.length > 0 && (
+          <div className="d-flex flex-wrap gap-1 mb-2">
+            {track.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="badge rounded-pill border border-dark text-dark bg-white fw-medium">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+        <Card.Text className="mb-3 lh-sm" style={TEXT}>{track.tagline ?? excerpt(track.description)}</Card.Text>
+        <ol className="list-unstyled mb-3">
+          {track.books.slice(0, SHOWN).map((stop, i) => (
+            <li key={stop.book.slug} className="d-flex gap-2 align-items-baseline py-1 border-top">
+              <span className="track-card-stop-num">{i + 1}</span>
+              <span className="text-truncate">{stop.book.title}</span>
+            </li>
+          ))}
+          {total > SHOWN && (
+            <li className="text-body-secondary border-top py-1" style={TEXT}>
+              +{total - SHOWN} more
+            </li>
+          )}
+        </ol>
         <div className="text-body-secondary mt-auto pt-2 border-top" style={TEXT}>
           <div className="d-flex align-items-center gap-2">
-            <span className="me-auto">{yearSpan(track)}</span>
+            <span className="me-auto">{trackSpan(track)}</span>
             {/* above the title's stretched link, which otherwise covers the whole card */}
             {showcase ? (
               <SeeAll to={`/tracks/${track.id}`} className="position-relative" style={{ zIndex: 2 }}>

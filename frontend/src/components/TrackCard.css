@@ -1,6 +1,7 @@
 /* A reading track as a card: every book's cover (up to ten) fanned out on a shelf at the top, which
    lifts a little on hover and spreads the covers */
 .track-card {
+  border: 1px solid var(--bs-dark) !important;
   transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -37,6 +38,15 @@
   justify-content: center;
   padding: 1.25rem 1rem 6px;
   overflow: hidden;
+}
+
+/* on a card the shelf has room for the larger covers; without a picture it is a white sheet */
+.track-card .track-card-band {
+  padding: 1.75rem 1.25rem 8px;
+}
+
+.track-card:not(.track-card-image) .track-card-band {
+  background: #fff;
 }
 
 /* the track's picture behind the covers, filling the band and anchored to the shelf, so the
@@ -97,6 +107,14 @@
   right: 0.75rem;
   bottom: 0.75rem;
   z-index: 21;
+}
+
+/* the place of a book in the track, on the card */
+.track-card-stop-num {
+  width: 1.25rem;
+  flex-shrink: 0;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
 }
 
 @media (prefers-reduced-motion: reduce) {
