@@ -7,13 +7,13 @@ import { GridPlaceholder, Loader, TrackCardPlaceholder } from "../../components/
 import TrackCard from "../../components/TrackCard.jsx";
 import { BOOK_GRID, TRACK_GRID } from "../../components/grids.js";
 
-// A section's title on the left, with its icon in a black-and-white circle and how many there are, and its
+// A section's title on the left, with its icon in a white circle and how many there are, and its
 // "See all" (or another action) on the right: quicker to scan down than the big centred headers the
 // other pages have, which suits a page of many short sections
 export function SectionTitle({ icon, title, count, action, children, id }) {
   return (
     <div className="d-flex align-items-center gap-3 mb-3" id={id}>
-      <span className="discover-section-icon bg-white text-black" aria-hidden="true">
+      <span className="discover-section-icon bg-white text-dark" aria-hidden="true">
         <Icon name={icon} />
       </span>
       <div className="flex-grow-1 min-w-0">

@@ -265,7 +265,7 @@ export default function BookPage() {
           biggest: the cover, the title and author, and the one main action; the small print (badges,
           year, where the reader is with it, why read it together) is small and grey */}
       <header className="text-center">
-        <BookCover book={book} size="hero" className="mx-auto mb-4" />
+        <BookCover book={book} size="hero" color className="mx-auto mb-4" />
         <div className="d-flex flex-wrap justify-content-center gap-2 mb-3">
           <DifficultyBadge level={book.difficulty} labelled />
           <EraBadge era={book.era} />

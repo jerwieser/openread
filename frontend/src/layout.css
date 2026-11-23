@@ -13,6 +13,9 @@
   --bs-link-color-rgb: var(--bs-dark-rgb);
   --bs-link-hover-color-rgb: var(--bs-dark-rgb);
   --bs-focus-ring-color: rgba(var(--bs-dark-rgb), 0.25);
+  /* Headings and other emphasis use the same dark as the page and the buttons, not pure black. */
+  --bs-emphasis-color: var(--bs-dark);
+  --bs-emphasis-color-rgb: var(--bs-dark-rgb);
   --bs-nav-pills-link-active-bg: var(--bs-dark);
   --bs-dropdown-link-active-bg: var(--bs-dark);
   --bs-pagination-active-bg: var(--bs-dark);
@@ -186,6 +189,13 @@ img.book-cover {
   img.book-cover {
     transition: none;
   }
+}
+
+/* On the book's own page the cover is already what you came to see, so it stays in colour. */
+.book-cover.book-cover-color img,
+.book-cover.book-cover-color:hover img,
+.book-cover.book-cover-color:focus-within img {
+  filter: none;
 }
 
 /* A cover with no card fill takes the colour of whatever it sits on. */
@@ -504,11 +514,12 @@ body {
   line-height: 1.2;
 }
 
-/* The bar and the phone menu are white, so they read as a bar on the dark field. */
+/* The bar and the phone menu are white, so they read as a bar on the dark field. Their type is the
+   same dark as the buttons, which is also Bootstrap's body colour. */
 .navbar.bg-white,
 #site-menu.offcanvas {
   background-color: #fff !important;
-  color: #000;
+  color: var(--bs-dark);
 }
 
 .navbar-nav {
@@ -519,10 +530,10 @@ body {
    so the drawer gets the bar's link colours (Bootstrap's dark navbar's): dimmed, the current page in
    full. */
 #site-menu {
-  --bs-navbar-color: rgba(0, 0, 0, 0.7);
-  --bs-navbar-hover-color: #000;
-  --bs-navbar-active-color: #000;
-  --bs-offcanvas-color: #000;
+  --bs-navbar-color: rgba(var(--bs-dark-rgb), 0.65);
+  --bs-navbar-hover-color: var(--bs-dark);
+  --bs-navbar-active-color: var(--bs-dark);
+  --bs-offcanvas-color: var(--bs-dark);
 }
 
 /* The avatar's dropdown button in the navbar (SiteNav.jsx): the avatar alone, without Bootstrap's

@@ -5,7 +5,8 @@ import { Ratio, Spinner } from "react-bootstrap";
 // load) a black cover with the title in white, so it still looks like a book and stays with the
 // rest of the site. Not the page's own dark: a cover in that colour disappears into the field.
 // The picture itself rests in grey and returns to colour when the reader is on it (layout.css).
-const WIDTHS = { sm: 72, lg: 170, xl: 260, hero: 280 };
+// color: on the book's own page, where it stays in colour and doesn't wait for a hover.
+const WIDTHS = { sm: 72, lg: 170, xl: 260, hero: 340 };
 
 // While a cover loads: a small spinner on the cover's grey, where the cover will be, which fades in
 // over it once it's there. Only when the page reaches it (loading="lazy"), and not for one the browser
@@ -37,12 +38,12 @@ function Picture({ src, title, onError }) {
   );
 }
 
-export default function BookCover({ book, size = "md", className = "" }) {
+export default function BookCover({ book, size = "md", color = false, className = "" }) {
   const width = WIDTHS[size];
   // the cover that didn't load, if one didn't (kept per address, so a new cover is tried again)
   const [failed, setFailed] = useState(null);
   return (
-    <div className={`book-cover flex-shrink-0 ${className}`} style={width ? { width, maxWidth: "100%" } : undefined}>
+    <div className={`book-cover flex-shrink-0 ${color ? "book-cover-color" : ""} ${className}`} style={width ? { width, maxWidth: "100%" } : undefined}>
       <Ratio aspectRatio={150} className="rounded shadow-sm overflow-hidden bg-body-secondary">
         {book.cover && book.cover !== failed ? (
           <Picture key={book.cover} src={book.cover} title={book.title} onError={() => setFailed(book.cover)} />
