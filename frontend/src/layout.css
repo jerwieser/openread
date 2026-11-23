@@ -111,6 +111,44 @@ body {
   color: var(--bs-body-color);
 }
 
+/* Notices over the page: a white sheet for ordinary news, a dark one when something went wrong.
+   No green, blue or yellow. */
+.alert.site-message {
+  --bs-alert-bg: #fff;
+  --bs-alert-color: var(--bs-dark);
+  --bs-alert-border-color: var(--bs-dark);
+  --bs-alert-link-color: var(--bs-dark);
+  background-color: #fff;
+  color: var(--bs-dark);
+  border-color: var(--bs-dark);
+}
+
+.alert.site-message .alert-link,
+.alert.site-message .alert-link:hover,
+.alert.site-message .alert-link:focus {
+  color: var(--bs-dark) !important;
+}
+
+.alert.site-message-danger {
+  --bs-alert-bg: var(--bs-dark);
+  --bs-alert-color: #fff;
+  --bs-alert-border-color: rgba(255, 255, 255, 0.55);
+  --bs-alert-link-color: #fff;
+  background-color: var(--bs-dark);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.alert.site-message-danger .alert-link,
+.alert.site-message-danger .alert-link:hover,
+.alert.site-message-danger .alert-link:focus {
+  color: #fff !important;
+}
+
+.alert.site-message-danger .btn-close {
+  filter: invert(1) grayscale(1);
+}
+
 .form-control,
 .form-select {
   color: var(--bs-body-color);

@@ -3,7 +3,7 @@
 // it's in view and at the top of the screen once it has scrolled away, the full width of the page's
 // container, so they're seen however far down the reader is. They never cover the menu. Several stack one beneath the other, and each fades out by itself
 // after a few seconds, or when closed. Any page can add one with useMessage(): message("Saved") or
-// message("Something went wrong", "danger").
+// message("Something went wrong", "danger"). Ordinary ones are a white sheet; a problem is a dark one.
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { Alert, Container } from "react-bootstrap";
 
@@ -54,7 +54,7 @@ function Message({ message: m, onGone }) {
       onClose={() => setShow(false)}
       onExited={() => onGone(m.id)}
       dismissible
-      className="d-flex align-items-center gap-2 mb-2 shadow"
+      className={`site-message d-flex align-items-center gap-2 mb-2 shadow ${m.variant === "danger" ? "site-message-danger" : ""}`}
       style={{ pointerEvents: "auto" }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
