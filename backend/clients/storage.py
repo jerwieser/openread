@@ -117,6 +117,21 @@ def store_picture(data: bytes, extension: str, folder: str) -> str:
     return name
 
 
+def read_stored(name: str) -> bytes | None:
+    """The bytes of a picture we stored, or None when it isn't one of ours or it's gone."""
+    if not is_upload(name) or ".." in name.split("/"):
+        return None
+    service = blob_service()
+    if service:
+        try:
+            return service.get_blob_client(get_settings().azure_storage_container_media, name).download_blob().readall()
+        except Exception:
+            logger.exception("Could not read the stored picture %s", name)
+            return None
+    path = MEDIA_DIR / name
+    return path.read_bytes() if path.is_file() else None
+
+
 def delete_upload(value: str | None) -> None:
     """Delete an uploaded picture. A failure is only logged: a leftover file does no harm."""
     if not is_upload(value):

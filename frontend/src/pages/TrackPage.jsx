@@ -3,6 +3,7 @@ import { Button, Container, Form, InputGroup } from "react-bootstrap";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import BusyButton from "../components/BusyButton.jsx";
+import InstagramTrackButton from "../components/InstagramTrackButton.jsx";
 import { Loader, LoadingSpinner, lazyPage } from "../components/Loading.jsx";
 import { useMessage } from "../components/Messages.jsx";
 import { usePageTitle } from "../components/PageHeader.jsx";
@@ -116,6 +117,7 @@ function TrackView({ track, kind, code }) {
         </div>
 
         <div className="d-flex flex-wrap justify-content-center align-items-center gap-3 mt-3">
+          <InstagramTrackButton track={track} stops={progress.stops} />
           {kind === "own" && <ShareActions track={track} />}
           {kind === "own" && (
             <>

@@ -2,14 +2,20 @@
 searching Open Library and adding its works.
 """
 
+import http.client
+import ipaddress
+import socket
+import urllib.error
+import urllib.parse
+import urllib.request
 from dataclasses import dataclass
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Path, Query, Request, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Path, Query, Request, Response, status
 from sqlmodel import col, exists, func, or_, select
 
 from backend.clients import openlibrary
-from backend.clients.storage import public_url
+from backend.clients.storage import picture_type, public_url, read_stored
 from backend.db import SessionDep
 from backend.deps import CurrentUser
 from backend.models import (
@@ -39,7 +45,7 @@ from backend.models import (
 from backend.rate_limit import limiter
 from backend.serialize import readers_read, reflections_read, tracks_read, work_by_slug
 from backend.services.enrich import enrich_later
-from backend.services.expressions import PICTURE, shown_title, titles_of
+from backend.services.expressions import PICTURE, cover_edition, shown_title, titles_of
 from backend.services.search import find_works
 from backend.services.works import by_ol_work, match, same_work, work_from_open_library
 
@@ -221,6 +227,71 @@ def match_works(
 
 # a real publication, not the work's cover picture (which has no ISBN or Open Library record)
 PUBLISHED = or_(col(Edition.isbn).is_not(None), col(Edition.ol_edition).is_not(None))
+
+COVER_TYPES = {"jpg": "image/jpeg", "png": "image/png", "webp": "image/webp"}
+COVER_BYTES = 5 * 1024 * 1024
+
+
+def _public_cover_host(host: str) -> bool:
+    """A cover we fetch has to be on the public internet: not this machine, not a private address."""
+    try:
+        infos = socket.getaddrinfo(host, None)
+    except socket.gaierror:
+        return False
+    for info in infos:
+        address = ipaddress.ip_address(info[4][0])
+        if not address.is_global:
+            return False
+    return True
+
+
+def _fetch_cover(url: str) -> tuple[bytes, str] | None:
+    """The picture at a cover's source URL, when it's a picture we keep and the host is public."""
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme not in ("http", "https") or not parsed.hostname or not _public_cover_host(parsed.hostname):
+        return None
+
+    class _PublicRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            target = urllib.parse.urlparse(newurl)
+            if target.scheme not in ("http", "https") or not target.hostname or not _public_cover_host(target.hostname):
+                raise urllib.error.HTTPError(newurl, code, "redirect refused", headers, fp)
+            return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+    try:
+        request = urllib.request.Request(url, headers={"User-Agent": openlibrary.USER_AGENT})
+        with urllib.request.build_opener(_PublicRedirect).open(request, timeout=8) as response:
+            data = response.read(COVER_BYTES + 1)
+    except (OSError, http.client.HTTPException):
+        return None
+    if len(data) > COVER_BYTES:
+        return None
+    kind = picture_type(data)
+    return (data, kind) if kind else None
+
+
+@router.get("/works/{slug}/cover")
+def get_cover(slug: str, session: SessionDep) -> Response:
+    """A book's cover, from our copy or its source, on this API.
+
+    The track's Instagram image is drawn in the browser, and a canvas can only use a picture from
+    the same place as the page. A cover that lives on Open Library or Wikimedia can't be drawn
+    until it comes through here.
+    """
+    work = work_by_slug(session, slug)
+    edition = cover_edition(session, work)
+    data = kind = None
+    if edition and edition.cover:
+        stored = read_stored(edition.cover)
+        kind = picture_type(stored) if stored else None
+        data = stored if kind else None
+    if data is None and edition and edition.cover_source:
+        fetched = _fetch_cover(edition.cover_source)
+        if fetched:
+            data, kind = fetched
+    if data is None or kind is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "This book has no cover")
+    return Response(content=data, media_type=COVER_TYPES[kind], headers={"Cache-Control": "public, max-age=86400"})
 
 
 @router.get("/works/{slug}/expressions", response_model=list[ExpressionRead])
