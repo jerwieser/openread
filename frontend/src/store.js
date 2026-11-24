@@ -20,8 +20,9 @@ const languages = () => `languages=${encodeURIComponent(READER_LANGUAGES.join(",
 const NONE = { user: null, statuses: {}, owned: [], follows: {}, ownTracks: [], ownReflections: [], suggestions: [], inbox: [] };
 
 // catalogue: "loading" while the site opens (load), then "loaded", or "unreachable" when the API
-// didn't answer
-const state = { catalogue: "loading", books: [], tracks: [], readers: [], reflections: [], ...NONE };
+// didn't answer. account: "loading" until /auth/me has answered, then "known", so a logged-out
+// visitor can see the landing page before the catalogue is in.
+const state = { catalogue: "loading", account: "loading", books: [], tracks: [], readers: [], reflections: [], ...NONE };
 const listeners = new Set();
 
 function set(changes) {
@@ -170,21 +171,30 @@ export async function matchBooks(rows) {
   return slugs;
 }
 
-// When the site opens, while the menu and footer already show: the catalogue, and the reader's own
-// things if they're logged in. The pages show once it's loaded (App.jsx, Opened).
+// When the site opens, while the menu and footer already show: who is logged in, and the catalogue.
+// A logged-out visitor gets the landing page as soon as /auth/me answers (App.jsx, HomeGate); the
+// catalogue fills its placeholders in afterwards. A signed-in reader is sent on once their account
+// is known. The other pages wait for the catalogue (App.jsx, Opened).
 export async function load() {
-  try {
-    const [me] = await Promise.all([api.get("/auth/me").catch(() => null), reload(...Object.keys(CATALOGUE))]);
-    if (me) await signIn(me);
-    await holdBooks(referred());
-    set({ catalogue: "loaded" });
-  } catch (error) {
-    console.error(error);
-    set({ catalogue: "unreachable" });
-  }
+  const catalogue = reload(...Object.keys(CATALOGUE))
+    .then(() => holdBooks(referred()))
+    .then(() => set({ catalogue: "loaded" }))
+    .catch((error) => {
+      console.error(error);
+      set({ catalogue: "unreachable" });
+    });
+  // 401 is "nobody is logged in", not a failure of the site
+  const account = api
+    .get("/auth/me")
+    .then((me) => (me ? signIn(me) : null))
+    .catch(() => null)
+    .then(() => set({ account: "known" }));
+  await Promise.all([catalogue, account]);
 }
 
 export const useCatalogue = () => useStore(() => state.catalogue);
+
+export const useAccount = () => useStore(() => state.account);
 
 export const useReaders = () => useStore(() => state.readers);
 
