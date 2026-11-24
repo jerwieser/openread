@@ -683,17 +683,17 @@ body {
   overflow-x: clip;
 }
 
-/* The navbar (SiteNav.jsx). One height on every width: the desktop bar, as on openread.cloud.
-   The name at its largest (1.75rem, line-height 1.2), 4px above and below, and the 1px border.
-   The burger is the logo's size, so on a phone it sits in that height instead of making the bar
-   taller. nowrap, so a narrow window can't fold the bar onto a second row. */
+/* The navbar (SiteNav.jsx). One height on every width, the same as daygame.pro: the name at its
+   largest (1.75rem, line-height 1.2), 8px above and below, and the 1px border. The burger is the
+   logo's size, so on a phone it sits in that height instead of making the bar taller. nowrap, so a
+   narrow window can't fold the bar onto a second row. */
 .navbar {
   --bs-navbar-brand-padding-y: 0;
   --bs-navbar-nav-link-padding-x: 0.5rem;
-  --bs-navbar-padding-y: 0.25rem;
+  --bs-navbar-padding-y: 0.5rem;
   box-sizing: border-box;
   flex-wrap: nowrap;
-  height: calc(1.75rem * 1.2 + 0.5rem + 1px);
+  height: calc(1.75rem * 1.2 + 1rem + 1px);
 }
 
 /* The burger (SiteNav.jsx), below md. The logo's 30px, so it lines up with the mark and stays
