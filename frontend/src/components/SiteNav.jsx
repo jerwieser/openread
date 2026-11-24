@@ -3,7 +3,7 @@ import { Badge, Button, Container, Dropdown, Nav, Navbar, Offcanvas } from "reac
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useConversations } from "../data/inbox.js";
-import { isAdmin, logOut, TRACKS_HOME, useCatalogue, useSuggestions, useUser } from "../store.js";
+import { isAdmin, logOut, TRACKS_HOME, useAccount, useSuggestions, useUser } from "../store.js";
 import Initials from "./Initials.jsx";
 import { useMessage } from "./Messages.jsx";
 import { Brand } from "./Logo.jsx";
@@ -40,7 +40,8 @@ const Unread = ({ count }) =>
 // stands in for the avatar.
 function useAccountLinks() {
   const user = useUser();
-  const opening = useCatalogue() === "loading";
+  const account = useAccount();
+  const opening = !user && account === "loading";
   const navigate = useNavigate();
   const message = useMessage();
   const [suggestions] = useSuggestions();
@@ -87,7 +88,7 @@ function Account() {
   if (opening) {
     return (
       <span className="placeholder-glow ms-md-2 d-inline-flex" role="status">
-        <span className="placeholder rounded-circle" style={{ width: 30, height: 30 }} />
+        <span className="placeholder rounded-circle" style={{ width: 32, height: 32 }} />
         <span className="visually-hidden">Loading your account…</span>
       </span>
     );
@@ -109,7 +110,7 @@ function Account() {
       <Dropdown as={Nav.Item} align="end">
         <Dropdown.Toggle as="button" id="account-menu" className="navbar-account nav-link py-0 pe-0 border-0 bg-transparent">
           <span className="position-relative d-inline-flex">
-            <Initials name={user.name} photo={user.photo} size={30} />
+            <Initials name={user.name} photo={user.photo} size={32} />
             {unread > 0 && <Dot />}
           </span>
           <span className="visually-hidden">

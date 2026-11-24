@@ -7,7 +7,7 @@ import { LoadingSpinner, lazyPage } from "./components/Loading.jsx";
 import { MessageArea, MessagesProvider } from "./components/Messages.jsx";
 import SiteFooter from "./components/SiteFooter.jsx";
 import SiteNav from "./components/SiteNav.jsx";
-import { TRACKS_HOME, useCatalogue, useUser } from "./store.js";
+import { TRACKS_HOME, useAccount, useCatalogue, useUser } from "./store.js";
 
 // Every page is its own chunk of code, fetched the first time it's opened (see Loading.jsx)
 const AccountPage = lazyPage(() => import("./pages/AccountPage.jsx"));
@@ -66,16 +66,17 @@ function ToDiscover({ view }) {
 }
 
 // The pages that show while the catalogue is still coming: their words and pictures are their own,
-// and the home page shows placeholders for what comes from the API (HomePage.jsx). / waits until
-// it's known whether anyone is logged in (HomeGate), so a reader isn't shown the landing page.
+// and the home page shows placeholders for what comes from the API (HomePage.jsx).
 const OPENS_EARLY = new Set(["/", "/terms", "/privacy"]);
 
-// / is the landing page for a visitor. A signed-in reader belongs on the tracks.
+// / is the landing page for a visitor. It shows as soon as we know nobody is logged in, with
+// placeholders for the tracks and books still on their way. A signed-in reader belongs on the
+// tracks, and isn't shown the landing page while that's still being checked.
 function HomeGate() {
   const user = useUser();
-  const catalogue = useCatalogue();
+  const account = useAccount();
   if (user) return <Navigate to={TRACKS_HOME} replace />;
-  if (catalogue === "loading") return <LoadingSpinner label="Loading the page…" />;
+  if (account === "loading") return <LoadingSpinner label="Loading the page…" />;
   return <HomePage />;
 }
 
